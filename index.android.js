@@ -10,20 +10,73 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  ListView
 } from 'react-native';
 
+var MOCKED_DATA = {
+  items: [{
+    goodsName: '实拍9671#欧美潮T短袖女装T恤洗水怀旧女上衣',
+    defaultImage: 'https://img.alicdn.com/bao/uploaded/i4/TB1kTZSHFXXXXaDapXXXXXXXXXX_!!0-item_pic.jpg',
+    price: '56.00'
+  }, {
+    goodsName: '8736#2016年夏季新款女装民族风印花短袖盘扣文艺棉麻连衣裙',
+    defaultImage: 'https://img.alicdn.com/bao/uploaded/i1/TB1aMZ.JFXXXXb8XFXXXXXXXXXX_!!0-item_pic.jpg',
+    price: '52.00'
+  }, {
+    goodsName: '实拍 春夏新款女装七分袖印花高腰中长款连衣裙一字领打底裙A字裙',
+    defaultImage: 'https://img.alicdn.com/bao/uploaded/i2/685489829/TB25wNhopXXXXc1XpXXXXXXXXXX_!!685489829.jpg',
+    price: '45.00'
+  }, {
+    goodsName: '(实拍)新款8259 浅色宽松破洞休闲磨破牛仔哈伦裤女垮裤',
+    defaultImage: 'https://img.alicdn.com/bao/uploaded/i1/855301567/TB2.h.HlpXXXXXZXXXXXXXXXXXX_!!855301567.jpg',
+    price: '36.00'
+  }, {
+    goodsName: '实拍现货9621#2016情侣装 韩版宽松 印花百搭情侣T恤潮',
+    defaultImage: 'https://img.alicdn.com/bao/uploaded/i2/1993861789/TB2JSJ2oVXXXXbiXXXXXXXXXXXX_!!1993861789.jpg',
+    price: '18.00'
+  }, {
+    goodsName: '实拍6702#2016夏装情侣装 刺绣字母宽松学生日系简约百搭韩版短袖',
+    defaultImage: 'http://img.alicdn.com/bao/uploaded/i4/735090978/TB2DZKdopXXXXXWXFXXXXXXXXXX-735090978.jpg_240x240.jpg',
+    price: '18.00'
+  }, {
+    goodsName: '6688#实拍小清新甜美夏装韩版短袖网纱罩衫无袖背心连衣裙两件套',
+    defaultImage: 'https://img.alicdn.com/bao/uploaded/i1/2105755207/TB28eSyqpXXXXX9XpXXXXXXXXXX_!!2105755207.jpg',
+    price: '25.00'
+  }, {
+    goodsName: '实拍 8511# 新款韩版女装时尚短袖印花T恤宽松大码T恤衫',
+    defaultImage: 'https://img.alicdn.com/bao/uploaded/i1/485700822/TB216FtnXXXXXcXXXXXXXXXXXXX_!!485700822.jpg',
+    price: '21.00'
+  }]
+};
+
 class zwd51 extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2
+      })
+    };
+  }
+
   render() {
     return (
+      <ListView dataSource={this.state.dataSource.cloneWithRows(MOCKED_DATA.items)}
+        renderRow={this.renderItem}/>
+    );
+  }
+
+  renderItem(item) {
+    return (
       <View style={styles.container}>
-        <Image style={styles.pic} source={{uri: 'https://img.alicdn.com/bao/uploaded/i1/TB1aMZ.JFXXXXb8XFXXXXXXXXXX_!!0-item_pic.jpg'}}/>
+        <Image style={styles.pic} source={{uri: item.defaultImage}}/>
         <View style={styles.rightContainer}>
         <Text style={styles.title}>
-          薄款无领时尚小西装女韩版修身七分袖夏装白色上衣短款女装短外套
+          {item.goodsName}
         </Text>
         <Text style={styles.price}>
-          价格: 52.00
+          价格: {item.price}
         </Text>
         </View>
       </View>
