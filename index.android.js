@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     width: 80
   },
   title: {
+    flex: 1,
     fontSize: 15
   },
   price: {
