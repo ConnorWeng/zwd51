@@ -11,7 +11,9 @@ import {
   Text,
   View,
   Image,
-  ListView
+  ListView,
+  TouchableHighlight,
+  Alert
 } from 'react-native';
 
 var MOCKED_DATA = {
@@ -69,17 +71,19 @@ class zwd51 extends Component {
 
   renderItem(item) {
     return (
-      <View style={styles.container}>
-        <Image style={styles.pic} source={{uri: item.defaultImage}}/>
-        <View style={styles.rightContainer}>
-        <Text style={styles.title}>
-          {item.goodsName}
-        </Text>
-        <Text style={styles.price}>
-          价格: {item.price}
-        </Text>
+      <TouchableHighlight onPress={() => {Alert.alert('title', 'msg');}}>
+        <View style={styles.container}>
+          <Image style={styles.pic} source={{uri: item.defaultImage}}/>
+          <View style={styles.rightContainer}>
+            <Text style={styles.title}>
+              {item.goodsName}
+            </Text>
+            <Text style={styles.price}>
+              价格: {item.price}
+            </Text>
+          </View>
         </View>
-      </View>
+      </TouchableHighlight>
     );
   }
 }
@@ -88,8 +92,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF'
   },
   rightContainer: {
