@@ -13,8 +13,11 @@ import {
   Image,
   ListView,
   TouchableHighlight,
-  Alert
+  Navigator,
+  BackAndroid
 } from 'react-native';
+
+import Item from './item';
 
 var MOCKED_DATA = {
   items: [{
@@ -53,6 +56,38 @@ var MOCKED_DATA = {
 };
 
 class zwd51 extends Component {
+  componentDidMount() {
+    var navigator = this._navigator;
+    BackAndroid.addEventListener('hardwareBackPress', () => {
+      if (navigator && navigator.getCurrentRoutes().length > 1) {
+        navigator.pop();
+        return true;
+      }
+      return false;
+    });
+  }
+
+  componentWillUnmount() {
+    BackAndroid.removeEventListener('hardwareBackPress');
+  }
+
+  render() {
+    return (
+      <Navigator initialRoute={{scene: Index}}
+        renderScene={this.renderScene.bind(this)}
+      />
+    );
+  }
+
+  renderScene(route, nav) {
+    this._navigator = nav;
+    return (
+      <route.scene navigator={nav}/>
+    );
+  }
+}
+
+class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -64,14 +99,15 @@ class zwd51 extends Component {
 
   render() {
     return (
-      <ListView dataSource={this.state.dataSource.cloneWithRows(MOCKED_DATA.items)}
-        renderRow={this.renderItem}/>
+      <ListView
+        dataSource={this.state.dataSource.cloneWithRows(MOCKED_DATA.items)}
+        renderRow={this.renderItem.bind(this)}/>
     );
   }
 
   renderItem(item) {
     return (
-      <TouchableHighlight onPress={() => {Alert.alert('title', 'msg');}}>
+      <TouchableHighlight onPress={() => this.goToItemDetail(item)}>
         <View style={styles.container}>
           <Image style={styles.pic} source={{uri: item.defaultImage}}/>
           <View style={styles.rightContainer}>
@@ -85,6 +121,10 @@ class zwd51 extends Component {
         </View>
       </TouchableHighlight>
     );
+  }
+
+  goToItemDetail(item) {
+    this.props.navigator.push({scene: Item});
   }
 }
 
