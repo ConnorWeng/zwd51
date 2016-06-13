@@ -73,7 +73,7 @@ class zwd51 extends Component {
 
   render() {
     return (
-      <Navigator initialRoute={{scene: Index}}
+      <Navigator initialRoute={{scene: Index, data: {}}}
         renderScene={this.renderScene.bind(this)}
       />
     );
@@ -82,7 +82,7 @@ class zwd51 extends Component {
   renderScene(route, nav) {
     this._navigator = nav;
     return (
-      <route.scene navigator={nav}/>
+      <route.scene navigator={nav} data={route.data}/>
     );
   }
 }
@@ -124,7 +124,7 @@ class Index extends Component {
   }
 
   goToItemDetail(item) {
-    this.props.navigator.push({scene: Item});
+    this.props.navigator.push({scene: Item, data: item});
   }
 }
 

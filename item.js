@@ -7,7 +7,7 @@ import {
 class Item extends Component {
   render() {
     return (
-      <Text>item page!</Text>
+      <Text>{this.props.data.goodsName}</Text>
     );
   }
 }
