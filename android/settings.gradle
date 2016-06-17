@@ -1,3 +1,4 @@
 rootProject.name = 'zwd51'
 
 include ':app'
+include ':OneSDK'

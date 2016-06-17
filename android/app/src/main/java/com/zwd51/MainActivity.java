@@ -1,5 +1,12 @@
 package com.zwd51;
 
+import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.alibaba.sdk.android.AlibabaSDK;
+import com.alibaba.sdk.android.callback.InitResultCallback;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -36,5 +43,22 @@ public class MainActivity extends ReactActivity {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage()
         );
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        AlibabaSDK.asyncInit(this, new InitResultCallback() {
+            @Override
+            public void onSuccess() {
+                Log.i("MainActivity", "onSuccess: SDK success");
+            }
+
+            @Override
+            public void onFailure(int code, String message) {
+                Log.e("MainActivity", "onFailure: SDK fail");
+            }
+        });
     }
 }
