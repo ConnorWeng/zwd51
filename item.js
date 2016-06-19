@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  NativeModules,
   StyleSheet,
   View,
   Image,
@@ -22,7 +23,7 @@ class Item extends Component {
   }
 
   upload() {
-
+    NativeModules.AlibabaAPI.login();
   }
 }
 
