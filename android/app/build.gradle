@@ -89,6 +89,11 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        /**
+         * Multidex support prior to Android 5.0
+         * see https://developer.android.com/studio/build/multidex.html
+         */
+        multiDexEnabled true
     }
     splits {
         abi {
