@@ -13,44 +13,66 @@ import {
   ScrollView
 } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
+import Icon from 'react-native-vector-icons/Entypo';
 import TabBar from './TabBar';
 
 class zwd51 extends Component {
+
+  state = {
+    title: ''
+  }
+
   render() {
     return (
-      <ScrollableTabView
-        tabBarPosition="bottom"
-        initialPage={1}
-        renderTabBar={() => <TabBar />}>
-        <ScrollView tabLabel="home" style={styles.tabView}>
-          <View style={styles.card}>
-            <Text>News</Text>
-          </View>
-        </ScrollView>
-        <ScrollView tabLabel="magnifying-glass" style={styles.tabView}>
-          <View style={styles.card}>
-            <Text>Friends</Text>
-          </View>
-        </ScrollView>
-        <ScrollView tabLabel="shop" style={styles.tabView}>
-          <View style={styles.card}>
-            <Text>Messenger</Text>
-          </View>
-        </ScrollView>
-        <ScrollView tabLabel="user" style={styles.tabView}>
-          <View style={styles.card}>
-            <Text>Other nav</Text>
-          </View>
-        </ScrollView>
-      </ScrollableTabView>
+      <View style={styles.container}>
+        <Icon.ToolbarAndroid
+          style={styles.toolbar}
+          title={this.state.title}
+          navIconName="menu"
+          actions={[
+            { title: 'Search', iconName: 'magnifying-glass', iconColor: "#4099FF", show: 'ifRoom' },
+            { title: 'Settings', iconName: 'cog', show: 'always' },
+          ]}
+          onActionSelected={this.onActionSelected} />
+        <ScrollableTabView
+          tabBarPosition="bottom"
+          initialPage={1}
+          renderTabBar={() => <TabBar />}>
+          <ScrollView tabLabel="home" style={styles.tabView}>
+            <View style={styles.card}>
+              <Text>Home</Text>
+            </View>
+          </ScrollView>
+          <ScrollView tabLabel="magnifying-glass" style={styles.tabView}>
+            <View style={styles.card}>
+              <Text>Search</Text>
+            </View>
+          </ScrollView>
+          <ScrollView tabLabel="shop" style={styles.tabView}>
+            <View style={styles.card}>
+              <Text>Shop</Text>
+            </View>
+          </ScrollView>
+          <ScrollView tabLabel="user" style={styles.tabView}>
+            <View style={styles.card}>
+              <Text>Me</Text>
+            </View>
+          </ScrollView>
+        </ScrollableTabView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  toolbar: {
+    height: 56
+  },
   tabView: {
     flex: 1,
-    padding: 10,
     backgroundColor: 'rgba(0,0,0,0.01)'
   },
   card: {
