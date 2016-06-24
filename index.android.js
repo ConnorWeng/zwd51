@@ -15,6 +15,10 @@ import {
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import Icon from 'react-native-vector-icons/Entypo';
 import TabBar from './TabBar';
+import HomePage from './HomePage';
+import SearchPage from './SearchPage';
+import ShopPage from './ShopPage';
+import UserPage from './UserPage';
 
 class zwd51 extends Component {
 
@@ -39,24 +43,16 @@ class zwd51 extends Component {
           initialPage={1}
           renderTabBar={() => <TabBar />}>
           <ScrollView tabLabel="home" style={styles.tabView}>
-            <View style={styles.card}>
-              <Text>Home</Text>
-            </View>
+            <HomePage />
           </ScrollView>
           <ScrollView tabLabel="magnifying-glass" style={styles.tabView}>
-            <View style={styles.card}>
-              <Text>Search</Text>
-            </View>
+            <SearchPage />
           </ScrollView>
           <ScrollView tabLabel="shop" style={styles.tabView}>
-            <View style={styles.card}>
-              <Text>Shop</Text>
-            </View>
+            <ShopPage />
           </ScrollView>
           <ScrollView tabLabel="user" style={styles.tabView}>
-            <View style={styles.card}>
-              <Text>Me</Text>
-            </View>
+            <UserPage />
           </ScrollView>
         </ScrollableTabView>
       </View>
@@ -76,16 +72,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.01)'
   },
   card: {
-    borderWidth: 1,
-    backgroundColor: '#fff',
-    borderColor: 'rgba(0,0,0,0.1)',
-    margin: 5,
-    height: 150,
-    padding: 15,
-    shadowColor: '#ccc',
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 3
+    height: 150
   }
 });
 
