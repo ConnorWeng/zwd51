@@ -25,11 +25,13 @@ class MainPage extends Component {
             { title: 'Search', iconName: 'magnifying-glass', iconColor: "#4099FF", show: 'ifRoom' },
             { title: 'Settings', iconName: 'cog', show: 'always' },
           ]}
-          onActionSelected={this.onActionSelected} />
+          onActionSelected={this.onActionSelected}
+        />
         <ScrollableTabView
           tabBarPosition="bottom"
           initialPage={0}
-          renderTabBar={() => <TabBar />}>
+          renderTabBar={() => <TabBar />}
+          onChangeTab={this.props.onChangeTab}>
           <ScrollView tabLabel="home" style={styles.tabView}>
             <HomePage />
           </ScrollView>
