@@ -5,11 +5,11 @@ const page = (state = {}, action) => {
       title: (() => {
         switch (action.index) {
         case 1:
-          return 'Search';
+          return '搜款式';
         case 2:
-          return 'Shop';
+          return '逛市场';
         case 3:
-          return 'Me';
+          return '我的';
         default:
           return '';
         }
