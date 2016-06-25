@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   ScrollView
 } from 'react-native';
-import { connect } from 'react-redux';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import Icon from 'react-native-vector-icons/Entypo';
 import TabBar from './TabBar';
@@ -67,6 +65,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const App = connect(state => state)(MainPage);
-
-export default App;
+export default MainPage;

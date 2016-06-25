@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import App from './App';
+import App from './containers/App';
 import reducers from './reducers';
 
 const store = createStore(reducers);
