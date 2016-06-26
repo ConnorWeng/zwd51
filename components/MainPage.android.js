@@ -22,8 +22,7 @@ class MainPage extends Component {
           title={this.props.page.title}
           navIconName="menu"
           actions={[
-            { title: 'Search', iconName: 'magnifying-glass', iconColor: "#4099FF", show: 'ifRoom' },
-            { title: 'Settings', iconName: 'cog', show: 'always' },
+            { title: 'Search', iconName: 'magnifying-glass', iconColor: "#4099FF", show: 'ifRoom' }
           ]}
           onActionSelected={this.onActionSelected}
         />
