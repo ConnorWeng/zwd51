@@ -18,18 +18,18 @@ class MainPage extends Component {
     return (
       <View style={styles.container}>
         <Icon.ToolbarAndroid
-          style={styles.toolbar}
-          title={this.props.page.title}
-          navIconName="menu"
-          actions={[
-            { title: 'Search', iconName: 'magnifying-glass', iconColor: "#4099FF", show: 'ifRoom' }
-          ]}
-          onActionSelected={this.onActionSelected}
-        />
+           style={styles.toolbar}
+           title={this.props.page.title}
+           navIconName="menu"
+           actions={[
+             { title: 'Search', iconName: 'magnifying-glass', iconColor: "#4099FF", show: 'ifRoom' }
+           ]}
+           onActionSelected={this.onActionSelected}/>
         <ScrollableTabView
-          tabBarPosition="bottom"
-          initialPage={0}
-          renderTabBar={() => <TabBar />}
+           tabBarPosition="bottom"
+           locked={true}
+           initialPage={0}
+           renderTabBar={() => <TabBar />}
           onChangeTab={this.props.onChangeTab}>
           <HomePageNav tabLabel="home" style={styles.tabView}/>
           <ScrollView tabLabel="magnifying-glass" style={styles.tabView}>
