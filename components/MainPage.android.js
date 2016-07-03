@@ -7,7 +7,7 @@ import {
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import Icon from 'react-native-vector-icons/Entypo';
 import TabBar from './TabBar';
-import HomePage from './HomePage';
+import HomePageNav from './HomePage';
 import SearchPage from './SearchPage';
 import ShopPage from './ShopPage';
 import UserPage from './UserPage';
@@ -31,9 +31,7 @@ class MainPage extends Component {
           initialPage={0}
           renderTabBar={() => <TabBar />}
           onChangeTab={this.props.onChangeTab}>
-          <ScrollView tabLabel="home" style={styles.tabView}>
-            <HomePage />
-          </ScrollView>
+          <HomePageNav tabLabel="home" style={styles.tabView}/>
           <ScrollView tabLabel="magnifying-glass" style={styles.tabView}>
             <SearchPage />
           </ScrollView>

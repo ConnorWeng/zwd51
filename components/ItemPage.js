@@ -8,13 +8,13 @@ import {
   TouchableHighlight
 } from 'react-native';
 
-class Item extends Component {
+class ItemPage extends Component {
   render() {
     return (
       <View>
-        <Image style={styles.pic} source={{uri: this.props.data.defaultImage}}/>
-        <Text>{this.props.data.goodsName}</Text>
-        <Text>{this.props.data.price}</Text>
+        <Image style={styles.pic} source={{uri: this.props.defaultImage}}/>
+        <Text>{this.props.goodsName}</Text>
+        <Text>{this.props.price}</Text>
         <TouchableHighlight onPress={this.upload.bind(this)}>
           <Text style={styles.uploadFont}>上传</Text>
         </TouchableHighlight>
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = Item;
+export default ItemPage;
