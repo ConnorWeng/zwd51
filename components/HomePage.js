@@ -11,12 +11,7 @@ import {
   Image,
   Dimensions
 } from 'react-native';
-import {
-  getTheme
-} from 'react-native-material-kit';
 import ItemPage from './ItemPage';
-
-const theme = getTheme();
 
 class HomePage extends Component {
 
@@ -49,11 +44,10 @@ class HomePage extends Component {
   renderTrendyItem(item) {
     return (
       <TouchableHighlight style={styles.trendyItemContainer} onPress={() => this.props.navigator.push({ItemPage: true, item: item})}>
-        <View style={theme.cardStyle}>
-          <Image source={{uri : item.defaultImage}} style={theme.cardImageStyle} />
-          <Text style={[theme.cardTitleStyle, styles.trendyItemTitle]}>{item.goodsName}</Text>
-          <View style={theme.cardActionStyle}>
-            <Text>上传淘宝</Text>
+        <View>
+          <Image source={{uri : item.defaultImage}} style={styles.trendyItemImage} />
+          <View style={styles.trendyItemTitleContainer}>
+            <Text numberOfLines={2} style={styles.trendyItemTitle}>{item.goodsName}</Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -65,7 +59,9 @@ class HomePage extends Component {
       <TouchableHighlight style={styles.hotItem} onPress={() => this.props.navigator.push({ItemPage: true, item: item})}>
         <View>
           <Image source={{uri : item.defaultImage}} style={styles.hotItemImage}/>
-          <Text style={styles.hotItemTitle}>{item.goodsName}</Text>
+          <View style={styles.hotItemTitleContainer}>
+            <Text numberOfLines={2} style={styles.hotItemTitle}>{item.goodsName}</Text>
+          </View>
         </View>
       </TouchableHighlight>
     );
@@ -81,22 +77,43 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(140,140,140,1)'
   },
   trendyItemContainer: {
-    paddingTop: 8
+    marginTop: 5
+  },
+  trendyItemImage: {
+    flex: 1,
+    height: 170,
+    resizeMode: 'cover'
+  },
+  trendyItemTitleContainer: {
+    position: 'absolute',
+    top: 130,
+    width: width,
+    height: 40,
+    backgroundColor: 'rgba(0,0,0,0.4)'
   },
   trendyItemTitle: {
-    fontSize: 16
+    color: 'rgb(255,255,255)',
+    fontSize: 16,
+    fontWeight: 'bold'
   },
   hotItemContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginTop: 5
   },
   hotItem: {
-    width: (width-10) / 2 - 1
+    width: width/2 - 2.5,
+    paddingBottom: 5
   },
   hotItemImage: {
-    width: (width-10) / 2 - 1,
-    height: 200
+    width: width/2 - 2.5,
+    height: 200,
+    resizeMode: 'cover'
+  },
+  hotItemTitleContainer: {
+    width: width/2 - 2.5,
+    backgroundColor: '#ffffff'
   },
   hotItemTitle: {
     fontSize: 12
