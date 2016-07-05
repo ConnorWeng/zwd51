@@ -57,4 +57,4 @@ var styles = StyleSheet.create({
   }
 });
 
-export default connect(state => state)(App);
+export default connect()(App);
