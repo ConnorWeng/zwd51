@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -7,9 +9,7 @@ import {
   ScrollView,
   TouchableHighlight,
   Image,
-  Dimensions,
-  Navigator,
-  BackAndroid
+  Dimensions
 } from 'react-native';
 import {
   getTheme
@@ -17,24 +17,6 @@ import {
 import ItemPage from './ItemPage';
 
 const theme = getTheme();
-
-class HomePageNav extends Component {
-
-  render() {
-    return (
-      <Navigator
-         initialRoute={{scene: HomePage}}
-         renderScene={this.renderScene.bind(this)} />
-    );
-  }
-
-  renderScene(route, nav) {
-    return (
-      <route.scene navigator={nav} {...route.props}/>
-    );
-  }
-
-}
 
 class HomePage extends Component {
 
@@ -45,21 +27,6 @@ class HomePage extends Component {
         rowHasChanged: (row1, row2) => row1 !== row2
       })
     };
-  }
-
-  componentDidMount() {
-    let nav = this.props.navigator;
-    BackAndroid.addEventListener('hardwareBackPress', () => {
-      if (nav && nav.getCurrentRoutes().length > 1) {
-        nav.pop();
-        return true;
-      }
-      return false;
-    });
-  }
-
-  componentWillUnmount() {
-    BackAndroid.removeEventListener('hardwareBackPress');
   }
 
   render() {
@@ -81,7 +48,7 @@ class HomePage extends Component {
 
   renderTrendyItem(item) {
     return (
-      <TouchableHighlight style={styles.trendyItemContainer} onPress={() => this.props.navigator.push({scene: ItemPage, props: item})}>
+      <TouchableHighlight style={styles.trendyItemContainer} onPress={() => this.props.navigator.push({ItemPage: true, item: item})}>
         <View style={theme.cardStyle}>
           <Image source={{uri : item.defaultImage}} style={theme.cardImageStyle} />
           <Text style={[theme.cardTitleStyle, styles.trendyItemTitle]}>{item.goodsName}</Text>
@@ -95,7 +62,7 @@ class HomePage extends Component {
 
   renderHotItem(item) {
     return (
-      <TouchableHighlight style={styles.hotItem} onPress={() => this.props.navigator.push({scene: ItemPage, props: item})}>
+      <TouchableHighlight style={styles.hotItem} onPress={() => this.props.navigator.push({ItemPage: true, item: item})}>
         <View>
           <Image source={{uri : item.defaultImage}} style={styles.hotItemImage}/>
           <Text style={styles.hotItemTitle}>{item.goodsName}</Text>
@@ -164,4 +131,4 @@ const MOCKED_DATA = {
   }]
 };
 
-export default HomePageNav;
+export default HomePage;

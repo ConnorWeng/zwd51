@@ -1,13 +1,17 @@
+'use strict';
+
 import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
   ScrollView
 } from 'react-native';
+import { connect } from 'react-redux';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import Icon from 'react-native-vector-icons/Entypo';
 import TabBar from './TabBar';
-import HomePageNav from './HomePage';
+import { changeMainTab } from '../actions';
+import HomePage from './HomePage';
 import SearchPage from './SearchPage';
 import ShopPage from './ShopPage';
 import UserPage from './UserPage';
@@ -31,7 +35,7 @@ class MainPage extends Component {
            initialPage={0}
            renderTabBar={() => <TabBar />}
           onChangeTab={this.props.onChangeTab}>
-          <HomePageNav tabLabel="home" style={styles.tabView}/>
+          <HomePage navigator={this.props.navigator} tabLabel="home" style={styles.tabView}/>
           <ScrollView tabLabel="magnifying-glass" style={styles.tabView}>
             <SearchPage />
           </ScrollView>
@@ -47,6 +51,12 @@ class MainPage extends Component {
   }
 
 }
+
+const actions = (dispatch) => {
+  return {
+    onChangeTab: (ins) => dispatch(changeMainTab(ins.i))
+  };
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -64,4 +74,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MainPage;
+export default connect(state => state, actions)(MainPage);
