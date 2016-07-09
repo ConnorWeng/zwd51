@@ -26,10 +26,11 @@ class MainPage extends Component {
            title={this.props.page.title}
            navIconName="menu"
            actions={[
-             { title: 'Search', iconName: 'magnifying-glass', iconColor: "#4099FF", show: 'ifRoom' }
+             { title: 'Search', iconName: 'magnifying-glass', iconColor: "#f40", show: 'ifRoom' }
            ]}
-           onActionSelected={this.onActionSelected}/>
+           onActionSelected={this.onActionSelected.bind(this)}/>
         <ScrollableTabView
+           ref="scrollableTabView"
            tabBarPosition="bottom"
            locked={true}
            initialPage={0}
@@ -48,6 +49,10 @@ class MainPage extends Component {
         </ScrollableTabView>
       </View>
     );
+  }
+
+  onActionSelected() {
+    this.refs.scrollableTabView.goToPage(1);
   }
 
 }
