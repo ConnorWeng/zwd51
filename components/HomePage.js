@@ -30,9 +30,11 @@ class HomePage extends Component {
         <View style={styles.banner}>
           <Text>banner</Text>
         </View>
+        <Text style={styles.separator}> － 热卖精品 － </Text>
         <ListView
            dataSource={this.state.dataSource.cloneWithRows(MOCKED_DATA.items)}
            renderRow={this.renderTrendyItem.bind(this)}/>
+        <Text style={styles.separator}> － 人气爆款 － </Text>
         <ListView
            contentContainerStyle={styles.hotItemContainer}
            dataSource={this.state.dataSource.cloneWithRows(MOCKED_DATA.items)}
@@ -62,6 +64,10 @@ class HomePage extends Component {
           <View style={styles.hotItemTitleContainer}>
             <Text numberOfLines={2} style={styles.hotItemTitle}>{item.goodsName}</Text>
           </View>
+          <View style={styles.hotItemPriceContainer}>
+            <Text numberOfLines={1} style={styles.hotItemPrice}>¥ {item.price} </Text>
+            <Text style={styles.hotItemOriginPrice}>¥ {item.price}</Text>
+          </View>
         </View>
       </TouchableHighlight>
     );
@@ -76,6 +82,10 @@ const styles = StyleSheet.create({
     height: 150,
     backgroundColor: 'rgba(140,140,140,1)'
   },
+  separator: {
+    fontSize: 16,
+    textAlign: 'center'
+  },
   trendyItemContainer: {
     marginTop: 5
   },
@@ -86,14 +96,14 @@ const styles = StyleSheet.create({
   },
   trendyItemTitleContainer: {
     position: 'absolute',
-    top: 130,
+    top: 125,
     width: width,
-    height: 40,
-    backgroundColor: 'rgba(0,0,0,0.4)'
+    height: 45,
+    backgroundColor: 'rgba(255,255,255,0.4)'
   },
   trendyItemTitle: {
-    color: 'rgb(255,255,255)',
-    fontSize: 16,
+    color: '#000000',
+    fontSize: 18,
     fontWeight: 'bold'
   },
   hotItemContainer: {
@@ -116,7 +126,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   hotItemTitle: {
-    fontSize: 12
+    fontSize: 12,
+    color: '#000000'
+  },
+  hotItemPriceContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    backgroundColor: '#ffffff'
+  },
+  hotItemPrice: {
+    color: '#f40'
+  },
+  hotItemOriginPrice: {
+    fontSize: 12,
+    textDecorationLine: 'line-through'
   }
 });
 
