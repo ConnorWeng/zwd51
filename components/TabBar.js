@@ -3,8 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
-  Animated,
+  TouchableOpacity
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 
@@ -33,11 +32,11 @@ const TabBar = React.createClass({
     });
   },
 
-  //color between rgb(59,89,152) and rgb(204,204,204)
+  //color between rgb(0,0,0) and rgb(204,204,204)
   iconColor(progress) {
-    const red = 59 + (204 - 59) * progress;
-    const green = 89 + (204 - 89) * progress;
-    const blue = 152 + (204 - 152) * progress;
+    const red = 204 * progress;
+    const green = 204 * progress;
+    const blue = 204 * progress;
     return `rgb(${red}, ${green}, ${blue})`;
   },
 
@@ -55,13 +54,12 @@ const TabBar = React.createClass({
               <Icon
                 name={tab}
                 size={30}
-                color={this.props.activeTab == i ? 'rgb(59,89,152)' : 'rgb(204,204,204)'}
+                color={this.props.activeTab == i ? 'rgb(0,0,0)' : 'rgb(204,204,204)'}
                 ref={(icon) => { this.tabIcons[i] = icon; }}
               />
             </TouchableOpacity>;
           })}
         </View>
-        <Animated.View style={[styles.tabUnderlineStyle, { width: tabWidth }, { left, }, ]} />
       </View>
     );
   }
@@ -72,10 +70,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 10
   },
   tabs: {
-    height: 45,
+    height: 42,
     flexDirection: 'row',
     paddingTop: 5,
     borderWidth: 1,
@@ -83,12 +80,6 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0,
     borderRightWidth: 0,
     borderBottomColor: 'rgba(0,0,0,0.05)'
-  },
-  tabUnderlineStyle: {
-    position: 'absolute',
-    height: 3,
-    backgroundColor: '#3b5998',
-    bottom: 0
   }
 });
 
