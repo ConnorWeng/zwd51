@@ -28,13 +28,13 @@ class HomePage extends Component {
     return (
       <ScrollView>
         <View style={styles.banner}>
-          <Text>banner</Text>
+          <Image style={{height: 150}} source={{uri: 'http://www.51zwd.com/data/files/mall/template/201607090053056375.jpg'}}/>
         </View>
-        <Text style={styles.separator}> － 热卖精品 － </Text>
+        <Text style={styles.separator}> — 热卖精品 — </Text>
         <ListView
            dataSource={this.state.dataSource.cloneWithRows(MOCKED_DATA.items)}
            renderRow={this.renderTrendyItem.bind(this)}/>
-        <Text style={styles.separator}> － 人气爆款 － </Text>
+        <Text style={styles.separator}> － 人气爆款 — </Text>
         <ListView
            contentContainerStyle={styles.hotItemContainer}
            dataSource={this.state.dataSource.cloneWithRows(MOCKED_DATA.items)}
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(140,140,140,1)'
   },
   separator: {
-    fontSize: 16,
+    fontSize: 20,
     textAlign: 'center'
   },
   trendyItemContainer: {
