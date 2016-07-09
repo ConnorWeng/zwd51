@@ -32,11 +32,11 @@ const TabBar = React.createClass({
     });
   },
 
-  //color between rgb(0,0,0) and rgb(204,204,204)
+  //color between rgb(240,64,0) and rgb(204,204,204)
   iconColor(progress) {
-    const red = 204 * progress;
-    const green = 204 * progress;
-    const blue = 204 * progress;
+    const red = 240 + (204 - 240) * progress;
+    const green = 64 + (204 - 64) * progress;
+    const blue = 0 + (204 - 0) * progress;
     return `rgb(${red}, ${green}, ${blue})`;
   },
 
@@ -54,7 +54,7 @@ const TabBar = React.createClass({
               <Icon
                 name={tab}
                 size={30}
-                color={this.props.activeTab == i ? 'rgb(0,0,0)' : 'rgb(204,204,204)'}
+                color={this.props.activeTab == i ? 'rgb(240,64,0)' : 'rgb(204,204,204)'}
                 ref={(icon) => { this.tabIcons[i] = icon; }}
               />
             </TouchableOpacity>;
@@ -69,17 +69,17 @@ const styles = StyleSheet.create({
   tab: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   tabs: {
     height: 42,
     flexDirection: 'row',
     paddingTop: 5,
     borderWidth: 1,
-    borderTopWidth: 0,
+    borderBottomWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderBottomColor: 'rgba(0,0,0,0.05)'
+    borderTopColor: 'rgba(0,0,0,0.05)'
   }
 });
 
