@@ -11,6 +11,8 @@ import {
   WebView
 } from 'react-native';
 
+const { height, width } = Dimensions.get('window');
+
 const BODY_TAG_PATTERN = /\<\/ *body\>/;
 
 const script = `
@@ -49,7 +51,7 @@ body, html, #height-wrapper {
     text-align: center;
 }
 img {
-    width: 320;
+    width: ${width};
 }
 </style>
 <script>
@@ -71,24 +73,33 @@ class ItemPage extends Component {
   render() {
     let html = '<html><head><title></title></head><body>' + this.props.description + '</body></html>';
     return (
-      <ScrollView>
-        <Image style={styles.itemImage} source={{uri: this.props.defaultImage}}/>
-        <View style={styles.itemHead}>
-          <Text numberOfLines={2} style={styles.itemTitle}>{this.props.goodsName}</Text>
-          <Text style={styles.itemPrice}>¥ {this.props.price}</Text>
-          <Text style={styles.itemOriginPrice}>淘宝价 ¥ {this.props.price}</Text>
+      <View style={styles.container}>
+        <ScrollView style={styles.itemContainer}>
+          <Image style={styles.itemImage} source={{uri: this.props.defaultImage}}/>
+          <View style={styles.itemHead}>
+            <Text numberOfLines={2} style={styles.itemTitle}>{this.props.goodsName}</Text>
+            <Text style={styles.itemPrice}>¥ {this.props.price}</Text>
+            <Text style={styles.itemOriginPrice}>淘宝价 ¥ {this.props.price}</Text>
+          </View>
+          <TouchableHighlight style={styles.itemSku}>
+            <Text style={styles.pleaseSelect}>选择  尺码 颜色分类</Text>
+          </TouchableHighlight>
+          <WebView style={[styles.itemDesc, {height: this.state.webViewHeight}]}
+                   javaScriptEnabled={true}
+                   onNavigationStateChange={(navState) => {
+                     this.setState({webViewHeight: parseInt(navState.title, 10) || 0});
+                   }}
+                   source={{html: codeInject(html)}}/>
+        </ScrollView>
+        <View style={styles.itemActionContainer}>
+          <TouchableHighlight onPress={()=>{}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
+            <Text style={[styles.itemActionText, {color: '#fff'}]}>上传淘宝</Text>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={()=>{}} style={[styles.itemAction, {borderColor: '#F0CAB6', backgroundColor: '#FFE4D0'}]}>
+            <Text style={[styles.itemActionText, {color: '#E5511D'}]}>立刻购买</Text>
+          </TouchableHighlight>
         </View>
-        <TouchableHighlight style={styles.itemSku}>
-          <Text style={styles.pleaseSelect}>选择  尺码 颜色分类</Text>
-        </TouchableHighlight>
-        <WebView style={[styles.itemDesc, {height: this.state.webViewHeight}]}
-                 javaScriptEnabled={true}
-                 onNavigationStateChange={(navState) => {
-                   this.setState({webViewHeight: parseInt(navState.title, 10) || 0});
-                   console.log(navState);
-                 }}
-                 source={{html: codeInject(html)}}/>
-      </ScrollView>
+      </View>
     );
   }
 
@@ -98,9 +109,30 @@ class ItemPage extends Component {
 
 }
 
-var { height, width } = Dimensions.get('window');
-
 const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  itemActionContainer: {
+    flexDirection: 'row',
+    width: width,
+    height: 42,
+    position: 'absolute',
+    left: 0,
+    bottom: 0
+  },
+  itemAction: {
+    flex: 1,
+    justifyContent: 'center',
+    borderWidth: 1
+  },
+  itemActionText: {
+    textAlign: 'center',
+    fontSize: 24
+  },
+  itemContainer: {
+    marginBottom: 42
+  },
   itemImage: {
     width: width,
     height: 400
