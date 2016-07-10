@@ -103,8 +103,7 @@ const styles = StyleSheet.create({
   },
   trendyItemTitle: {
     color: '#000000',
-    fontSize: 18,
-    fontWeight: 'bold'
+    fontSize: 18
   },
   hotItemContainer: {
     flexDirection: 'row',

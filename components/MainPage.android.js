@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import Icon from 'react-native-vector-icons/Entypo';
+import Icon from 'react-native-vector-icons/Ionicons';
 import TabBar from './TabBar';
 import { changeMainTab } from '../actions';
 import HomePage from './HomePage';
@@ -24,9 +24,10 @@ class MainPage extends Component {
         <Icon.ToolbarAndroid
            style={styles.toolbar}
            title={this.props.page.title}
-           navIconName="menu"
+           navIconName="md-reorder"
+           iconSize={30}
            actions={[
-             { title: 'Search', iconName: 'magnifying-glass', iconColor: "#f40", show: 'ifRoom' }
+             { title: 'Search', iconName: 'ios-search-outline', iconColor: "#f40", show: 'ifRoom' }
            ]}
            onActionSelected={this.onActionSelected.bind(this)}/>
         <ScrollableTabView
@@ -36,14 +37,14 @@ class MainPage extends Component {
            initialPage={0}
            renderTabBar={() => <TabBar />}
           onChangeTab={this.props.onChangeTab}>
-          <HomePage navigator={this.props.navigator} tabLabel="home" style={styles.tabView}/>
-          <ScrollView tabLabel="magnifying-glass" style={styles.tabView}>
+          <HomePage navigator={this.props.navigator} tabLabel="ios-home-outline" style={styles.tabView}/>
+          <ScrollView tabLabel="ios-search-outline" style={styles.tabView}>
             <SearchPage />
           </ScrollView>
-          <ScrollView tabLabel="shop" style={styles.tabView}>
+          <ScrollView tabLabel="ios-globe-outline" style={styles.tabView}>
             <ShopPage />
           </ScrollView>
-          <ScrollView tabLabel="user" style={styles.tabView}>
+          <ScrollView tabLabel="ios-contact-outline" style={styles.tabView}>
             <UserPage />
           </ScrollView>
         </ScrollableTabView>
