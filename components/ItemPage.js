@@ -5,7 +5,7 @@ import {
   View,
   Image,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   Dimensions,
   ScrollView,
   WebView
@@ -81,9 +81,9 @@ class ItemPage extends Component {
             <Text style={styles.itemPrice}>¥ {this.props.price}</Text>
             <Text style={styles.itemOriginPrice}>淘宝价 ¥ {this.props.price}</Text>
           </View>
-          <TouchableHighlight style={styles.itemSku}>
+          <TouchableOpacity style={styles.itemSku} onPress={()=>{}}>
             <Text style={styles.pleaseSelect}>选择  尺码 颜色分类</Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
           <WebView style={[styles.itemDesc, {height: this.state.webViewHeight}]}
                    javaScriptEnabled={true}
                    onNavigationStateChange={(navState) => {
@@ -92,12 +92,12 @@ class ItemPage extends Component {
                    source={{html: codeInject(html)}}/>
         </ScrollView>
         <View style={styles.itemActionContainer}>
-          <TouchableHighlight onPress={()=>{}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
+          <TouchableOpacity onPress={()=>{}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
             <Text style={[styles.itemActionText, {color: '#fff'}]}>上传淘宝</Text>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={()=>{}} style={[styles.itemAction, {borderColor: '#F0CAB6', backgroundColor: '#FFE4D0'}]}>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>{}} style={[styles.itemAction, {borderColor: '#F0CAB6', backgroundColor: '#FFE4D0'}]}>
             <Text style={[styles.itemActionText, {color: '#E5511D'}]}>立刻购买</Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
       </View>
     );
