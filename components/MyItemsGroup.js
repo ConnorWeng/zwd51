@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
   bodyContainer: {
     marginTop: 20,
     backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.05)'
+    borderTopWidth: 0.5,
+    borderColor: 'rgba(0,0,0,0.1)'
   }
 });
 

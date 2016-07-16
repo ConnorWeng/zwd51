@@ -28,7 +28,9 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 20
+    paddingLeft: 20,
+    borderBottomWidth: 0.5,
+    borderColor: 'rgba(0,0,0,0.1)'
   },
   bodyItemTitle: {
     flex: 8,
