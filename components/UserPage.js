@@ -17,7 +17,7 @@ class UserPage extends Component {
   render() {
     return (
       <ScrollView>
-        <TouchableHighlight style={{marginTop: 20}} onPress={() => {}}>
+        <TouchableHighlight style={{marginTop: 20}} onPress={() => { this.props.navigator.push({LoginPage: true}); }}>
           <View style={styles.headContainer}>
             <Image style={styles.headImage} source={{uri: 'http://g.hiphotos.baidu.com/zhidao/wh%3D600%2C800/sign=a5656052494a20a4314b34c1a062b41a/79f0f736afc37931ec26be69edc4b74543a91127.jpg'}}/>
             <View style={styles.headUserNameContainer}>

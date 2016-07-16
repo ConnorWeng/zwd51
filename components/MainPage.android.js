@@ -44,9 +44,7 @@ class MainPage extends Component {
           <ScrollView tabLabel="ios-globe-outline" style={styles.tabView}>
             <ShopPage />
           </ScrollView>
-          <ScrollView tabLabel="ios-contact-outline" style={styles.tabView}>
-            <UserPage />
-          </ScrollView>
+          <UserPage navigator={this.props.navigator} tabLabel="ios-contact-outline" style={styles.tabView}/>
         </ScrollableTabView>
       </View>
     );

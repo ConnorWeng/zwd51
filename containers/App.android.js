@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux';
 import MainPage from '../components/MainPage';
 import ItemPage from '../components/ItemPage';
+import LoginPage from '../components/LoginPage';
 
 class App extends Component {
 
@@ -42,6 +43,11 @@ class App extends Component {
     if (route.ItemPage) {
       return (
         <ItemPage navigator={navigator} {...route.item}/>
+      );
+    }
+    if (route.LoginPage) {
+      return (
+        <LoginPage navigator={navigator}/>
       );
     }
     return (
