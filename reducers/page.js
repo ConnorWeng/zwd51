@@ -13,7 +13,7 @@ const page = (state = {}, action) => {
         default:
           return '';
         }
-      })()
+      })(),
     });
   default:
     return state;

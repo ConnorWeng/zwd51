@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   NativeModules,
   StyleSheet,
@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
-  WebView
+  WebView,
 } from 'react-native';
 
-const { height, width } = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 const BODY_TAG_PATTERN = /\<\/ *body\>/;
 
@@ -59,14 +59,14 @@ ${script}
 </script>
 `;
 
-const codeInject = (html) => html.replace(BODY_TAG_PATTERN, style + "</body>");
+const codeInject = (html) => html.replace(BODY_TAG_PATTERN, style + '</body>');
 
 class ItemPage extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      webViewHeight: 600
+      webViewHeight: 600,
     };
   }
 
@@ -111,7 +111,7 @@ class ItemPage extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   itemActionContainer: {
     flexDirection: 'row',
@@ -119,57 +119,57 @@ const styles = StyleSheet.create({
     height: 42,
     position: 'absolute',
     left: 0,
-    bottom: 0
+    bottom: 0,
   },
   itemAction: {
     flex: 1,
     justifyContent: 'center',
-    borderWidth: 1
+    borderWidth: 1,
   },
   itemActionText: {
     textAlign: 'center',
-    fontSize: 24
+    fontSize: 24,
   },
   itemContainer: {
-    marginBottom: 42
+    marginBottom: 42,
   },
   itemImage: {
     width: width,
-    height: 400
+    height: 400,
   },
   itemHead: {
     marginTop: 5,
     paddingLeft: 10,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
   },
   itemTitle: {
     fontSize: 16,
-    color: '#000000'
+    color: '#000000',
   },
   itemPrice: {
     fontSize: 16,
-    color: '#f40'
+    color: '#f40',
   },
   itemOriginPrice: {
     fontSize: 14,
-    textDecorationLine: 'line-through'
+    textDecorationLine: 'line-through',
   },
   itemSku: {
     marginTop: 5,
     paddingLeft: 10,
     backgroundColor: '#ffffff',
     height: 35,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   pleaseSelect: {
     fontSize: 16,
-    color: '#000000'
+    color: '#000000',
   },
   itemDesc: {
     marginTop: 5,
     width: width,
-    backgroundColor: '#ffffff'
-  }
+    backgroundColor: '#ffffff',
+  },
 });
 
 export default ItemPage;

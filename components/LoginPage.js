@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
   ScrollView,
   TextInput,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 
 class LoginPage extends Component {
@@ -37,25 +37,25 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: '#ffffff',
     borderTopWidth: 0.5,
-    borderColor: 'rgba(0,0,0,0.1)'
+    borderColor: 'rgba(0,0,0,0.1)',
   },
   userInputContainer: {
     flexDirection: 'row',
     paddingLeft: 20,
     alignItems: 'center',
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(0,0,0,0.1)'
+    borderColor: 'rgba(0,0,0,0.1)',
   },
   userInputLabel: {
     flex: 1,
     fontSize: 16,
-    color: '#000000'
+    color: '#000000',
   },
   userInput: {
     flex: 6,
     fontSize: 16,
     height: 40,
-    padding: 0
+    padding: 0,
   },
   loginButton: {
     height: 42,
@@ -64,13 +64,13 @@ const styles = StyleSheet.create({
     marginRight: 20,
     borderRadius: 5,
     backgroundColor: '#f40',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   loginButtonText: {
     textAlign: 'center',
     fontSize: 24,
-    color: '#ffffff'
-  }
+    color: '#ffffff',
+  },
 });
 
 export default LoginPage;

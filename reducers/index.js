@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 import page from './page';
 
 const reducers = combineReducers({page});

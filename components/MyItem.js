@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
   Text,
-  TouchableHighlight
+  TouchableHighlight,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -30,17 +30,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 20,
     borderBottomWidth: 0.5,
-    borderColor: 'rgba(0,0,0,0.1)'
+    borderColor: 'rgba(0,0,0,0.1)',
   },
   bodyItemTitle: {
     flex: 8,
     marginLeft: 20,
     fontSize: 16,
-    color: '#000000'
+    color: '#000000',
   },
   bodyItemArrow: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default MyItem;

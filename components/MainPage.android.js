@@ -1,16 +1,14 @@
-'use strict';
-
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
-  ScrollView
+  ScrollView,
 } from 'react-native';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TabBar from './TabBar';
-import { changeMainTab } from '../actions';
+import {changeMainTab} from '../actions';
 import HomePage from './HomePage';
 import SearchPage from './SearchPage';
 import ShopPage from './ShopPage';
@@ -27,7 +25,7 @@ class MainPage extends Component {
            navIconName="md-reorder"
            iconSize={30}
            actions={[
-             { title: 'Search', iconName: 'ios-search-outline', iconColor: "#f40", show: 'ifRoom' }
+             {title: 'Search', iconName: 'ios-search-outline', iconColor: '#f40', show: 'ifRoom'},
            ]}
            onActionSelected={this.onActionSelected.bind(this)}/>
         <ScrollableTabView
@@ -58,24 +56,24 @@ class MainPage extends Component {
 
 const actions = (dispatch) => {
   return {
-    onChangeTab: (ins) => dispatch(changeMainTab(ins.i))
+    onChangeTab: (ins) => dispatch(changeMainTab(ins.i)),
   };
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   toolbar: {
-    height: 56
+    height: 56,
   },
   tabView: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.01)'
+    backgroundColor: 'rgba(0,0,0,0.01)',
   },
   card: {
-    height: 150
-  }
+    height: 150,
+  },
 });
 
 export default connect(state => state, actions)(MainPage);

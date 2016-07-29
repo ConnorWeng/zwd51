@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
-  View
+  View,
 } from 'react-native';
 
 class MyItemsGroup extends Component {
@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: '#ffffff',
     borderTopWidth: 0.5,
-    borderColor: 'rgba(0,0,0,0.1)'
-  }
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
 });
 
 export default MyItemsGroup;

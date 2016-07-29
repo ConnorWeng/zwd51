@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
   TextInput,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -29,24 +29,24 @@ class SearchPage extends Component {
 
 const styles = StyleSheet.create({
   searchContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   searchInputContainer: {
     flex: 5,
     height: 35,
     marginLeft: 20,
     borderRadius: 20,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
   },
   searchInput: {
     height: 40,
     marginLeft: 10,
-    fontSize: 16
+    fontSize: 16,
   },
   searchFilter: {
     flex: 1,
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default SearchPage;

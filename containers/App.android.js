@@ -1,12 +1,10 @@
-'use strict';
-
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   Navigator,
-  BackAndroid
+  BackAndroid,
 } from 'react-native';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import MainPage from '../components/MainPage';
 import ItemPage from '../components/ItemPage';
 import LoginPage from '../components/LoginPage';
@@ -35,7 +33,10 @@ class App extends Component {
          style={styles.container}
          initialRoute={{}}
          renderScene={this.renderScene}
-         configureScene={(route) => {return Navigator.SceneConfigs.FloatFromBottomAndroid;}}/>
+         configureScene={(route) => {
+           return Navigator.SceneConfigs.FloatFromBottomAndroid;
+         }}
+      />
     );
   }
 
@@ -59,8 +60,8 @@ class App extends Component {
 
 var styles = StyleSheet.create({
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default connect()(App);
