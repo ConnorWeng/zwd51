@@ -4,16 +4,18 @@
  * @flow
  */
 
-import React, { Component } from 'react';
-import {
-  AppRegistry
-} from 'react-native';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import React, {Component} from 'react';
+import {AppRegistry} from 'react-native';
+import {Provider} from 'react-redux';
+import thunkMiddleware from 'redux-thunk';
+import {createStore, applyMiddleware} from 'redux';
 import App from './containers/App';
 import reducers from './reducers';
 
-const store = createStore(reducers);
+const store = createStore(
+  reducers,
+  applyMiddleware(thunkMiddleware)
+);
 
 class zwd51 extends Component {
 
