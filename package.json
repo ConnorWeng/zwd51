@@ -7,8 +7,6 @@
     "pretest": "eslint ."
   },
   "dependencies": {
-    "es6-promise": "^3.2.1",
-    "isomorphic-fetch": "^2.2.1",
     "react": "^15.1.0",
     "react-native": "0.27.2",
     "react-native-material-kit": "^0.3.2",
