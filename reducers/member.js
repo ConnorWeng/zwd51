@@ -4,7 +4,6 @@ const member = (state = {
   isLogging: false,
   message: '',
 }, action) => {
-  console.log(action);
   switch (action.type) {
   case 'LOGIN_REQUEST':
     return Object.assign({}, state, {
@@ -15,14 +14,14 @@ const member = (state = {
     if (action.json.error) {
       return Object.assign({}, state, {
         isLogging: false,
-        message: action.json.error.message,
+        message: action.json.message,
       });
     } else {
       return Object.assign({}, state, {
         isLogging: false,
-        accessToken: action.json.id,
-        userId: action.json.user.userId,
-        username: action.json.user.username,
+        accessToken: action.json.access_token,
+        userId: action.json.user_id,
+        username: action.json.user_name,
         message: '登录成功',
       });
     }

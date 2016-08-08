@@ -1,23 +1,29 @@
 // TODO: handle network error
 export async function loginService(username, password) {
-  const response = await fetch(remoteService('/Members/login'), {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      username: username,
-      password: password,
-    }),
-  });
-  const json = await response.json();
+  let json;
+  try {
+    const response = await fetch(remoteService('/mobile_member/login'), {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `username=${username}&password=${password}`,
+    });
+    json = await response.json();
+  } catch (e) {
+    // TODO: log error and send later?
+    json = {
+      error: true,
+      message: e.message,
+    };
+  }
   return json;
 };
 
 import {SERVICE_URL} from "../service.json";
 
 function remoteService(serviceName) {
-  console.log(SERVICE_URL + serviceName);
-  return SERVICE_URL + serviceName;
+  const parts = serviceName.split('/');
+  return SERVICE_URL + '/index.php?app=' + parts[1] + '&act=' + parts[2];
 }
