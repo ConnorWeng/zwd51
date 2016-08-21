@@ -8,14 +8,35 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   Image,
+  ToastAndroid,
 } from 'react-native';
+import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TouchableContainerItem from './TouchableContainerItem';
 import TouchableContainerItemsGroup from './TouchableContainerItemsGroup';
+import {submitOrder} from '../actions';
 
 const {height, width} = Dimensions.get('window');
 
 class OrderConfirmPage extends Component {
+
+  componentDidMount() {
+    if (!this.props.member.accessToken) {
+      this.props.navigator.push({LoginPage: true});
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.order.message) {
+      ToastAndroid.show(nextProps.order.message, ToastAndroid.SHORT);
+    }
+    if (nextProps.order.orders.length > 0) {
+      const orders = nextProps.order.orders;
+      const newOrder = orders[orders.length - 1];
+      // TODO: jump to payment page
+      console.log(newOrder);
+    }
+  }
 
   render() {
     return (
@@ -57,15 +78,31 @@ class OrderConfirmPage extends Component {
           <View style={styles.priceContainer}>
             <Text style={styles.priceText}>实付款：¥332.40</Text>
           </View>
-          <TouchableOpacity onPress={()=>{}} style={[styles.submitAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
-            <Text style={[styles.submitActionText, {color: '#fff'}]}>提交订单</Text>
+          <TouchableOpacity onPress={this.submitOrder.bind(this)} style={[styles.submitAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
+            <Text style={[styles.submitActionText, {color: '#fff'}]}>{this.props.order.isSubmitting ? '提交中...' : '提交订单'}</Text>
           </TouchableOpacity>
         </View>
       </View>
     );
   }
 
+  submitOrder() {
+    this.props.submitOrder('43649,43652', '1,2', 127102, 10919, 28, '', this.props.member.accessToken);
+  }
+
 }
+
+const actions = (dispatch) => {
+  return {
+    submitOrder: (specIds, specNums, addressId,
+                  behalfId, deliveryId, postscript,
+                  accessToken) => dispatch(
+                    submitOrder(specIds, specNums, addressId,
+                                behalfId, deliveryId, postscript,
+                                accessToken)
+                  ),
+  };
+};
 
 const styles = StyleSheet.create({
   receiverName: {
@@ -117,4 +154,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderConfirmPage;
+export default connect(state => state, actions)(OrderConfirmPage);

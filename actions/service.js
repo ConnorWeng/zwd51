@@ -21,6 +21,29 @@ export async function loginService(username, password) {
   return json;
 };
 
+export async function submitOrderService(specIds, specNums, addressId,
+                                         behalfId, deliveryId, postscript,
+                                         accessToken) {
+  let json;
+  try {
+    const response = await fetch(remoteService('/mobile_order/submit_order'), {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `spec_ids=${specIds}&spec_nums=${specNums}&address_id=${addressId}&behalf_id=${behalfId}&delivery_id=${deliveryId}&postscript=${postscript}&access_token=${accessToken}`,
+    });
+    json = await response.json();
+  } catch (e) {
+    json = {
+      error: true,
+      message: e.message,
+    };
+  }
+  return json;
+};
+
 import {SERVICE_URL} from "../service.json";
 
 function remoteService(serviceName) {
