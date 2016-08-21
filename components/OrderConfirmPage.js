@@ -35,6 +35,7 @@ class OrderConfirmPage extends Component {
       const newOrder = orders[orders.length - 1];
       // TODO: jump to payment page
       console.log(newOrder);
+      this.props.navigator.push({PaymentPage: true});
     }
   }
 
