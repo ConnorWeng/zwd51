@@ -30,11 +30,8 @@ class OrderConfirmPage extends Component {
     if (nextProps.order.message) {
       ToastAndroid.show(nextProps.order.message, ToastAndroid.SHORT);
     }
-    if (nextProps.order.orders.length > 0) {
-      const orders = nextProps.order.orders;
-      const newOrder = orders[orders.length - 1];
-      // TODO: jump to payment page
-      console.log(newOrder);
+    if (nextProps.order.lastSubmitted) {
+      const newOrder = nextProps.order.lastSubmitted;
       this.props.navigator.push({PaymentPage: true});
     }
   }
