@@ -9,7 +9,6 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.github.xinthink.rnmk.ReactMaterialKitPackage;
 import com.zwd51.packages.AlibabaAPIPackage;
 
 import java.util.Arrays;
@@ -44,7 +43,6 @@ public class MainActivity extends ReactActivity {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
             new VectorIconsPackage(),
-            new ReactMaterialKitPackage(),
             new AlibabaAPIPackage(MainActivity.this)
         );
     }
