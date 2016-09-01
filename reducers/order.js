@@ -20,7 +20,9 @@ const order = (state = {
     } else {
       const newOrder = {
         orderId: action.json.order_id,
+        orderSn: action.json.order_sn,
         totalAmount: action.json.total_amount,
+        orderInfo: action.json.order_info,
         isPaid: false,
       };
       return Object.assign({}, state, {

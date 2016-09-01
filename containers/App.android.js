@@ -60,7 +60,7 @@ class App extends Component {
     }
     if (route.PaymentPage) {
       return (
-        <PaymentPage navigator={navigator}/>
+        <PaymentPage navigator={navigator} orderInfo={route.orderInfo}/>
       );
     }
     return (

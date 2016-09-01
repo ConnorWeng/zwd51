@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+  NativeModules,
   StyleSheet,
   View,
   ScrollView,
@@ -35,7 +36,7 @@ class PaymentPage extends Component {
           containerStyle={styles.checkboxContainter}
           labelStyle={styles.checkboxLabel}
           onChange={(checked) => this.setState({alipay: checked, remain: !checked})}/>
-        <PrimaryButton label='确认支付 ¥332.40' onPress={() => console.log('pay')}/>
+        <PrimaryButton label='确认支付 ¥332.40' onPress={() => NativeModules.AlibabaAPI.pay(this.props.orderInfo)}/>
       </ScrollView>
     );
   }
