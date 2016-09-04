@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   checkboxLabel: {
     fontSize: 20,
-    color: '#000000'
+    color: '#000000',
   },
 });
 

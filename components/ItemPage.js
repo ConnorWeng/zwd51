@@ -95,7 +95,7 @@ class ItemPage extends Component {
           <TouchableOpacity onPress={()=>{}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
             <Text style={[styles.itemActionText, {color: '#fff'}]}>上传淘宝</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>{this.props.navigator.push({OrderConfirmPage: true});}} style={[styles.itemAction, {borderColor: '#F0CAB6', backgroundColor: '#FFE4D0'}]}>
+          <TouchableOpacity onPress={() => { this.props.navigator.push({OrderConfirmPage: true}); }} style={[styles.itemAction, {borderColor: '#F0CAB6', backgroundColor: '#FFE4D0'}]}>
             <Text style={[styles.itemActionText, {color: '#E5511D'}]}>立刻购买</Text>
           </TouchableOpacity>
         </View>
