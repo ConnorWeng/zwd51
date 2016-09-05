@@ -11,7 +11,7 @@ class MyItem extends Component {
 
   render() {
     return (
-      <TouchableHighlight onPress={() => {}} underlayColor="#f0f0f0">
+      <TouchableHighlight onPress={this.props.onPress} underlayColor="#f0f0f0">
         <View style={styles.bodyItemContainer}>
           <Icon name={this.props.iconName} size={30} color="#000000" />
           <Text style={styles.bodyItemTitle}>{this.props.title}</Text>

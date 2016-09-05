@@ -10,6 +10,7 @@ import ItemPage from '../components/ItemPage';
 import LoginPage from '../components/LoginPage';
 import OrderConfirmPage from '../components/OrderConfirmPage';
 import PaymentPage from '../components/PaymentPage';
+import OrderPage from '../components/OrderPage';
 
 class App extends Component {
 
@@ -61,6 +62,11 @@ class App extends Component {
     if (route.PaymentPage) {
       return (
         <PaymentPage navigator={navigator} orderInfo={route.orderInfo}/>
+      );
+    }
+    if (route.OrderPage) {
+      return (
+        <OrderPage navigator={navigator}/>
       );
     }
     return (
