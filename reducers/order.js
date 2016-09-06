@@ -21,7 +21,7 @@ const order = (state = {
       const newOrder = {
         orderId: action.json.order_id,
         orderSn: action.json.order_sn,
-        totalAmount: action.json.total_amount,
+        orderAmount: action.json.order_amount,
         orderInfo: action.json.order_info,
         isPaid: false,
       };
