@@ -23,7 +23,8 @@ const order = (state = {
         orderSn: action.json.order_sn,
         orderAmount: action.json.order_amount,
         orderInfo: action.json.order_info,
-        isPaid: false,
+        status: action.json.status,
+        isProcessing: false,
       };
       return Object.assign({}, state, {
         isSubmitting: false,
