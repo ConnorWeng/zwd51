@@ -1,4 +1,4 @@
-import {loginService, submitOrderService} from './service';
+import {loginService, submitOrderService, getOrdersService} from './service';
 
 export function changeMainTab(index) {
   return {
@@ -49,6 +49,27 @@ function submitOrderRequest() {
 function submitOrderCheck(json) {
   return {
     type: 'SUBMIT_ORDER_CHECK',
+    json: json,
+  };
+}
+
+export function getOrders(accessToken) {
+  return async (dispatch) => {
+    dispatch(getOrdersRequest());
+    const responseJson = await getOrdersService(accessToken);
+    dispatch(getOrdersCheck(responseJson));
+  };
+}
+
+function getOrdersRequest() {
+  return {
+    type: 'GET_ORDERS_REQUEST',
+  };
+}
+
+function getOrdersCheck(json) {
+  return {
+    type: 'GET_ORDERS_CHECK',
     json: json,
   };
 }

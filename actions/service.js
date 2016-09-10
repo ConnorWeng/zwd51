@@ -44,6 +44,20 @@ export async function submitOrderService(specIds, specNums, addressId,
   return json;
 };
 
+export async function getOrdersService(accessToken) {
+  let json;
+  try {
+    const response = await fetch(remoteService('/mobile_order/index') + '&access_token=' + accessToken);
+    json = await response.json();
+  } catch (e) {
+    json = {
+      error: true,
+      message: e.message,
+    };
+  }
+  return json;
+}
+
 import {SERVICE_URL} from "../service.json";
 
 function remoteService(serviceName) {

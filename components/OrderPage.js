@@ -9,7 +9,10 @@ import {
   ListView,
   Image,
 } from 'react-native';
+import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+import {getOrders} from '../actions';
 
 class OrderPage extends Component {
 
@@ -22,30 +25,42 @@ class OrderPage extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.getOrders(this.props.member.accessToken);
+  }
+
   render() {
+    console.log('&&&&&&&&&&&&&&');
+    console.log(this.props.order.orders);
     return (
       <ScrollView>
         <ListView
-           dataSource={this.state.dataSource.cloneWithRows(MOCKED_DATA.orders)}
+           dataSource={this.state.dataSource.cloneWithRows(this.props.order.orders)}
            renderRow={this.renderOrder.bind(this)}/>
       </ScrollView>
     );
   }
 
   renderOrder(order) {
+    const goods = [];
+    for (var g in order.order_goods) {
+      const goods_image = order.order_goods[g].goods_image;
+      const goods_id = order.order_goods[g].goods_id;
+      goods.push(
+        <Image style={{height: 100, width: 100, marginRight: 5}} source={{uri: goods_image}} key={goods_id}/>
+      );
+    }
     return (
       <View style={styles.orderContainer}>
         <View style={styles.orderHeadContainer}>
-          <Text style={styles.orderSn}>订单号：{order.orderSn}</Text>
+          <Text style={styles.orderSn}>订单号：{order.order_sn}</Text>
         </View>
         <View style={styles.orderBodyContainer}>
           <View style={styles.orderGoodsContainer}>
-            {
-              order.goods.map((good) => <Image style={{height: 100, width: 100, marginRight: 5}} source={{uri: good.defaultImage}} key={good.goodsId}/>)
-            }
+            {goods}
           </View>
           <View style={styles.orderAmountContainer}>
-            <Text style={styles.orderAmount}>实付款：¥ {order.orderAmount}</Text>
+            <Text style={styles.orderAmount}>实付款：¥ {order.order_amount}</Text>
           </View>
         </View>
         <View style={styles.orderFootContainer}>
@@ -58,6 +73,12 @@ class OrderPage extends Component {
   }
 
 }
+
+const actions = (dispatch) => {
+  return {
+    getOrders: (accessToken) => dispatch(getOrders(accessToken)),
+  };
+};
 
 const styles = StyleSheet.create({
   orderContainer: {
@@ -134,4 +155,4 @@ const MOCKED_DATA = {
   }],
 };
 
-export default OrderPage;
+export default connect(state => state, actions)(OrderPage);

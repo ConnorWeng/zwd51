@@ -19,10 +19,10 @@ const order = (state = {
       });
     } else {
       const newOrder = {
-        orderId: action.json.order_id,
-        orderSn: action.json.order_sn,
-        orderAmount: action.json.order_amount,
-        orderInfo: action.json.order_info,
+        order_id: action.json.order_id,
+        order_sn: action.json.order_sn,
+        order_amount: action.json.order_amount,
+        order_info: action.json.order_info,
         status: action.json.status,
         isProcessing: false,
       };
@@ -36,6 +36,10 @@ const order = (state = {
         message: '提交成功',
       });
     }
+  case 'GET_ORDERS_CHECK':
+    return Object.assign({}, state, {
+      orders: action.json
+    });
   default:
     return state;
   }

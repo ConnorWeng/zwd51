@@ -32,7 +32,7 @@ class OrderConfirmPage extends Component {
     }
     if (nextProps.order.lastSubmitted) {
       const newOrder = nextProps.order.lastSubmitted;
-      this.props.navigator.push({PaymentPage: true, orderInfo: newOrder.orderInfo});
+      this.props.navigator.push({PaymentPage: true, orderInfo: newOrder.order_info});
     }
   }
 
