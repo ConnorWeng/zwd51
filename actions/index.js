@@ -1,4 +1,4 @@
-import {loginService, submitOrderService, getOrdersService} from './service';
+import {loginService, submitOrderService, getOrdersService, getAlipayOrderInfoService} from './service';
 
 export function changeMainTab(index) {
   return {
@@ -70,6 +70,28 @@ function getOrdersRequest() {
 function getOrdersCheck(json) {
   return {
     type: 'GET_ORDERS_CHECK',
+    json: json,
+  };
+}
+
+export function getAlipayOrderInfo(orderId, accessToken) {
+  return async (dispatch) => {
+    dispatch(getAlipayOrderInfoRequest(orderId));
+    const responseJson = await getAlipayOrderInfoService(orderId, accessToken);
+    dispatch(getAlipayOrderInfoCheck(responseJson));
+  };
+}
+
+function getAlipayOrderInfoRequest(orderId) {
+  return {
+    type: 'GET_ALIPAY_ORDER_INFO_REQUEST',
+    orderId: orderId,
+  };
+}
+
+function getAlipayOrderInfoCheck(json) {
+  return {
+    type: 'GET_ALIPAY_ORDER_INFO_CHECK',
     json: json,
   };
 }

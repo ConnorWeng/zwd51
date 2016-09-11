@@ -12,7 +12,7 @@ import {
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {getOrders} from '../actions';
+import {getOrders, getAlipayOrderInfo} from '../actions';
 
 class OrderPage extends Component {
 
@@ -29,9 +29,16 @@ class OrderPage extends Component {
     this.props.getOrders(this.props.member.accessToken);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.order.message) {
+      ToastAndroid.show(nextProps.order.message, ToastAndroid.SHORT);
+    }
+    if (nextProps.order.lastProcessed) {
+      this.props.navigator.push({PaymentPage: true, orderInfo: nextProps.order.lastProcessed.order_info});
+    }
+  }
+
   render() {
-    console.log('&&&&&&&&&&&&&&');
-    console.log(this.props.order.orders);
     return (
       <ScrollView>
         <ListView
@@ -64,8 +71,9 @@ class OrderPage extends Component {
           </View>
         </View>
         <View style={styles.orderFootContainer}>
-          <TouchableOpacity style={styles.orderActionContainer}>
-            { order.status == '11' ? <Text style={styles.orderActionLabel}>支付</Text> : <Text style={styles.orderActionLabel}>查看订单</Text> }
+          <TouchableOpacity style={styles.orderActionContainer} onPress={() =>
+            this.props.getAlipayOrderInfo(order.order_id, this.props.member.accessToken)}>
+            <Text style={styles.orderActionLabel}>{order.status == '11' ? '支付' : '查看订单'}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -77,6 +85,7 @@ class OrderPage extends Component {
 const actions = (dispatch) => {
   return {
     getOrders: (accessToken) => dispatch(getOrders(accessToken)),
+    getAlipayOrderInfo: (orderId, accessToken) => dispatch(getAlipayOrderInfo(orderId, accessToken)),
   };
 };
 

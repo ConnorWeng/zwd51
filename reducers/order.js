@@ -1,20 +1,20 @@
 const order = (state = {
-  isSubmitting: false,
+  isProcessing: false,
   orders: [],
-  lastSubmitted: null,
+  lastProcessed: null,
   message: '',
 }, action) => {
   switch (action.type) {
   case 'SUBMIT_ORDER_REQUEST': ;
     return Object.assign({}, state, {
-      isSubmitting: true,
-      lastSubmitted: null,
+      isProcessing: true,
+      lastProcessed: null,
       message: '',
     });
   case 'SUBMIT_ORDER_CHECK': ;
     if (action.json.error) {
       return Object.assign({}, state, {
-        isSubmitting: false,
+        isProcessing: false,
         message: action.json.message,
       });
     } else {
@@ -24,15 +24,14 @@ const order = (state = {
         order_amount: action.json.order_amount,
         order_info: action.json.order_info,
         status: action.json.status,
-        isProcessing: false,
       };
       return Object.assign({}, state, {
-        isSubmitting: false,
+        isProcessing: false,
         orders: [
           ...state.orders,
           newOrder,
         ],
-        lastSubmitted: newOrder,
+        lastProcessed: newOrder,
         message: '提交成功',
       });
     }
@@ -40,6 +39,23 @@ const order = (state = {
     return Object.assign({}, state, {
       orders: action.json
     });
+  case 'GET_ALIPAY_ORDER_INFO_REQUEST':
+    return Object.assign({}, state, {
+      isProcessing: true,
+      lastProcessed: null,
+    });
+  case 'GET_ALIPAY_ORDER_INFO_CHECK':
+    if (action.json.error) {
+      return Object.assign({}, state, {
+        isProcessing: false,
+        message: action.json.message,
+      });
+    } else {
+      return Object.assign({}, state, {
+        isProcessing: false,
+        lastProcessed: action.json,
+      });
+    }
   default:
     return state;
   }

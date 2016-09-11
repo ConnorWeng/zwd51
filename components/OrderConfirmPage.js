@@ -30,8 +30,8 @@ class OrderConfirmPage extends Component {
     if (nextProps.order.message) {
       ToastAndroid.show(nextProps.order.message, ToastAndroid.SHORT);
     }
-    if (nextProps.order.lastSubmitted) {
-      const newOrder = nextProps.order.lastSubmitted;
+    if (nextProps.order.lastProcessed) {
+      const newOrder = nextProps.order.lastProcessed;
       this.props.navigator.push({PaymentPage: true, orderInfo: newOrder.order_info});
     }
   }
@@ -77,7 +77,7 @@ class OrderConfirmPage extends Component {
             <Text style={styles.priceText}>实付款：¥332.40</Text>
           </View>
           <TouchableOpacity onPress={this.submitOrder.bind(this)} style={[styles.submitAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
-            <Text style={[styles.submitActionText, {color: '#fff'}]}>{this.props.order.isSubmitting ? '提交中...' : '提交订单'}</Text>
+            <Text style={[styles.submitActionText, {color: '#fff'}]}>{this.props.order.isProcessing ? '提交中...' : '提交订单'}</Text>
           </TouchableOpacity>
         </View>
       </View>
