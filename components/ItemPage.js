@@ -10,6 +10,9 @@ import {
   ScrollView,
   WebView,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Modal from 'react-native-modalbox';
+import SpecSelector from './SpecSelector';
 
 const {height, width} = Dimensions.get('window');
 
@@ -81,8 +84,9 @@ class ItemPage extends Component {
             <Text style={styles.itemPrice}>¥ {this.props.price}</Text>
             <Text style={styles.itemOriginPrice}>淘宝价 ¥ {this.props.price}</Text>
           </View>
-          <TouchableOpacity style={styles.itemSku} onPress={()=>{}}>
+          <TouchableOpacity style={styles.itemSku} onPress={()=>{this.refs.modal.open();}}>
             <Text style={styles.pleaseSelect}>选择  尺码 颜色分类</Text>
+            <Text style={styles.arrow}>></Text>
           </TouchableOpacity>
           <WebView style={[styles.itemDesc, {height: this.state.webViewHeight}]}
                    javaScriptEnabled={true}
@@ -92,13 +96,24 @@ class ItemPage extends Component {
                    source={{html: codeInject(html)}}/>
         </ScrollView>
         <View style={styles.itemActionContainer}>
-          <TouchableOpacity onPress={()=>{}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
+          <TouchableOpacity onPress={() => {}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
             <Text style={[styles.itemActionText, {color: '#fff'}]}>上传淘宝</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => { this.props.navigator.push({OrderConfirmPage: true}); }} style={[styles.itemAction, {borderColor: '#F0CAB6', backgroundColor: '#FFE4D0'}]}>
+          <TouchableOpacity onPress={() => {this.refs.modal.open();}} style={[styles.itemAction, {borderColor: '#F0CAB6', backgroundColor: '#FFE4D0'}]}>
             <Text style={[styles.itemActionText, {color: '#E5511D'}]}>立刻购买</Text>
           </TouchableOpacity>
         </View>
+        <Modal style={styles.modal} position={'bottom'} ref={'modal'}>
+          <TouchableOpacity style={styles.modalCloseBtn} onPress={() => this.refs.modal.close()}>
+            <Icon name="ios-close-circle-outline" size={24}/>
+          </TouchableOpacity>
+          <SpecSelector category="颜色" specs={['红色', '黑色']}/>
+          <SpecSelector category="尺码" specs={['L', 'XL', 'XXL']}/>
+          <SpecSelector category="数量" specs={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}/>
+          <TouchableOpacity onPress={() => {this.props.navigator.push({OrderConfirmPage: true});}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
+            <Text style={[styles.itemActionText, {color: '#fff'}]}>立即购买</Text>
+          </TouchableOpacity>
+        </Modal>
       </View>
     );
   }
@@ -155,13 +170,20 @@ const styles = StyleSheet.create({
     textDecorationLine: 'line-through',
   },
   itemSku: {
+    flexDirection: 'row',
     marginTop: 5,
     paddingLeft: 10,
+    paddingRight: 10,
     backgroundColor: '#ffffff',
     height: 35,
-    justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   pleaseSelect: {
+    fontSize: 16,
+    color: '#000000',
+  },
+  arrow: {
     fontSize: 16,
     color: '#000000',
   },
@@ -169,6 +191,13 @@ const styles = StyleSheet.create({
     marginTop: 5,
     width: width,
     backgroundColor: '#ffffff',
+  },
+  modal: {
+    height: 250,
+  },
+  modalCloseBtn: {
+    alignItems: 'flex-end',
+    marginRight: 10,
   },
 });
 
