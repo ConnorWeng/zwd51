@@ -9,6 +9,7 @@ import {
   Text,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import ShopInfo from './ShopInfo';
 
 class ShopPage extends Component {
 
@@ -42,21 +43,7 @@ class ShopPage extends Component {
   renderStore(store) {
     return (
       <TouchableOpacity onPress={()=>{}}>
-        <View style={styles.storeContainer}>
-          <View style={styles.storeHeadContainer}>
-            <View style={styles.storeHead}>
-              <Text style={styles.storeName}>{store.storeName}</Text>
-              <View style={styles.storeSeePriceContainer}>
-                <Text style={styles.storeSeePrice}>{store.seePrice}</Text>
-              </View>
-            </View>
-            <Text style={styles.storeAddress}>{store.address}</Text>
-          </View>
-          <View style={styles.storeBodyContainer}>
-            <Text style={styles.storeBusinessScopeLabel}>主营：</Text>
-            <Text style={styles.storeBusinessScope}>{store.businessScope}</Text>
-          </View>
-        </View>
+        <ShopInfo {...store} />
       </TouchableOpacity>
     );
   }
@@ -82,47 +69,6 @@ const styles = StyleSheet.create({
   searchFilter: {
     flex: 1,
     alignItems: 'center',
-  },
-  storeContainer: {
-    marginTop: 10,
-    marginRight: 10,
-    marginLeft: 10,
-    backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.1)',
-  },
-  storeHeadContainer: {
-    marginLeft: 5,
-  },
-  storeHead: {
-    flexDirection: 'row',
-  },
-  storeName: {
-    fontSize: 18,
-    color: '#000000',
-  },
-  storeSeePriceContainer: {
-    marginLeft: 5,
-    borderRadius: 5,
-    backgroundColor: '#f40',
-    justifyContent: 'center',
-  },
-  storeSeePrice: {
-    fontSize: 14,
-    color: '#ffffff',
-  },
-  storeAddress: {
-    fontSize: 14,
-  },
-  storeBodyContainer: {
-    flexDirection: 'row',
-    marginLeft: 5,
-    marginRight: 5,
-    borderTopWidth: 1,
-    borderColor: 'rgba(0,0,0,0.1)',
-  },
-  storeBusinessScopeLabel: {
-    color: '#000000',
   },
   storeBusinessScope: {
   },
