@@ -11,7 +11,7 @@ import TabBar from './TabBar';
 import {changeMainTab} from '../actions';
 import HomePage from './HomePage';
 import SearchPage from './SearchPage';
-import ShopPage from './ShopPage';
+import MarketPage from './MarketPage';
 import UserPage from './UserPage';
 
 class MainPage extends Component {
@@ -40,7 +40,7 @@ class MainPage extends Component {
             <SearchPage />
           </ScrollView>
           <ScrollView tabLabel="ios-globe-outline" style={styles.tabView}>
-            <ShopPage />
+            <MarketPage />
           </ScrollView>
           <UserPage navigator={this.props.navigator} tabLabel="ios-contact-outline" style={styles.tabView}/>
         </ScrollableTabView>

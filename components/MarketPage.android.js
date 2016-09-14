@@ -11,7 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import ShopInfo from './ShopInfo';
 
-class ShopPage extends Component {
+class MarketPage extends Component {
 
   constructor(props) {
     super(props);
@@ -128,4 +128,4 @@ const MOCKED_DATA = {
   }],
 };
 
-export default ShopPage;
+export default MarketPage;
