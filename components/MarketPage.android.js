@@ -42,7 +42,7 @@ class MarketPage extends Component {
 
   renderStore(store) {
     return (
-      <TouchableOpacity onPress={()=>{}}>
+      <TouchableOpacity onPress={() => { this.props.navigator.push({ShopPage: true, store: store}); }}>
         <ShopInfo {...store} />
       </TouchableOpacity>
     );

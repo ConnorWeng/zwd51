@@ -11,6 +11,7 @@ import LoginPage from '../components/LoginPage';
 import OrderConfirmPage from '../components/OrderConfirmPage';
 import PaymentPage from '../components/PaymentPage';
 import OrderPage from '../components/OrderPage';
+import ShopPage from '../components/ShopPage';
 
 class App extends Component {
 
@@ -67,6 +68,11 @@ class App extends Component {
     if (route.OrderPage) {
       return (
         <OrderPage navigator={navigator}/>
+      );
+    }
+    if (route.ShopPage) {
+      return (
+        <ShopPage navigator={navigator} store={route.store}/>
       );
     }
     return (
