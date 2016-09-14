@@ -10,6 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import ItemPage from './ItemPage';
+import ItemList from './ItemList';
 
 class HomePage extends Component {
 
@@ -33,10 +34,7 @@ class HomePage extends Component {
            dataSource={this.state.dataSource.cloneWithRows(MOCKED_DATA.items)}
            renderRow={this.renderTrendyItem.bind(this)}/>
         <Text style={styles.separator}> － 人气爆款 — </Text>
-        <ListView
-           contentContainerStyle={styles.hotItemContainer}
-           dataSource={this.state.dataSource.cloneWithRows(MOCKED_DATA.items)}
-           renderRow={this.renderHotItem.bind(this)}/>
+        <ItemList items={MOCKED_DATA.items} navigator={this.props.navigator}/>
       </ScrollView>
     );
   }
@@ -48,23 +46,6 @@ class HomePage extends Component {
           <Image source={{uri: item.defaultImage}} style={styles.trendyItemImage} />
           <View style={styles.trendyItemTitleContainer}>
             <Text numberOfLines={2} style={styles.trendyItemTitle}>{item.goodsName}</Text>
-          </View>
-        </View>
-      </TouchableHighlight>
-    );
-  }
-
-  renderHotItem(item) {
-    return (
-      <TouchableHighlight style={styles.hotItem} onPress={() => this.props.navigator.push({ItemPage: true, item: item})}>
-        <View>
-          <Image source={{uri: item.defaultImage}} style={styles.hotItemImage}/>
-          <View style={styles.hotItemTitleContainer}>
-            <Text numberOfLines={2} style={styles.hotItemTitle}>{item.goodsName}</Text>
-          </View>
-          <View style={styles.hotItemPriceContainer}>
-            <Text numberOfLines={1} style={styles.hotItemPrice}>¥ {item.price} </Text>
-            <Text style={styles.hotItemOriginPrice}>¥ {item.price}</Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -102,41 +83,6 @@ const styles = StyleSheet.create({
   trendyItemTitle: {
     color: '#000000',
     fontSize: 18,
-  },
-  hotItemContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginTop: 5,
-  },
-  hotItem: {
-    width: width / 2 - 2.5,
-    paddingBottom: 5,
-  },
-  hotItemImage: {
-    width: width / 2 - 2.5,
-    height: 200,
-    resizeMode: 'cover',
-  },
-  hotItemTitleContainer: {
-    width: width / 2 - 2.5,
-    backgroundColor: '#ffffff',
-  },
-  hotItemTitle: {
-    fontSize: 12,
-    color: '#000000',
-  },
-  hotItemPriceContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    backgroundColor: '#ffffff',
-  },
-  hotItemPrice: {
-    color: '#f40',
-  },
-  hotItemOriginPrice: {
-    fontSize: 12,
-    textDecorationLine: 'line-through',
   },
 });
 
