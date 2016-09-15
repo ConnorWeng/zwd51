@@ -32,14 +32,12 @@ class ShopInfo extends Component {
 const styles = StyleSheet.create({
   storeContainer: {
     marginTop: 10,
-    marginRight: 10,
-    marginLeft: 10,
     backgroundColor: '#ffffff',
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.1)',
   },
   storeHeadContainer: {
-    marginLeft: 5,
+    paddingLeft: 15,
   },
   storeHead: {
     flexDirection: 'row',
@@ -63,8 +61,8 @@ const styles = StyleSheet.create({
   },
   storeBodyContainer: {
     flexDirection: 'row',
-    marginLeft: 5,
-    marginRight: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
     borderTopWidth: 1,
     borderColor: 'rgba(0,0,0,0.1)',
   },
