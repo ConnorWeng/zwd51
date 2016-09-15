@@ -7,8 +7,10 @@ const page = (state = {}, action) => {
         case 1:
           return '搜款式';
         case 2:
-          return '逛市场';
+          return '购物车';
         case 3:
+          return '逛市场';
+        case 4:
           return '我的';
         default:
           return '';

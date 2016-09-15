@@ -13,6 +13,7 @@ import HomePage from './HomePage';
 import SearchPage from './SearchPage';
 import MarketPage from './MarketPage';
 import UserPage from './UserPage';
+import CartPage from './CartPage';
 
 class MainPage extends Component {
 
@@ -39,6 +40,7 @@ class MainPage extends Component {
           <ScrollView tabLabel="ios-search-outline" style={styles.tabView}>
             <SearchPage />
           </ScrollView>
+          <CartPage navigator={this.props.navigator} tabLabel="ios-cart-outline" style={styles.tabView}/>
           <MarketPage navigator={this.props.navigator} tabLabel="ios-globe-outline" style={styles.tabView}/>
           <UserPage navigator={this.props.navigator} tabLabel="ios-contact-outline" style={styles.tabView}/>
         </ScrollableTabView>
