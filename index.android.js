@@ -5,17 +5,22 @@
  */
 
 import React, {Component} from 'react';
-import {AppRegistry} from 'react-native';
+import {AppRegistry, AsyncStorage} from 'react-native';
 import {Provider} from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import {createStore, applyMiddleware} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
+import {persistStore, autoRehydrate} from 'redux-persist';
 import App from './containers/App';
 import reducers from './reducers';
 
 const store = createStore(
   reducers,
-  applyMiddleware(thunkMiddleware)
+  compose(
+    applyMiddleware(thunkMiddleware),
+    autoRehydrate()
+  )
 );
+persistStore(store, {storage: AsyncStorage});
 
 class zwd51 extends Component {
 
