@@ -54,7 +54,7 @@ class OrderPage extends Component {
       const goods_image = order.order_goods[g].goods_image;
       const goods_id = order.order_goods[g].goods_id;
       goods.push(
-        <Image style={{height: 100, width: 100, marginRight: 5}} source={{uri: goods_image}} key={goods_id}/>
+        <Image style={{height: 60, width: 60, marginTop: 5, marginRight: 5, marginBottom: 5}} source={{uri: goods_image}} key={goods_id}/>
       );
     }
     return (
