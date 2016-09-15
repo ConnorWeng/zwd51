@@ -3,15 +3,28 @@ import {
   StyleSheet,
   View,
   Text,
+  ScrollView,
 } from 'react-native';
 import {connect} from 'react-redux';
+import PleaseLogin from './PleaseLogin';
 
 class CartPage extends Component {
 
   render() {
     return (
-      <View>
-      </View>
+      <ScrollView>
+        {(() => {
+          if (!this.props.member.accessToken) {
+            return (
+              <PleaseLogin navigator={this.props.navigator}/>
+            );
+          } else {
+            return (
+              <View></View>
+            );
+          }
+        })()}
+      </ScrollView>
     );
   }
 
