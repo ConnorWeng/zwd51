@@ -30,30 +30,26 @@ class CartPage extends Component {
   }
 
   render() {
-    return (
-      <View style={{flex: 1}}>
-        <ScrollView>
-          {(() => {
-            if (!this.props.member.accessToken) {
-              return (
-                <PleaseLogin navigator={this.props.navigator}/>
-              );
-            } else {
-              return (
-                <ListView
-                   dataSource={this.state.shopDataSource.cloneWithRows(MOCKED_DATA.shops)}
-                   renderRow={this.renderShop.bind(this)}/>
-              );
-            }
-          })()}
-        </ScrollView>
-        <View style={styles.itemActionContainer}>
-          <TouchableOpacity onPress={() => {}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
-            <Text style={[styles.itemActionText, {color: '#fff'}]}>结算</Text>
-          </TouchableOpacity>
+    if (!this.props.member.accessToken) {
+      return (
+        <PleaseLogin navigator={this.props.navigator}/>
+      );
+    } else {
+      return (
+        <View style={{flex: 1}}>
+          <ScrollView>
+            <ListView
+               dataSource={this.state.shopDataSource.cloneWithRows(MOCKED_DATA.shops)}
+               renderRow={this.renderShop.bind(this)}/>
+          </ScrollView>
+          <View style={styles.itemActionContainer}>
+            <TouchableOpacity onPress={() => {this.props.navigator.push({OrderConfirmPage: true});}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
+              <Text style={[styles.itemActionText, {color: '#fff'}]}>结算</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    );
+      );
+    }
   }
 
   renderShop(shop) {
