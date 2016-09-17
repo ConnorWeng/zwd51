@@ -20,14 +20,14 @@ const store = createStore(
     autoRehydrate()
   )
 );
-persistStore(store, {storage: AsyncStorage});
+const persistor = persistStore(store, {storage: AsyncStorage});
 
 class zwd51 extends Component {
 
   render() {
     return (
       <Provider store={store}>
-        <App />
+        <App persistor={persistor}/>
       </Provider>
     );
   }

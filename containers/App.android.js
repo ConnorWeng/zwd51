@@ -12,6 +12,7 @@ import OrderConfirmPage from '../components/OrderConfirmPage';
 import PaymentPage from '../components/PaymentPage';
 import OrderPage from '../components/OrderPage';
 import ShopPage from '../components/ShopPage';
+import SettingPage from '../components/SettingPage';
 
 class App extends Component {
 
@@ -36,7 +37,7 @@ class App extends Component {
          ref="navigator"
          style={styles.container}
          initialRoute={{}}
-         renderScene={this.renderScene}
+         renderScene={this.renderScene.bind(this)}
          configureScene={(route) => {
            return Navigator.SceneConfigs.FloatFromBottomAndroid;
          }}
@@ -73,6 +74,11 @@ class App extends Component {
     if (route.ShopPage) {
       return (
         <ShopPage navigator={navigator} store={route.store}/>
+      );
+    }
+    if (route.SettingPage) {
+      return (
+        <SettingPage navigator={navigator} persistor={this.props.persistor}/>
       );
     }
     return (
