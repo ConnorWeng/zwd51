@@ -59,11 +59,13 @@ const styles = StyleSheet.create({
   },
   specCheckboxContainer: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     marginTop: 5,
     marginBottom: 5,
   },
   specCheckbox: {
     marginRight: 5,
+    marginBottom: 5,
     padding: 5,
     backgroundColor: 'rgba(0,0,0,0.1)',
     borderRadius: 10,

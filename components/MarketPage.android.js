@@ -7,9 +7,11 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
+  DrawerLayoutAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ShopInfo from './ShopInfo';
+import SpecSelector from './SpecSelector';
 
 class MarketPage extends Component {
 
@@ -23,20 +25,36 @@ class MarketPage extends Component {
   }
 
   render() {
-    return (
-      <ScrollView>
-        <View style={styles.searchContainer}>
-          <View style={styles.searchInputContainer}>
-            <TextInput style={styles.searchInput} underlineColorAndroid="rgba(0,0,0,0)" placeholder="搜索..."/>
-          </View>
-          <TouchableOpacity style={styles.searchFilter} onPress={() => {}}>
-            <Icon name="ios-funnel-outline" size={30} color="#000000" />
+    const navigationView = (
+      <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <SpecSelector category="市场" specs={['全部', '国投', '国大', '大西豪', '富丽', '佰润', '女人街', '金纱', '非凡', '大时代', '宝华', '柏美', '新金马', '西街', '欣欣', '跨客城', '新百佳', '新旺角', '新潮都', '十三行', '广控', '鞋城', '大西豪三晟', '机筑巷', '圣迦', '景叶', '南城', '万佳', '益民', '富壹', '北城', '西苑鞋汇', '金马实体', '新塘牛仔城', '沙河周边', '其他', '其他城市',]}/>
+        <View style={styles.itemActionContainer}>
+          <TouchableOpacity onPress={() => {this.refs.drawerLayout.closeDrawer();}} style={[styles.itemAction, {borderColor: 'rgba(0,0,0,0.1)', backgroundColor: '#f40'}]}>
+            <Text style={[styles.itemActionText, {color: '#fff'}]}>确定</Text>
           </TouchableOpacity>
         </View>
-        <ListView
-           dataSource={this.state.dataSource.cloneWithRows(MOCKED_DATA.stores)}
-           renderRow={this.renderStore.bind(this)}/>
-      </ScrollView>
+      </View>
+    );
+    return (
+      <DrawerLayoutAndroid
+         ref="drawerLayout"
+         drawerWidth={300}
+         drawerPosition={DrawerLayoutAndroid.positions.Right}
+         renderNavigationView={() => navigationView}>
+        <ScrollView>
+          <View style={styles.searchContainer}>
+            <View style={styles.searchInputContainer}>
+              <TextInput style={styles.searchInput} underlineColorAndroid="rgba(0,0,0,0)" placeholder="搜索..."/>
+            </View>
+            <TouchableOpacity style={styles.searchFilter} onPress={() => {this.refs.drawerLayout.openDrawer();}}>
+              <Icon name="ios-funnel-outline" size={30} color="#000000" />
+            </TouchableOpacity>
+          </View>
+          <ListView
+             dataSource={this.state.dataSource.cloneWithRows(MOCKED_DATA.stores)}
+             renderRow={this.renderStore.bind(this)}/>
+        </ScrollView>
+      </DrawerLayoutAndroid>
     );
   }
 
@@ -51,6 +69,23 @@ class MarketPage extends Component {
 }
 
 const styles = StyleSheet.create({
+  itemActionContainer: {
+    flexDirection: 'row',
+    width: 300,
+    height: 42,
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+  },
+  itemAction: {
+    flex: 1,
+    justifyContent: 'center',
+    borderWidth: 1,
+  },
+  itemActionText: {
+    textAlign: 'center',
+    fontSize: 24,
+  },
   searchContainer: {
     flexDirection: 'row',
   },
