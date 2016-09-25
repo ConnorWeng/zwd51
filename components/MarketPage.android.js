@@ -8,8 +8,13 @@ import {
   TouchableOpacity,
   Text,
   DrawerLayoutAndroid,
+  ActivityIndicator,
+  ProgressBarAndroid,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import TimerEnhance from 'react-native-smart-timer-enhance';
+import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import ShopInfo from './ShopInfo';
 import SpecSelector from './SpecSelector';
 
@@ -17,10 +22,14 @@ class MarketPage extends Component {
 
   constructor(props) {
     super(props);
+    const clonedData = Array.from(MOCKED_DATA.stores);
+    clonedData.splice(10);
+    const dataSource = new ListView.DataSource({
+      rowHasChanged: (row1, row2) => row1 !== row2,
+    });
     this.state = {
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-      }),
+      dataSource: dataSource,
+      stores: dataSource.cloneWithRows(clonedData),
     };
   }
 
@@ -41,7 +50,7 @@ class MarketPage extends Component {
          drawerWidth={300}
          drawerPosition={DrawerLayoutAndroid.positions.Right}
          renderNavigationView={() => navigationView}>
-        <ScrollView>
+        <View>
           <View style={styles.searchContainer}>
             <View style={styles.searchInputContainer}>
               <TextInput style={styles.searchInput} underlineColorAndroid="rgba(0,0,0,0)" placeholder="搜索..."/>
@@ -50,10 +59,20 @@ class MarketPage extends Component {
               <Icon name="ios-funnel-outline" size={30} color="#000000" />
             </TouchableOpacity>
           </View>
-          <ListView
-             dataSource={this.state.dataSource.cloneWithRows(MOCKED_DATA.stores)}
-             renderRow={this.renderStore.bind(this)}/>
-        </ScrollView>
+          <PullToRefreshListView
+             ref="pullToRefreshListView"
+             style={styles.shopListView}
+             dataSource={this.state.stores}
+             viewType={PullToRefreshListView.constants.viewType.listView}
+             renderRow={this.renderStore.bind(this)}
+             renderFooter={this.renderFooter.bind(this)}
+             onRefresh={this.onRefresh.bind(this)}
+             onLoadMore={this.onLoadMore.bind(this)}
+             pullUpDistance={35}
+             pullUpStayDistance={50}
+             initialListSize={10}
+             pageSize={10}/>
+        </View>
       </DrawerLayoutAndroid>
     );
   }
@@ -66,7 +85,76 @@ class MarketPage extends Component {
     );
   }
 
+  renderFooter(viewState) {
+    let {pullState, pullDistancePercent} = viewState;
+    const {load_more_none, load_more_idle, will_load_more, loading_more, loaded_all,} = PullToRefreshListView.constants.viewState;
+    pullDistancePercent = Math.round(pullDistancePercent * 100);
+    switch(pullState) {
+    case load_more_none:
+      return (
+        <View style={{height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
+          <Text>pull up to load more</Text>
+        </View>
+      );
+    case load_more_idle:
+      return (
+        <View style={{height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
+          <Text>pull up to load more{pullDistancePercent}%</Text>
+        </View>
+      );
+    case will_load_more:
+      return (
+        <View style={{height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
+          <Text>release to load more{pullDistancePercent > 100 ? 100 : pullDistancePercent}%</Text>
+        </View>
+      );
+    case loading_more:
+      return (
+        <View style={{flexDirection: 'row', height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
+          {this.renderActivityIndicator()}<Text>loading</Text>
+        </View>
+      );
+    case loaded_all:
+      return (
+        <View style={{height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
+          <Text>no more</Text>
+        </View>
+      );
+    }
+  }
+
+  renderActivityIndicator() {
+    return ActivityIndicator ? (
+      <ActivityIndicator
+         style={{marginRight: 10,}}
+         animating={true}
+         color={'#ff0000'}
+         size={'small'}/>
+    ) : (
+      <ProgressBarAndroid
+         style={{marginRight: 10,}}
+         color={'#ff0000'}
+         styleAttr={'Small'}/>
+
+    );
+  }
+
+  onRefresh() {
+    this.refs.pullToRefreshListView.endRefresh(true);
+  }
+
+  onLoadMore() {
+    this.setTimeout(() => {
+      this.setState({
+        stores: this.state.dataSource.cloneWithRows(MOCKED_DATA.stores),
+      });
+      this.refs.pullToRefreshListView.endLoadMore(true);
+    }, 1000);
+  }
+
 }
+
+const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   itemActionContainer: {
@@ -104,6 +192,9 @@ const styles = StyleSheet.create({
   searchFilter: {
     flex: 1,
     alignItems: 'center',
+  },
+  shopListView: {
+    height: height-56-40-42-18, // window height - toolbar - search container - tabbar - margin
   },
   storeBusinessScope: {
   },
@@ -160,7 +251,27 @@ const MOCKED_DATA = {
     address: '新金马-4F-D014',
     seePrice: '减30',
     businessScope: '女装连衣裙 防晒衣 打底衫 套装 等',
+  }, {
+    storeName: '艾上乐品',
+    address: '宝华 3F-320-B',
+    seePrice: '减20',
+    businessScope: '连衣裙',
+  }, {
+    storeName: '乔蒙网络服饰',
+    address: '国投 4F-413-B',
+    seePrice: '减20',
+    businessScope: '连衣裙 上衣 外贸 欧美',
+  }, {
+    storeName: '俊衣阁服饰',
+    address: '女人街 2F-A19-D1',
+    seePrice: '减20',
+    businessScope: '女装',
+  }, {
+    storeName: '小鸟依人服饰',
+    address: '国大 4F-431-A',
+    seePrice: '减20',
+    businessScope: '女装',
   }],
 };
 
-export default MarketPage;
+export default TimerEnhance(MarketPage);

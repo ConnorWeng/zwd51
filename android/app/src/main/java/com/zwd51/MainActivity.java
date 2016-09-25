@@ -9,6 +9,7 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.reactnativecomponent.swiperefreshlayout.RCTSwipeRefreshLayoutPackage;
 import com.zwd51.packages.AlibabaAPIPackage;
 
 import java.util.Arrays;
@@ -43,6 +44,7 @@ public class MainActivity extends ReactActivity {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
             new VectorIconsPackage(),
+            new RCTSwipeRefreshLayoutPackage(),
             new AlibabaAPIPackage(MainActivity.this)
         );
     }
