@@ -1,4 +1,10 @@
-import {loginService, submitOrderService, getOrdersService, getAlipayOrderInfoService} from './service';
+import {
+  loginService,
+  submitOrderService,
+  getOrdersService,
+  getAlipayOrderInfoService,
+  getShopsService,
+} from './service';
 
 export function changeMainTab(index) {
   return {
@@ -92,6 +98,27 @@ function getAlipayOrderInfoRequest(orderId) {
 function getAlipayOrderInfoCheck(json) {
   return {
     type: 'GET_ALIPAY_ORDER_INFO_CHECK',
+    json: json,
+  };
+}
+
+export function getShops(mkId, page) {
+  return async (dispatch) => {
+    dispatch(getShopsRequest());
+    const responseJson = await getShopsService(mkId, page);
+    dispatch(getShopsCheck(responseJson));
+  };
+}
+
+function getShopsRequest() {
+  return {
+    type: 'GET_SHOPS_REQUEST',
+  };
+}
+
+function getShopsCheck(json) {
+  return {
+    type: 'GET_SHOPS_CHECK',
     json: json,
   };
 }

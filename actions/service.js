@@ -73,6 +73,21 @@ export async function getAlipayOrderInfoService(orderId, accessToken) {
   return json;
 }
 
+export async function getShopsService(mkId, page) {
+  let json;
+  try {
+    const response = await fetch(
+      remoteService('/mobile_shop/index') + `&mk_id=${mkId}&page=${page}`);
+    json = await response.json();
+  } catch (e) {
+    json = {
+      error: true,
+      message: e.message,
+    };
+  }
+  return json;
+}
+
 import {SERVICE_URL} from "../service.json";
 
 function remoteService(serviceName) {

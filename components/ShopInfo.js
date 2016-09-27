@@ -12,16 +12,16 @@ class ShopInfo extends Component {
       <View style={styles.storeContainer}>
         <View style={styles.storeHeadContainer}>
           <View style={styles.storeHead}>
-            <Text style={styles.storeName}>{this.props.storeName}</Text>
+            <Text style={styles.storeName}>{this.props.store_name}</Text>
             <View style={styles.storeSeePriceContainer}>
-              <Text style={styles.storeSeePrice}>{this.props.seePrice}</Text>
+              <Text style={styles.storeSeePrice}>{this.props.see_price}</Text>
             </View>
           </View>
           <Text style={styles.storeAddress}>{this.props.address}</Text>
         </View>
         <View style={styles.storeBodyContainer}>
           <Text style={styles.storeBusinessScopeLabel}>主营：</Text>
-          <Text style={styles.storeBusinessScope}>{this.props.businessScope}</Text>
+          <Text style={styles.storeBusinessScope}>{this.props.business_scope}</Text>
         </View>
       </View>
     );

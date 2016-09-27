@@ -11,26 +11,41 @@ import {
   ActivityIndicator,
   ProgressBarAndroid,
   Dimensions,
+  ToastAndroid,
 } from 'react-native';
+import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TimerEnhance from 'react-native-smart-timer-enhance';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import ShopInfo from './ShopInfo';
 import SpecSelector from './SpecSelector';
+import {getShops} from '../actions';
 
 class MarketPage extends Component {
 
   constructor(props) {
     super(props);
-    const clonedData = Array.from(MOCKED_DATA.stores);
-    clonedData.splice(10);
     const dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
     });
     this.state = {
       dataSource: dataSource,
-      stores: dataSource.cloneWithRows(clonedData),
+      stores: dataSource.cloneWithRows(props.shops),
     };
+  }
+
+  componentDidMount() {
+    // this.refs.pullToRefreshListView.beginRefresh();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.message) {
+      ToastAndroid.show(nextProps.order.message, ToastAndroid.SHORT);
+    } else {
+      this.setState({
+        stores: this.state.dataSource.cloneWithRows(nextProps.shops),
+      });
+    }
   }
 
   render() {
@@ -144,15 +159,16 @@ class MarketPage extends Component {
   }
 
   onLoadMore() {
-    this.setTimeout(() => {
-      this.setState({
-        stores: this.state.dataSource.cloneWithRows(MOCKED_DATA.stores),
-      });
-      this.refs.pullToRefreshListView.endLoadMore(true);
-    }, 1000);
+    this.props.getShops(this.props.mkId, this.props.page);
   }
 
 }
+
+const actions = (dispatch) => {
+  return {
+    getShops: (mkId, page) => dispatch(getShops(mkId, page)),
+  };
+};
 
 const {height, width} = Dimensions.get('window');
 
@@ -274,4 +290,4 @@ const MOCKED_DATA = {
   }],
 };
 
-export default TimerEnhance(MarketPage);
+export default connect(state => state.market, actions)(TimerEnhance(MarketPage));
