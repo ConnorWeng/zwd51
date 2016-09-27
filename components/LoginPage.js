@@ -9,6 +9,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {login} from '../actions';
 
 class LoginPage extends Component {
@@ -46,6 +47,7 @@ class LoginPage extends Component {
         <TouchableOpacity style={styles.loginButton} onPress={() => this.props.login(this.state.username, this.state.password)}>
           <Text style={styles.loginButtonText}>{this.props.isLogging ? '登录中...' : '登录'}</Text>
         </TouchableOpacity>
+        <Spinner visible={this.props.isLogging}/>
       </ScrollView>
     );
   }
