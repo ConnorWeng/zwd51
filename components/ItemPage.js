@@ -107,9 +107,9 @@ class ItemPage extends Component {
           <TouchableOpacity style={styles.modalCloseBtn} onPress={() => this.refs.modal.close()}>
             <Icon name="ios-close-circle-outline" size={24}/>
           </TouchableOpacity>
-          <SpecSelector category="颜色" specs={['红色', '黑色']}/>
-          <SpecSelector category="尺码" specs={['L', 'XL', 'XXL']}/>
-          <SpecSelector category="数量" specs={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}/>
+          <SpecSelector category="颜色" specs={[{label: '红色', value: '红色'}, {label: '黑色', value: '黑色'}]}/>
+          <SpecSelector category="尺码" specs={[{label: 'L', value: 'L'}, {label: 'XL', value: 'XL'}, {label: 'XXL', value: 'XXL'}]}/>
+          <SpecSelector category="数量" specs={[{label: 1, value: 1}, {label: 2, value: 2}, {label: 3, value: 3}, {label: 4, value: 4}, {label: 5, value: 5}, {label: 6, value: 6}, {label: 7, value: 7}, {label: 8, value: 8}, {label: 9, value: 9}, {label: 10, value: 10}]}/>
           <TouchableOpacity onPress={() => {this.props.navigator.push({OrderConfirmPage: true});}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
             <Text style={[styles.itemActionText, {color: '#fff'}]}>立即购买</Text>
           </TouchableOpacity>

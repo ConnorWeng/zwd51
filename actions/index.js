@@ -122,3 +122,10 @@ function getShopsCheck(json) {
     json: json,
   };
 }
+
+export function changeMkId(mkId) {
+  return {
+    type: 'CHANGE_MK_ID',
+    mkId: mkId,
+  };
+}

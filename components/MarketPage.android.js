@@ -19,7 +19,7 @@ import TimerEnhance from 'react-native-smart-timer-enhance';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import ShopInfo from './ShopInfo';
 import SpecSelector from './SpecSelector';
-import {getShops} from '../actions';
+import {getShops, changeMkId} from '../actions';
 
 class MarketPage extends Component {
 
@@ -40,7 +40,7 @@ class MarketPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.message) {
-      ToastAndroid.show(nextProps.order.message, ToastAndroid.SHORT);
+      ToastAndroid.show(nextProps.message, ToastAndroid.SHORT);
     } else {
       this.setState({
         stores: this.state.dataSource.cloneWithRows(nextProps.shops),
@@ -51,11 +51,11 @@ class MarketPage extends Component {
   render() {
     const navigationView = (
       <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <SpecSelector category="市场" specs={['全部', '国投', '国大', '大西豪', '富丽', '佰润', '女人街', '金纱', '非凡', '大时代', '宝华', '柏美', '新金马', '西街', '欣欣', '跨客城', '新百佳', '新旺角', '新潮都', '十三行', '广控', '鞋城', '大西豪三晟', '机筑巷', '圣迦', '景叶', '南城', '万佳', '益民', '富壹', '北城', '西苑鞋汇', '金马实体', '新塘牛仔城', '沙河周边', '其他', '其他城市',]}/>
+        <SpecSelector ref="markets" category="市场" specs={[{label: '全部', value: 0}, {label: '国投', value: 130}, {label: '国大', value: 8}, {label: '大西豪', value: 4}, {label: '富丽', value: 2}, {label: '佰润', value: 6}, {label: '女人街', value: 3}, {label: '金纱', value: 255}, {label: '非凡', value: 12}, {label: '大时代', value: 10}, {label: '宝华', value: 5}, {label: '柏美', value: 9}, {label: '新金马', value: 45}, {label: '西街', value: 15}, {label: '欣欣', value: 251}, {label: '跨客城', value: 999}, {label: '新百佳', value: 22}, {label: '新旺角', value: 268}, {label: '新潮都', value: 11}, {label: '十三行', value: 14}, {label: '广控', value: 237}, {label: '鞋城', value: 18}, {label: '大西豪三晟', value: 277}, {label: '机筑巷', value: 53}, {label: '圣迦', value: 261}, {label: '景叶', value: 359}, {label: '南城', value: 16}, {label: '万佳', value: 20}, {label: '益民', value: 21}, {label: '富壹', value: 55}, {label: '北城', value: 139}, {label: '西苑鞋汇', value: 57}, {label: '金马实体', value: 151}, {label: '新塘牛仔城', value: 137}, {label: '沙河周边', value: 58}, {label: '其他', value: 56}, {label: '其他城市', value: 535},]}/>
         <View style={styles.itemActionContainer}>
-          <TouchableOpacity onPress={() => {this.refs.drawerLayout.closeDrawer();}} style={[styles.itemAction, {borderColor: 'rgba(0,0,0,0.1)', backgroundColor: '#f40'}]}>
-            <Text style={[styles.itemActionText, {color: '#fff'}]}>确定</Text>
-          </TouchableOpacity>
+        <TouchableOpacity onPress={this.onConfirm.bind(this)} style={[styles.itemAction, {borderColor: 'rgba(0,0,0,0.1)', backgroundColor: '#f40'}]}>
+          <Text style={[styles.itemActionText, {color: '#fff'}]}>确定</Text>
+        </TouchableOpacity>
         </View>
       </View>
     );
@@ -162,11 +162,18 @@ class MarketPage extends Component {
     this.props.getShops(this.props.mkId, this.props.page);
   }
 
+  onConfirm() {
+    this.refs.drawerLayout.closeDrawer();
+    this.refs.pullToRefreshListView.endLoadMore();
+    this.props.changeMkId(this.refs.markets.getSelected());
+  }
+
 }
 
 const actions = (dispatch) => {
   return {
     getShops: (mkId, page) => dispatch(getShops(mkId, page)),
+    changeMkId: (mkId) => dispatch(changeMkId(mkId)),
   };
 };
 

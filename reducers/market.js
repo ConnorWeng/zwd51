@@ -6,6 +6,13 @@ const market = (state = {
   message: '',
 }, action) => {
   switch (action.type) {
+  case 'CHANGE_MK_ID':
+    return Object.assign({}, state, {
+      shops: [],
+      mkId: action.mkId,
+      page: 0,
+      message: '',
+    });
   case 'GET_SHOPS_REQUEST':
     return Object.assign({}, state, {
       isLoading: true,

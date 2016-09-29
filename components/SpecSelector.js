@@ -25,16 +25,16 @@ class SpecSelector extends Component {
           {
             this.props.specs.map((spec) => {
               let checked = {};
-              if (this.state.selected === spec) {
+              if (this.state.selected === spec.value) {
                 checked = styles.checked;
               }
               return (
-                <TouchableOpacity key={spec} style={[styles.specCheckbox, checked]} onPress={() => {
+                <TouchableOpacity key={spec.value} style={[styles.specCheckbox, checked]} onPress={() => {
                     this.setState({
-                      selected: spec,
+                      selected: spec.value,
                     });
                   }}>
-                  <Text>{spec}</Text>
+                  <Text>{spec.label}</Text>
                 </TouchableOpacity>
               );
             })
@@ -42,6 +42,10 @@ class SpecSelector extends Component {
         </View>
       </View>
     );
+  }
+
+  getSelected() {
+    return this.state.selected;
   }
 
 }
