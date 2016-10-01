@@ -17,7 +17,9 @@ class ShopInfo extends Component {
               <Text style={styles.storeSeePrice}>{this.props.see_price}</Text>
             </View>
           </View>
-          <Text style={styles.storeAddress}>{this.props.address}</Text>
+          <Text style={styles.storeAddress}>
+            {this.props.mk_name}-{this.props.address}
+          </Text>
         </View>
         <View style={styles.storeBodyContainer}>
           <Text style={styles.storeBusinessScopeLabel}>主营：</Text>
