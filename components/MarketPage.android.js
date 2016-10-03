@@ -30,7 +30,7 @@ class MarketPage extends Component {
     });
     this.state = {
       dataSource: dataSource,
-      stores: dataSource.cloneWithRows(props.shops),
+      shops: dataSource.cloneWithRows(props.shops),
     };
   }
 
@@ -43,7 +43,7 @@ class MarketPage extends Component {
       ToastAndroid.show(nextProps.message, ToastAndroid.SHORT);
     } else {
       this.setState({
-        stores: this.state.dataSource.cloneWithRows(nextProps.shops),
+        shops: this.state.dataSource.cloneWithRows(nextProps.shops),
       });
     }
   }
@@ -77,9 +77,9 @@ class MarketPage extends Component {
           <PullToRefreshListView
              ref="pullToRefreshListView"
              style={styles.shopListView}
-             dataSource={this.state.stores}
+             dataSource={this.state.shops}
              viewType={PullToRefreshListView.constants.viewType.listView}
-             renderRow={this.renderStore.bind(this)}
+             renderRow={this.renderShop.bind(this)}
              renderFooter={this.renderFooter.bind(this)}
              onRefresh={this.onRefresh.bind(this)}
              onLoadMore={this.onLoadMore.bind(this)}
@@ -92,10 +92,10 @@ class MarketPage extends Component {
     );
   }
 
-  renderStore(store) {
+  renderShop(shop) {
     return (
-      <TouchableOpacity onPress={() => { this.props.navigator.push({ShopPage: true, store: store}); }}>
-        <ShopInfo {...store} />
+      <TouchableOpacity onPress={() => { this.props.navigator.push({ShopPage: true, shop: shop}); }}>
+        <ShopInfo {...shop} />
       </TouchableOpacity>
     );
   }
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   shopListView: {
     height: height-56-40-42-18, // window height - toolbar - search container - tabbar - margin
   },
-  storeBusinessScope: {
+  shopBusinessScope: {
   },
 });
 

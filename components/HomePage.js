@@ -34,7 +34,7 @@ class HomePage extends Component {
            dataSource={this.state.dataSource.cloneWithRows(MOCKED_DATA.items)}
            renderRow={this.renderTrendyItem.bind(this)}/>
         <Text style={styles.separator}> － 人气爆款 — </Text>
-        <ItemList items={MOCKED_DATA.items} navigator={this.props.navigator}/>
+        <ItemList shopId={0} navigator={this.props.navigator}/>
       </ScrollView>
     );
   }

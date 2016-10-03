@@ -4,6 +4,7 @@ import {
   getOrdersService,
   getAlipayOrderInfoService,
   getShopsService,
+  getGoodsService,
 } from './service';
 
 export function changeMainTab(index) {
@@ -127,5 +128,26 @@ export function changeMkId(mkId) {
   return {
     type: 'CHANGE_MK_ID',
     mkId: mkId,
+  };
+}
+
+export function getGoods(storeId, page) {
+  return async (dispatch) => {
+    dispatch(getGoodsRequest());
+    const responseJson = await getGoodsService(storeId, page);
+    dispatch(getGoodsCheck(responseJson));
+  };
+}
+
+function getGoodsRequest() {
+  return {
+    type: 'GET_GOODS_REQUEST',
+  };
+}
+
+function getGoodsCheck(json) {
+  return {
+    type: 'GET_GOODS_CHECK',
+    json: json,
   };
 }

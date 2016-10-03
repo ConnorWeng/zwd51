@@ -88,6 +88,21 @@ export async function getShopsService(mkId, page) {
   return json;
 }
 
+export async function getGoodsService(storeId, page) {
+  let json;
+  try {
+    const response = await fetch(
+      remoteService('/mobile_goods/index') + `&store_id=${storeId}&page=${page}`);
+    json = await response.json();
+  } catch (e) {
+    json = {
+      error: true,
+      message: e.message,
+    };
+  }
+  return json;
+}
+
 import {SERVICE_URL} from "../service.json";
 
 function remoteService(serviceName) {

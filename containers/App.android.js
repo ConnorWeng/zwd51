@@ -73,7 +73,7 @@ class App extends Component {
     }
     if (route.ShopPage) {
       return (
-        <ShopPage navigator={navigator} store={route.store}/>
+        <ShopPage navigator={navigator} shop={route.shop}/>
       );
     }
     if (route.SettingPage) {
