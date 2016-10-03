@@ -70,6 +70,7 @@ class ItemPage extends Component {
     super(props);
     this.state = {
       webViewHeight: 600,
+      webViewVisibility: false,
     };
   }
 
@@ -77,10 +78,10 @@ class ItemPage extends Component {
     let html = '<html><head><title></title></head><body>' + this.props.description + '</body></html>';
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.itemContainer}>
-          <Image style={styles.itemImage} source={{uri: this.props.defaultImage}}/>
+        <ScrollView style={styles.itemContainer} onScroll={this.onScroll.bind(this)}>
+          <Image style={styles.itemImage} source={{uri: this.props.default_image}}/>
           <View style={styles.itemHead}>
-            <Text numberOfLines={2} style={styles.itemTitle}>{this.props.goodsName}</Text>
+            <Text numberOfLines={2} style={styles.itemTitle}>{this.props.goods_name}</Text>
             <Text style={styles.itemPrice}>¥ {this.props.price}</Text>
             <Text style={styles.itemOriginPrice}>淘宝价 ¥ {this.props.price}</Text>
           </View>
@@ -88,12 +89,24 @@ class ItemPage extends Component {
             <Text style={styles.pleaseSelect}>选择  尺码 颜色分类</Text>
             <Text style={styles.arrow}>></Text>
           </TouchableOpacity>
-          <WebView style={[styles.itemDesc, {height: this.state.webViewHeight}]}
+          {(() => {
+            if (this.state.webViewVisibility) {
+              return (
+                <WebView style={[styles.itemDesc, {height: this.state.webViewHeight}]}
                    javaScriptEnabled={true}
                    onNavigationStateChange={(navState) => {
                      this.setState({webViewHeight: parseInt(navState.title, 10) || 0});
                    }}
                    source={{html: codeInject(html)}}/>
+              );
+            } else {
+              return (
+                <View style={styles.pleaseScrollContainer}>
+                  <Text>------ 继续滚动，查看图文详情 ------</Text>
+                </View>
+              );
+            }
+          })()}
         </ScrollView>
         <View style={styles.itemActionContainer}>
           <TouchableOpacity onPress={() => {}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
@@ -116,6 +129,15 @@ class ItemPage extends Component {
         </Modal>
       </View>
     );
+  }
+
+  onScroll(e) {
+    const scrollY = e.nativeEvent.contentOffset.y;
+    if (scrollY > 50) {
+      this.setState({
+        webViewVisibility: true,
+      });
+    }
   }
 
   taobaoUpload() {
@@ -198,6 +220,11 @@ const styles = StyleSheet.create({
   modalCloseBtn: {
     alignItems: 'flex-end',
     marginRight: 10,
+  },
+  pleaseScrollContainer: {
+    alignItems: 'center',
+    paddingTop: 10,
+    height: 100,
   },
 });
 
