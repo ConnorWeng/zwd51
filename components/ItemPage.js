@@ -10,9 +10,12 @@ import {
   ScrollView,
   WebView,
 } from 'react-native';
+import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modalbox';
+import Spinner from 'react-native-loading-spinner-overlay';
 import SpecSelector from './SpecSelector';
+import {getDescription, clearDescription} from '../actions';
 
 const {height, width} = Dimensions.get('window');
 
@@ -70,12 +73,14 @@ class ItemPage extends Component {
     super(props);
     this.state = {
       webViewHeight: 600,
-      webViewVisibility: false,
     };
   }
 
+  componentWillMount() {
+    this.props.clearDescription();
+  }
+
   render() {
-    let html = '<html><head><title></title></head><body>' + this.props.description + '</body></html>';
     return (
       <View style={styles.container}>
         <ScrollView style={styles.itemContainer} onScroll={this.onScroll.bind(this)}>
@@ -90,7 +95,8 @@ class ItemPage extends Component {
             <Text style={styles.arrow}>></Text>
           </TouchableOpacity>
           {(() => {
-            if (this.state.webViewVisibility) {
+            const html = '<html><head><title></title></head><body>' + this.props.description + '</body></html>';
+            if (this.props.description !== '') {
               return (
                 <WebView style={[styles.itemDesc, {height: this.state.webViewHeight}]}
                    javaScriptEnabled={true}
@@ -127,16 +133,15 @@ class ItemPage extends Component {
             <Text style={[styles.itemActionText, {color: '#fff'}]}>立即购买</Text>
           </TouchableOpacity>
         </Modal>
+        <Spinner visible={this.props.isLoading}/>
       </View>
     );
   }
 
   onScroll(e) {
     const scrollY = e.nativeEvent.contentOffset.y;
-    if (scrollY > 50) {
-      this.setState({
-        webViewVisibility: true,
-      });
+    if (scrollY > 50 && this.props.description === '') {
+      this.props.getDescription(this.props.goods_id);
     }
   }
 
@@ -144,6 +149,13 @@ class ItemPage extends Component {
     NativeModules.AlibabaAPI.login();
   }
 
+}
+
+const actions = (dispatch) => {
+  return {
+    getDescription: (goodsId) => dispatch(getDescription(goodsId)),
+    clearDescription: () => dispatch(clearDescription()),
+  };
 }
 
 const styles = StyleSheet.create({
@@ -228,4 +240,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ItemPage;
+export default connect(state => state.good, actions)(ItemPage);

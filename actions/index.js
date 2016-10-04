@@ -60,6 +60,18 @@ export function getGoods(storeId, page) {
   });
 }
 
+export function getDescription(goodsId) {
+  return serviceAction('GET_DESCRIPTION', '/mobile_goods/describe', 'GET', {
+    goods_id: goodsId,
+  });
+}
+
+export function clearDescription() {
+  return {
+    type: 'CLEAR_DESCRIPTION',
+  };
+}
+
 function serviceAction(serviceName, path, method, params) {
   return async (dispatch) => {
     dispatch({

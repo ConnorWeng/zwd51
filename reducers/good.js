@@ -1,5 +1,6 @@
 const good = (state = {
   isLoading: false,
+  description: '',
   goods: [],
   page: 0,
   message: '',
@@ -16,6 +17,25 @@ const good = (state = {
       ],
       page: state.page + 1,
       message: '',
+    });
+  case 'GET_DESCRIPTION_REQUEST':
+    return Object.assign({}, state, {isLoading: true, message: '', description: ''});
+  case 'GET_DESCRIPTION_CHECK':
+    if (action.json.error) {
+      return Object.assign({}, state, {
+        isLoading: false,
+        message: action.json.message,
+      });
+    } else {
+      return Object.assign({}, state, {
+        isLoading: false,
+        message: '',
+        description: action.json.description,
+      });
+    }
+  case 'CLEAR_DESCRIPTION':
+    return Object.assign({}, state, {
+      description: '',
     });
   default:
     return state;
