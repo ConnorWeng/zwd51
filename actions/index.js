@@ -1,12 +1,3 @@
-import {
-  loginService,
-  submitOrderService,
-  getOrdersService,
-  getAlipayOrderInfoService,
-  getShopsService,
-  getGoodsService,
-} from './service';
-
 export function changeMainTab(index) {
   return {
     type: 'CHANGE_MAIN_TAB',
@@ -15,113 +6,44 @@ export function changeMainTab(index) {
 }
 
 export function login(username, password) {
-  return async (dispatch) => {
-    dispatch(loginRequest());
-    const responseJson = await loginService(username, password);
-    dispatch(loginCheck(responseJson));
-  };
+  return serviceAction('LOGIN', '/mobile_member/login', 'POST', {
+    username: username,
+    password: password,
+  });
 };
-
-function loginRequest() {
-  return {
-    type: 'LOGIN_REQUEST',
-  };
-}
-
-function loginCheck(json) {
-  return {
-    type: 'LOGIN_CHECK',
-    json: json,
-  };
-}
 
 export function submitOrder(specIds, specNums, addressId,
                             behalfId, deliveryId, postscript,
                             accessToken) {
-  return async (dispatch) => {
-    dispatch(submitOrderRequest());
-    const responseJson = await submitOrderService(specIds, specNums, addressId,
-                                                  behalfId, deliveryId, postscript,
-                                                  accessToken);
-    dispatch(submitOrderCheck(responseJson));
-  };
-}
-
-function submitOrderRequest() {
-  return {
-    type: 'SUBMIT_ORDER_REQUEST',
-  };
-}
-
-function submitOrderCheck(json) {
-  return {
-    type: 'SUBMIT_ORDER_CHECK',
-    json: json,
-  };
+  return serviceAction('SUBMIT_ORDER', '/mobile_order/submit_order', 'POST', {
+    spec_ids: specIds,
+    spec_nums: specNums,
+    address_id: addressId,
+    behalf_id: behalfId,
+    delivery_id: deliveryId,
+    postscript: postscript,
+    access_token: accessToken,
+  });
 }
 
 export function getOrders(accessToken) {
-  return async (dispatch) => {
-    dispatch(getOrdersRequest());
-    const responseJson = await getOrdersService(accessToken);
-    dispatch(getOrdersCheck(responseJson));
-  };
-}
-
-function getOrdersRequest() {
-  return {
-    type: 'GET_ORDERS_REQUEST',
-  };
-}
-
-function getOrdersCheck(json) {
-  return {
-    type: 'GET_ORDERS_CHECK',
-    json: json,
-  };
+  return serviceAction('GET_ORDERS', '/mobile_order/index', 'GET', {
+    access_token: accessToken,
+  });
 }
 
 export function getAlipayOrderInfo(orderId, accessToken) {
-  return async (dispatch) => {
-    dispatch(getAlipayOrderInfoRequest(orderId));
-    const responseJson = await getAlipayOrderInfoService(orderId, accessToken);
-    dispatch(getAlipayOrderInfoCheck(responseJson));
-  };
-}
-
-function getAlipayOrderInfoRequest(orderId) {
-  return {
-    type: 'GET_ALIPAY_ORDER_INFO_REQUEST',
-    orderId: orderId,
-  };
-}
-
-function getAlipayOrderInfoCheck(json) {
-  return {
-    type: 'GET_ALIPAY_ORDER_INFO_CHECK',
-    json: json,
-  };
+  return serviceAction('GET_ALIPAY_ORDER_INFO', '/mobile_order/get_alipay_order_info', 'GET', {
+    order_id: orderId,
+    access_token: accessToken,
+  });
 }
 
 export function getShops(mkId, page) {
-  return async (dispatch) => {
-    dispatch(getShopsRequest());
-    const responseJson = await getShopsService(mkId, page);
-    dispatch(getShopsCheck(responseJson));
-  };
-}
-
-function getShopsRequest() {
-  return {
-    type: 'GET_SHOPS_REQUEST',
-  };
-}
-
-function getShopsCheck(json) {
-  return {
-    type: 'GET_SHOPS_CHECK',
-    json: json,
-  };
+  return serviceAction('GET_SHOPS', '/mobile_shop/index', 'GET', {
+    mk_id: mkId,
+    page: page,
+  });
 }
 
 export function changeMkId(mkId) {
@@ -132,22 +54,78 @@ export function changeMkId(mkId) {
 }
 
 export function getGoods(storeId, page) {
+  return serviceAction('GET_GOODS', '/mobile_goods/index', 'GET', {
+    store_id: storeId,
+    page: page,
+  });
+}
+
+function serviceAction(serviceName, path, method, params) {
   return async (dispatch) => {
-    dispatch(getGoodsRequest());
-    const responseJson = await getGoodsService(storeId, page);
-    dispatch(getGoodsCheck(responseJson));
+    dispatch({
+      type: serviceName + '_REQUEST',
+    });
+    let json;
+    if (method === 'GET') {
+      json = await callGetService(path, params);
+    } else if (method === 'POST') {
+      json = await callPostService(path, params);
+    }
+    dispatch({
+      type: serviceName + '_CHECK',
+      json: json,
+    });
   };
 }
 
-function getGoodsRequest() {
-  return {
-    type: 'GET_GOODS_REQUEST',
-  };
+import {SERVICE_URL} from "../service.json";
+
+async function callGetService(path, params) {
+  let json;
+  try {
+    const response = await fetch(
+      remoteService(path) + buildQueryString(params));
+    json = await response.json();
+  } catch (e) {
+    json = {
+      error: true,
+      message: e.message,
+    };
+  }
+  return json;
 }
 
-function getGoodsCheck(json) {
-  return {
-    type: 'GET_GOODS_CHECK',
-    json: json,
-  };
+async function callPostService(path, params) {
+  let json;
+  try {
+    const response = await fetch(remoteService(path), {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: buildQueryString(params),
+    });
+    json = await response.json();
+  } catch (e) {
+    // TODO: log error and send later?
+    json = {
+      error: true,
+      message: e.message,
+    };
+  }
+  return json;
+}
+
+function buildQueryString(params) {
+  let query = '';
+  for (var key in params) {
+    query += `&${key}=${params[key]}`;
+  }
+  return query;
+}
+
+function remoteService(serviceName) {
+  const parts = serviceName.split('/');
+  return SERVICE_URL + '/index.php?app=' + parts[1] + '&act=' + parts[2];
 }
