@@ -72,6 +72,12 @@ export function clearDescription() {
   };
 }
 
+export function getSpecs(goodsId) {
+  return serviceAction('GET_SPECS', '/mobile_goods/specs', 'GET', {
+    goods_id: goodsId,
+  });
+}
+
 function serviceAction(serviceName, path, method, params) {
   return async (dispatch) => {
     dispatch({

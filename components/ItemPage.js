@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modalbox';
 import Spinner from 'react-native-loading-spinner-overlay';
 import SpecSelector from './SpecSelector';
-import {getDescription, clearDescription} from '../actions';
+import {getDescription, clearDescription, getSpecs} from '../actions';
 
 const {height, width} = Dimensions.get('window');
 
@@ -122,7 +122,7 @@ class ItemPage extends Component {
             <Text style={[styles.itemActionText, {color: '#E5511D'}]}>立刻购买</Text>
           </TouchableOpacity>
         </View>
-        <Modal style={styles.modal} position={'bottom'} ref={'modal'}>
+        <Modal style={styles.modal} position={'bottom'} ref={'modal'} onOpened={this.onModalOpened.bind(this)}>
           <TouchableOpacity style={styles.modalCloseBtn} onPress={() => this.refs.modal.close()}>
             <Icon name="ios-close-circle-outline" size={24}/>
           </TouchableOpacity>
@@ -133,7 +133,7 @@ class ItemPage extends Component {
             <Text style={[styles.itemActionText, {color: '#fff'}]}>立即购买</Text>
           </TouchableOpacity>
         </Modal>
-        <Spinner visible={this.props.isLoading}/>
+        <Spinner visible={this.props.isLoading || this.props.isLoadingSpecs}/>
       </View>
     );
   }
@@ -142,6 +142,12 @@ class ItemPage extends Component {
     const scrollY = e.nativeEvent.contentOffset.y;
     if (scrollY > 50 && this.props.description === '') {
       this.props.getDescription(this.props.goods_id);
+    }
+  }
+
+  onModalOpened() {
+    if (this.props.specs.length === 0) {
+      this.props.getSpecs(this.props.goods_id);
     }
   }
 
@@ -155,6 +161,7 @@ const actions = (dispatch) => {
   return {
     getDescription: (goodsId) => dispatch(getDescription(goodsId)),
     clearDescription: () => dispatch(clearDescription()),
+    getSpecs: (goodsId) => dispatch(getSpecs(goodsId)),
   };
 }
 

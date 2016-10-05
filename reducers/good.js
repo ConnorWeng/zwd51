@@ -1,5 +1,7 @@
 const good = (state = {
   isLoading: false,
+  isLoadingSpecs: false,
+  specs: [],
   description: '',
   goods: [],
   page: 0,
@@ -37,6 +39,25 @@ const good = (state = {
     return Object.assign({}, state, {
       description: '',
     });
+  case 'GET_SPECS_REQUEST':
+    return Object.assign({}, state, {
+      isLoadingSpecs: true,
+      message: '',
+      specs: [],
+    });
+  case 'GET_SPECS_CHECK':
+    if (action.json.error) {
+      return Object.assign({}, state, {
+        isLoadingSpecs: false,
+        message: actions.json.message,
+      });
+    } else {
+      return Object.assign({}, state, {
+        isLoadingSpecs: false,
+        message: '',
+        specs: action.json.specs,
+      });
+    }
   default:
     return state;
   }
