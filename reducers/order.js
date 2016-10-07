@@ -2,6 +2,7 @@ const order = (state = {
   isProcessing: false,
   orders: [],
   lastProcessed: null,
+  goodsInfo: {},
   message: '',
 }, action) => {
   switch (action.type) {
@@ -43,6 +44,7 @@ const order = (state = {
     return Object.assign({}, state, {
       isProcessing: true,
       lastProcessed: null,
+      message: '',
     });
   case 'GET_ALIPAY_ORDER_INFO_CHECK':
     if (action.json.error) {
@@ -54,6 +56,26 @@ const order = (state = {
       return Object.assign({}, state, {
         isProcessing: false,
         lastProcessed: action.json,
+      });
+    }
+  case 'GET_ORDER_GOODS_INFO_REQUEST':
+    return Object.assign({}, state, {
+      isProcessing: true,
+      lastProcessed: null,
+      message: '',
+      goodsInfo: {},
+    });
+  case 'GET_ORDER_GOODS_INFO_CHECK':
+    if (action.json.error) {
+      return Object.assign({}, state, {
+        isProcessing: false,
+        message: action.json.message,
+      });
+    } else {
+      return Object.assign({}, state, {
+        isProcessing: false,
+        message: '',
+        goodsInfo: action.json,
       });
     }
   default:

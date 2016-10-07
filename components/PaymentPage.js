@@ -36,7 +36,7 @@ class PaymentPage extends Component {
           containerStyle={styles.checkboxContainter}
           labelStyle={styles.checkboxLabel}
           onChange={(checked) => this.setState({alipay: checked, remain: !checked})}/>
-        <PrimaryButton label='确认支付 ¥332.40' onPress={() => NativeModules.AlibabaAPI.pay(this.props.orderInfo)}/>
+        <PrimaryButton label={'确认支付 ¥' + this.props.orderAmount} onPress={() => NativeModules.AlibabaAPI.pay(this.props.orderInfo)}/>
       </ScrollView>
     );
   }

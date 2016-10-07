@@ -12,9 +12,10 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Spinner from 'react-native-loading-spinner-overlay';
 import TouchableContainerItem from './TouchableContainerItem';
 import TouchableContainerItemsGroup from './TouchableContainerItemsGroup';
-import {submitOrder} from '../actions';
+import {submitOrder, getOrderGoodsInfo} from '../actions';
 
 const {height, width} = Dimensions.get('window');
 
@@ -23,6 +24,10 @@ class OrderConfirmPage extends Component {
   componentDidMount() {
     if (!this.props.member.accessToken) {
       this.props.navigator.push({LoginPage: true});
+    } else {
+      const specIds = this.props.specIds.join(',');
+      const specNums = this.props.specNums.join(',');
+      this.props.getOrderGoodsInfo(specIds, specNums, this.props.member.accessToken);
     }
   }
 
@@ -32,7 +37,11 @@ class OrderConfirmPage extends Component {
     }
     if (nextProps.order.lastProcessed) {
       const newOrder = nextProps.order.lastProcessed;
-      this.props.navigator.push({PaymentPage: true, orderInfo: newOrder.order_info});
+      this.props.navigator.push({
+        PaymentPage: true,
+        orderInfo: newOrder.order_info,
+        orderAmount: newOrder.order_amount,
+      });
     }
   }
 
@@ -42,20 +51,28 @@ class OrderConfirmPage extends Component {
         <ScrollView>
           <TouchableContainerItemsGroup>
             <TouchableContainerItem style={{height: 80}} arrow={true}>
-              <Text style={styles.receiverName}>小小明</Text>
-              <Text style={styles.receiverMobile}>13819878374</Text>
-              <Text style={styles.receiverAddress} numberOfLines={1}>上海市卢湾区上岛名邸8号808室</Text>
+              <Text style={styles.receiverName}>{this.props.order.goodsInfo.default_address ? this.props.order.goodsInfo.default_address.consignee : ''}</Text>
+              <Text style={styles.receiverMobile}>{this.props.order.goodsInfo.default_address ? this.props.order.goodsInfo.default_address.phone_mob : ''}</Text>
+              <Text style={styles.receiverAddress} numberOfLines={1}>{this.props.order.goodsInfo.default_address ? this.props.order.goodsInfo.default_address.address : ''}</Text>
             </TouchableContainerItem>
           </TouchableContainerItemsGroup>
           <TouchableContainerItemsGroup style={{marginTop: 10}}>
             <TouchableContainerItem style={{height: 100}} bodyStyle={{justifyContent: 'space-between'}} arrow={true}>
               <View style={{flexDirection: 'row'}}>
-                <Image style={styles.itemImage}
-                       source={{uri: 'http://g.hiphotos.baidu.com/zhidao/wh%3D600%2C800/sign=a5656052494a20a4314b34c1a062b41a/79f0f736afc37931ec26be69edc4b74543a91127.jpg'}}/>
-                <Image style={styles.itemImage}
-                       source={{uri: 'http://g.hiphotos.baidu.com/zhidao/wh%3D600%2C800/sign=a5656052494a20a4314b34c1a062b41a/79f0f736afc37931ec26be69edc4b74543a91127.jpg'}}/>
+                {(() => {
+                  if (this.props.order.goodsInfo.items) {
+                    const images = [];
+                    this.props.order.goodsInfo.items.forEach((item) => {
+                      images.push(
+                        <Image style={styles.itemImage}
+                               source={{uri: item.goods_image}}/>
+                      );
+                    });
+                    return images;
+                  }
+                })()}
               </View>
-              <Text>共2件</Text>
+              <Text>共{this.props.order.goodsInfo.items ? this.props.order.goodsInfo.items.length : 0}件</Text>
             </TouchableContainerItem>
             <TouchableContainerItem style={{height: 60}} arrow={false}>
               <Text style={{fontSize: 16}}>配送：51代发</Text>
@@ -64,28 +81,30 @@ class OrderConfirmPage extends Component {
           <TouchableContainerItemsGroup style={{marginTop: 10}}>
             <TouchableContainerItem style={{height: 40}} bodyStyle={{justifyContent: 'space-between'}} arrow={false}>
               <Text>商品金额</Text>
-              <Text style={{color: '#f40'}}>322.40</Text>
+              <Text style={{color: '#f40'}}>{this.props.order.goodsInfo.amount}</Text>
             </TouchableContainerItem>
             <TouchableContainerItem style={{height: 40}} bodyStyle={{justifyContent: 'space-between'}} arrow={false}>
               <Text>代发费用</Text>
-              <Text style={{color: '#f40'}}>+ 10.00</Text>
+              <Text style={{color: '#f40'}}>+ {this.props.order.goodsInfo.behalf_fee}</Text>
             </TouchableContainerItem>
           </TouchableContainerItemsGroup>
         </ScrollView>
         <View style={styles.actionContainer}>
           <View style={styles.priceContainer}>
-            <Text style={styles.priceText}>实付款：¥332.40</Text>
+            <Text style={styles.priceText}>实付款：¥{this.props.order.goodsInfo.amount + this.props.order.goodsInfo.behalf_fee}</Text>
           </View>
           <TouchableOpacity onPress={this.submitOrder.bind(this)} style={[styles.submitAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
-            <Text style={[styles.submitActionText, {color: '#fff'}]}>{this.props.order.isProcessing ? '提交中...' : '提交订单'}</Text>
+            <Text style={[styles.submitActionText, {color: '#fff'}]}>{this.props.order.isProcessing ? '处理中...' : '提交订单'}</Text>
           </TouchableOpacity>
         </View>
+        <Spinner visible={this.props.order.isProcessing}/>
       </View>
     );
   }
 
   submitOrder() {
-    this.props.submitOrder('43649,43652', '1,2', 127102, 10919, 28, '', this.props.member.accessToken);
+    this.props.submitOrder(this.props.specIds.join(','), this.props.specNums.join(','),
+                           this.props.order.goodsInfo.default_address.addr_id, 10919, 28, '', this.props.member.accessToken);
   }
 
 }
@@ -99,6 +118,7 @@ const actions = (dispatch) => {
                                 behalfId, deliveryId, postscript,
                                 accessToken)
                   ),
+    getOrderGoodsInfo: (specIds, specNums, accessToken) => dispatch(getOrderGoodsInfo(specIds, specNums, accessToken)),
   };
 };
 

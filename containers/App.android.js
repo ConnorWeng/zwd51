@@ -58,12 +58,12 @@ class App extends Component {
     }
     if (route.OrderConfirmPage) {
       return (
-        <OrderConfirmPage navigator={navigator}/>
+        <OrderConfirmPage navigator={navigator} specIds={route.specIds} specNums={route.specNums}/>
       );
     }
     if (route.PaymentPage) {
       return (
-        <PaymentPage navigator={navigator} orderInfo={route.orderInfo}/>
+        <PaymentPage navigator={navigator} orderInfo={route.orderInfo} orderAmount={route.orderAmount}/>
       );
     }
     if (route.OrderPage) {

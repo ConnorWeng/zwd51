@@ -78,6 +78,14 @@ export function getSpecs(goodsId) {
   });
 }
 
+export function getOrderGoodsInfo(specIds, specNums, accessToken) {
+  return serviceAction('GET_ORDER_GOODS_INFO', '/mobile_order/get_order_goods_info', 'GET', {
+    spec_ids: specIds,
+    spec_nums: specNums,
+    access_token: accessToken,
+  });
+}
+
 function serviceAction(serviceName, path, method, params) {
   return async (dispatch) => {
     dispatch({
