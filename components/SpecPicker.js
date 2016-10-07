@@ -16,7 +16,11 @@ class SpecPicker extends Component {
       selectedSpec2: '0',
     };
     this.relations = [];
-    this.props.specs.forEach((spec) => {
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.relations = [];
+    nextProps.specs.forEach((spec) => {
       this.relations.push(spec.spec_vid_1 + ':' + spec.spec_vid_2);
     });
   }

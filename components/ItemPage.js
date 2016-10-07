@@ -145,13 +145,13 @@ class ItemPage extends Component {
 
   onScroll(e) {
     const scrollY = e.nativeEvent.contentOffset.y;
-    if (scrollY > 50 && this.props.description === '') {
+    if (scrollY > 100 && this.props.description === '') {
       this.props.getDescription(this.props.goods_id);
     }
   }
 
   onModalOpened() {
-    if (this.props.specs.length === 0) {
+    if (this.props.specs.length === 0 || this.props.specs[0].goods_id !== this.props.goods_id) {
       this.props.getSpecs(this.props.goods_id);
     }
   }
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
   pleaseScrollContainer: {
     alignItems: 'center',
     paddingTop: 10,
-    height: 100,
+    height: 150,
   },
 });
 
