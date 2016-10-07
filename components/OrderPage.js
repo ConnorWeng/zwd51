@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import {getOrders, getAlipayOrderInfo} from '../actions';
 
@@ -35,7 +36,11 @@ class OrderPage extends Component {
       ToastAndroid.show(nextProps.order.message, ToastAndroid.SHORT);
     }
     if (nextProps.order.lastProcessed) {
-      this.props.navigator.push({PaymentPage: true, orderInfo: nextProps.order.lastProcessed.order_info});
+      this.props.navigator.push({
+        PaymentPage: true,
+        orderInfo: nextProps.order.lastProcessed.order_info,
+        orderAmount: nextProps.order.lastProcessed.order_amount,
+      });
     }
   }
 
@@ -45,6 +50,7 @@ class OrderPage extends Component {
         <ListView
            dataSource={this.state.dataSource.cloneWithRows(this.props.order.orders)}
            renderRow={this.renderOrder.bind(this)}/>
+        <Spinner visible={this.props.order.isProcessing}/>
       </ScrollView>
     );
   }

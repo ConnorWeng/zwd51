@@ -36,8 +36,16 @@ const order = (state = {
         message: '提交成功',
       });
     }
+  case 'GET_ORDERS_REQUEST':
+    return Object.assign({}, state, {
+      isProcessing: true,
+      orders: [],
+      lastProcessed: null,
+      message: '',
+    });
   case 'GET_ORDERS_CHECK':
     return Object.assign({}, state, {
+      isProcessing: false,
       orders: action.json
     });
   case 'GET_ALIPAY_ORDER_INFO_REQUEST':
