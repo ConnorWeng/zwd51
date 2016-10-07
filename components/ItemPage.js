@@ -9,12 +9,16 @@ import {
   Dimensions,
   ScrollView,
   WebView,
+  ToastAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modalbox';
 import Spinner from 'react-native-loading-spinner-overlay';
-import SpecSelector from './SpecSelector';
+import InputNumber from '../node_modules/rc-input-number/lib/index';
+import inputNumberStyles from '../node_modules/rc-input-number/lib/styles';
+import SpecPicker from './SpecPicker';
+import SpecContainer from './SpecContainer';
 import {getDescription, clearDescription, getSpecs} from '../actions';
 
 const {height, width} = Dimensions.get('window');
@@ -126,10 +130,11 @@ class ItemPage extends Component {
           <TouchableOpacity style={styles.modalCloseBtn} onPress={() => this.refs.modal.close()}>
             <Icon name="ios-close-circle-outline" size={24}/>
           </TouchableOpacity>
-          <SpecSelector category="颜色" specs={[{label: '红色', value: '红色'}, {label: '黑色', value: '黑色'}]}/>
-          <SpecSelector category="尺码" specs={[{label: 'L', value: 'L'}, {label: 'XL', value: 'XL'}, {label: 'XXL', value: 'XXL'}]}/>
-          <SpecSelector category="数量" specs={[{label: 1, value: 1}, {label: 2, value: 2}, {label: 3, value: 3}, {label: 4, value: 4}, {label: 5, value: 5}, {label: 6, value: 6}, {label: 7, value: 7}, {label: 8, value: 8}, {label: 9, value: 9}, {label: 10, value: 10}]}/>
-          <TouchableOpacity onPress={() => {this.props.navigator.push({OrderConfirmPage: true});}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
+          <SpecPicker ref="specPicker" specs={this.props.specs} specName1={this.props.specName1} specName2={this.props.specName2}/>
+          <SpecContainer specName="数量">
+            <InputNumber ref="num" styles={inputNumberStyles} defaultValue={1} min={1}/>
+          </SpecContainer>
+          <TouchableOpacity onPress={this.buy.bind(this)} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
             <Text style={[styles.itemActionText, {color: '#fff'}]}>立即购买</Text>
           </TouchableOpacity>
         </Modal>
@@ -148,6 +153,21 @@ class ItemPage extends Component {
   onModalOpened() {
     if (this.props.specs.length === 0) {
       this.props.getSpecs(this.props.goods_id);
+    }
+  }
+
+  buy() {
+    const num = this.refs.num.getCurrentValidValue();
+    const specId = this.refs.specPicker.getSelected();
+    if (specId === '0') {
+      ToastAndroid.show('请选择商品规格', ToastAndroid.SHORT);
+      return ;
+    } else {
+      this.props.navigator.push({
+        OrderConfirmPage: true,
+        specIds: [specId],
+        specNums: [num],
+      });
     }
   }
 
@@ -234,7 +254,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   modal: {
-    height: 250,
+    height: 285,
   },
   modalCloseBtn: {
     alignItems: 'flex-end',

@@ -2,6 +2,8 @@ const good = (state = {
   isLoading: false,
   isLoadingSpecs: false,
   specs: [],
+  specName1: '',
+  specName2: '',
   description: '',
   goods: [],
   page: 0,
@@ -44,18 +46,25 @@ const good = (state = {
       isLoadingSpecs: true,
       message: '',
       specs: [],
+      specName1: '',
+      specName2: '',
     });
   case 'GET_SPECS_CHECK':
     if (action.json.error) {
       return Object.assign({}, state, {
         isLoadingSpecs: false,
-        message: actions.json.message,
+        message: action.json.message,
+        specs: [],
+        specName1: '',
+        specName2: '',
       });
     } else {
       return Object.assign({}, state, {
         isLoadingSpecs: false,
         message: '',
         specs: action.json.specs,
+        specName1: action.json.spec_name_1,
+        specName2: action.json.spec_name_2,
       });
     }
   default:
