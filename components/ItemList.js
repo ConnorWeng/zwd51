@@ -58,10 +58,9 @@ class ItemList extends Component {
          renderFooter={this.renderFooter.bind(this)}
          onRefresh={this.onRefresh.bind(this)}
          onLoadMore={this.onLoadMore.bind(this)}
+         enabledPullDown={false}
          pullUpDistance={35}
-         pullUpStayDistance={50}
-         pullDownDistance={35}
-         pullDownStayDistance={50}/>
+         pullUpStayDistance={50}/>
     );
   }
 
@@ -83,35 +82,9 @@ class ItemList extends Component {
   }
 
   renderHeader(viewState) {
-    let {pullState, pullDistancePercent} = viewState;
-    let {refresh_none, refresh_idle, will_refresh, refreshing,} = PullToRefreshListView.constants.viewState;
-    pullDistancePercent = Math.round(pullDistancePercent * 100);
-    switch(pullState) {
-    case refresh_none:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>下拉刷新</Text>
-        </View>
-      );
-    case refresh_idle:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>下拉刷新</Text>
-        </View>
-      );
-    case will_refresh:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>放开刷新</Text>
-        </View>
-      );
-    case refreshing:
-      return (
-        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          {this.renderActivityIndicator()}<Text>刷新中...</Text>
-        </View>
-      );
-    }
+    return (
+      <View style={{width: width}}></View>
+    );
   }
 
   renderFooter(viewState) {
