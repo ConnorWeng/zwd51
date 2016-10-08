@@ -46,7 +46,7 @@ class SearchPage extends Component {
       });
     }
     if (this.refs.pullToRefreshListView) {
-      this.refs.pullToRefreshListView.endLoadMore(this.props.searchEnd);
+      this.refs.pullToRefreshListView.endLoadMore(nextProps.searchEnd);
     }
   }
 
