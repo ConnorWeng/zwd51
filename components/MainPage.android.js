@@ -25,9 +25,11 @@ class MainPage extends Component {
            title={this.props.page.title}
            navIconName="md-reorder"
            iconSize={30}
-           actions={[
-             {title: 'Search', iconName: 'ios-search-outline', iconColor: '#f40', show: 'ifRoom'},
-           ]}
+           actions={
+             this.props.page.title !== '搜款式' ? [
+               {title: 'Search', iconName: 'ios-search-outline', iconColor: '#f40', show: 'ifRoom'},
+             ] : []
+           }
            onActionSelected={this.onActionSelected.bind(this)}/>
         <ScrollableTabView
            ref="scrollableTabView"
@@ -37,9 +39,7 @@ class MainPage extends Component {
            renderTabBar={() => <TabBar />}
           onChangeTab={this.props.onChangeTab}>
           <HomePage navigator={this.props.navigator} tabLabel="ios-home-outline" style={styles.tabView}/>
-          <ScrollView tabLabel="ios-search-outline" style={styles.tabView}>
-            <SearchPage />
-          </ScrollView>
+          <SearchPage navigator={this.props.navigator} tabLabel="ios-search-outline" style={styles.tabView}/>
           <CartPage navigator={this.props.navigator} tabLabel="ios-cart-outline" style={styles.tabView}/>
           <MarketPage navigator={this.props.navigator} tabLabel="ios-globe-outline" style={styles.tabView}/>
           <UserPage navigator={this.props.navigator} tabLabel="ios-contact-outline" style={styles.tabView}/>

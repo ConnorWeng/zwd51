@@ -7,6 +7,10 @@ const good = (state = {
   description: '',
   goods: [],
   page: 0,
+  isSearching: false,
+  searchGoods: [],
+  searchPage: 0,
+  searchEnd: false,
   message: '',
 }, action) => {
   switch (action.type) {
@@ -65,6 +69,38 @@ const good = (state = {
         specs: action.json.specs,
         specName1: action.json.spec_name_1,
         specName2: action.json.spec_name_2,
+      });
+    }
+  case 'CLEAR_SEARCH_GOODS':
+    return Object.assign({}, state, {
+      isSearching: false,
+      searchGoods: [],
+      searchEnd: false,
+      searchPage: 0,
+    });
+  case 'SEARCH_GOODS_REQUEST':
+    return Object.assign({}, state, {
+      isSearching: true,
+      message: '',
+    });
+  case 'SEARCH_GOODS_CHECK':
+    if (action.json.error) {
+      return Object.assign({}, state, {
+        isSearching: false,
+        message: actions.json.message,
+        searchGoods: [],
+        searchPage: 0,
+      });
+    } else {
+      return Object.assign({}, state, {
+        isSearching: false,
+        searchGoods: [
+          ...state.searchGoods,
+          ...action.json,
+        ],
+        searchPage: action.json.length > 0 ? state.searchPage + 1 : state.searchPage,
+        searchEnd: action.json.length < 20 ? true : false,
+        message: '',
       });
     }
   default:

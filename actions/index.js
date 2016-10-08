@@ -86,6 +86,19 @@ export function getOrderGoodsInfo(specIds, specNums, accessToken) {
   });
 }
 
+export function searchGoods(keywords, page) {
+  return serviceAction('SEARCH_GOODS', '/mobile_goods/search', 'GET', {
+    keywords: keywords,
+    page: page,
+  });
+}
+
+export function clearSearchGoods() {
+  return {
+    type: 'CLEAR_SEARCH_GOODS',
+  };
+}
+
 function serviceAction(serviceName, path, method, params) {
   return async (dispatch) => {
     dispatch({
