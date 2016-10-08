@@ -23,7 +23,6 @@ class MainPage extends Component {
         <Icon.ToolbarAndroid
            style={styles.toolbar}
            title={this.props.page.title}
-           navIconName="md-reorder"
            iconSize={30}
            actions={
              this.props.page.title !== '搜款式' ? [
