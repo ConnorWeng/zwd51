@@ -39,6 +39,7 @@ class ItemList extends Component {
         goods: this.state.dataSource.cloneWithRows(nextProps.goods),
       });
     }
+    this.refs.pullToRefreshListView.endLoadMore(nextProps.end);
   }
 
   render() {
@@ -88,26 +89,26 @@ class ItemList extends Component {
     switch(pullState) {
     case refresh_none:
       return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-          <Text>pull down to refresh</Text>
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Text>下拉刷新</Text>
         </View>
       );
     case refresh_idle:
       return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-          <Text>pull down to refresh{pullDistancePercent}%</Text>
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Text>下拉刷新</Text>
         </View>
       );
     case will_refresh:
       return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-          <Text>release to refresh{pullDistancePercent > 100 ? 100 : pullDistancePercent}%</Text>
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Text>放开刷新</Text>
         </View>
       );
     case refreshing:
       return (
-        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-          {this.renderActivityIndicator()}<Text>refreshing</Text>
+        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          {this.renderActivityIndicator()}<Text>刷新中...</Text>
         </View>
       );
     }
@@ -115,37 +116,37 @@ class ItemList extends Component {
 
   renderFooter(viewState) {
     let {pullState, pullDistancePercent} = viewState;
-    let {load_more_none, load_more_idle, will_load_more, loading_more, loaded_all, } = PullToRefreshListView.constants.viewState;
+    const {load_more_none, load_more_idle, will_load_more, loading_more, loaded_all,} = PullToRefreshListView.constants.viewState;
     pullDistancePercent = Math.round(pullDistancePercent * 100);
     switch(pullState) {
     case load_more_none:
       return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-          <Text>pull up to load more</Text>
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Text>上拉加载更多</Text>
         </View>
       );
     case load_more_idle:
       return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-          <Text>pull up to load more{pullDistancePercent}%</Text>
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Text>上拉加载更多</Text>
         </View>
       );
     case will_load_more:
       return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-          <Text>release to load more{pullDistancePercent > 100 ? 100 : pullDistancePercent}%</Text>
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Text>放开加载更多</Text>
         </View>
       );
     case loading_more:
       return (
-        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-          {this.renderActivityIndicator()}<Text>loading</Text>
+        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          {this.renderActivityIndicator()}<Text>加载中...</Text>
         </View>
       );
     case loaded_all:
       return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-          <Text>no more</Text>
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Text>没有更多了</Text>
         </View>
       );
     }

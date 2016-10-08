@@ -7,6 +7,7 @@ const good = (state = {
   description: '',
   goods: [],
   page: 0,
+  end: false,
   isSearching: false,
   searchGoods: [],
   searchPage: 0,
@@ -14,18 +15,38 @@ const good = (state = {
   message: '',
 }, action) => {
   switch (action.type) {
-  case 'GET_GOODS_REQUEST':
-    return Object.assign({}, state, {isLoading: true, message: ''});
-  case 'GET_GOODS_CHECK':
+  case 'CLEAR_SHOP_GOODS':
     return Object.assign({}, state, {
       isLoading: false,
-      goods: [
-        ...state.goods,
-        ...action.json,
-      ],
-      page: state.page + 1,
+      goods: [],
+      page: 0,
+      end: false,
+    });
+  case 'GET_GOODS_REQUEST':
+    return Object.assign({}, state, {
+      isLoading: true,
       message: '',
     });
+  case 'GET_GOODS_CHECK':
+    if (action.json.error) {
+      return Object.assign({}, state, {
+        isLoading: false,
+        goods: [],
+        page: 0,
+        message: action.json.message,
+      });
+    } else {
+      return Object.assign({}, state, {
+        isLoading: false,
+        goods: [
+          ...state.goods,
+          ...action.json,
+        ],
+        page: action.json.length > 0 ? state.page + 1 : state.page,
+        end: action.json.length < 20 ? true : false,
+        message: '',
+      });
+    }
   case 'GET_DESCRIPTION_REQUEST':
     return Object.assign({}, state, {isLoading: true, message: '', description: ''});
   case 'GET_DESCRIPTION_CHECK':

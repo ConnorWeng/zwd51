@@ -8,11 +8,16 @@ import {
 import {connect} from 'react-redux';
 import ShopInfo from './ShopInfo';
 import ItemList from './ItemList';
+import {clearShopGoods} from  '../actions';
 
 class ShopPage extends Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentWillMount() {
+    this.props.clearShopGoods();
   }
 
   render() {
@@ -26,8 +31,14 @@ class ShopPage extends Component {
 
 }
 
+const actions = (dispatch) => {
+  return {
+    clearShopGoods: () => dispatch(clearShopGoods()),
+  };
+};
+
 const styles = StyleSheet.create({
 
 });
 
-export default ShopPage;
+export default connect(state => state.good, actions)(ShopPage);

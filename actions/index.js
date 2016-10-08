@@ -99,6 +99,12 @@ export function clearSearchGoods() {
   };
 }
 
+export function clearShopGoods() {
+  return {
+    type: 'CLEAR_SHOP_GOODS',
+  }
+}
+
 function serviceAction(serviceName, path, method, params) {
   return async (dispatch) => {
     dispatch({
