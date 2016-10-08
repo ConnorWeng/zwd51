@@ -3,6 +3,7 @@ const market = (state = {
   shops: [],
   mkId: 0,
   page: 0,
+  end: false,
   message: '',
 }, action) => {
   switch (action.type) {
@@ -11,6 +12,7 @@ const market = (state = {
       shops: [],
       mkId: action.mkId,
       page: 0,
+      end: false,
       message: '',
     });
   case 'GET_SHOPS_REQUEST':
@@ -23,6 +25,8 @@ const market = (state = {
       return Object.assign({}, state, {
         isLoading: false,
         message: action.json.message,
+        shops: [],
+        page: 0,
       });
     } else {
       return Object.assign({}, state, {
@@ -31,7 +35,8 @@ const market = (state = {
           ...state.shops,
           ...action.json,
         ],
-        page: state.page + 1,
+        page: action.json.length > 0 ? state.page + 1 : state.page,
+        end: action.json.length < 10 ? true : false,
         message: '',
       });
     }
