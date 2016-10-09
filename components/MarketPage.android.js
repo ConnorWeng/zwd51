@@ -89,8 +89,8 @@ class MarketPage extends Component {
              enabledPullDown={false}
              pullUpDistance={35}
              pullUpStayDistance={50}
-             initialListSize={10}
-             pageSize={10}/>
+             initialListSize={25}
+             pageSize={25}/>
         </View>
       </DrawerLayoutAndroid>
     );

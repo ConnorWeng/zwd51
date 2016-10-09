@@ -43,7 +43,7 @@ export function buildReducer(defaultState, defaultHandler, requestState) {
                     ...action.json,
                   ],
                   page: action.json.length > 0 ? state[key].page + 1 : state[key].page,
-                  isEnd: action.json.length < 10 ? true : false,
+                  isEnd: action.json.length < 25 ? true : false,
                 };
                 return Object.assign({}, state, newState);
               }

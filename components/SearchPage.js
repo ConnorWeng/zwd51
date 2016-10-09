@@ -69,9 +69,9 @@ class SearchPage extends Component {
                  dataSource={this.state.searchGoods}
                  viewType={PullToRefreshListView.constants.viewType.listView}
                  style={styles.goodsListView}
-                 initialListSize={20}
+                 initialListSize={25}
                  enableEmptySections={true}
-                 pageSize={20}
+                 pageSize={25}
                  renderRow={this.renderItem.bind(this)}
                  renderHeader={this.renderHeader.bind(this)}
                  renderFooter={this.renderFooter.bind(this)}
