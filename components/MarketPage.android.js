@@ -29,6 +29,7 @@ class MarketPage extends Component {
       rowHasChanged: (row1, row2) => row1 !== row2,
     });
     this.state = {
+      keywords: '',
       dataSource: dataSource,
       shops: dataSource.cloneWithRows(props.getShopsRequest.data),
     };
@@ -71,8 +72,11 @@ class MarketPage extends Component {
         <View>
           <View style={styles.searchContainer}>
             <View style={styles.searchInputContainer}>
-              <TextInput style={styles.searchInput} underlineColorAndroid="rgba(0,0,0,0)" placeholder="搜索..."/>
+              <TextInput onChangeText={(text) => this.setState({keywords: text})} style={styles.searchInput} underlineColorAndroid="rgba(0,0,0,0)" placeholder="搜索..."/>
             </View>
+            <TouchableOpacity style={styles.searchFilter} onPress={this.search.bind(this)}>
+              <Icon name="ios-search-outline" size={30} color="#000000" />
+            </TouchableOpacity>
             <TouchableOpacity style={styles.searchFilter} onPress={() => {this.refs.drawerLayout.openDrawer();}}>
               <Icon name="ios-funnel-outline" size={30} color="#000000" />
             </TouchableOpacity>
@@ -86,7 +90,7 @@ class MarketPage extends Component {
              renderFooter={this.renderFooter.bind(this)}
              onRefresh={this.onRefresh.bind(this)}
              onLoadMore={this.onLoadMore.bind(this)}
-             enabledPullDown={false}
+             enabledPullDown={true}
              pullUpDistance={35}
              pullUpStayDistance={50}
              initialListSize={25}
@@ -163,7 +167,12 @@ class MarketPage extends Component {
   }
 
   onLoadMore() {
-    this.props.getShops(this.props.mkId, this.props.getShopsRequest.page);
+    this.props.getShops(this.props.mkId, this.state.keywords, this.props.getShopsRequest.page);
+  }
+
+  search() {
+    this.props.changeMkId(this.refs.markets.getSelected());
+    this.props.getShops(this.props.mkId, this.state.keywords, this.props.getShopsRequest.page);
   }
 
   onConfirm() {
@@ -176,7 +185,7 @@ class MarketPage extends Component {
 
 const actions = (dispatch) => {
   return {
-    getShops: (mkId, page) => dispatch(getShops(mkId, page)),
+    getShops: (mkId, keywords, page) => dispatch(getShops(mkId, keywords, page)),
     changeMkId: (mkId) => dispatch(changeMkId(mkId)),
   };
 };

@@ -41,9 +41,10 @@ export function getAlipayOrderInfo(orderId, accessToken) {
   });
 }
 
-export function getShops(mkId, page) {
+export function getShops(mkId, keywords, page) {
   return serviceAction('GET_SHOPS', '/mobile_shop/index', 'GET', {
     mk_id: mkId,
+    keywords: keywords,
     page: page,
   });
 }

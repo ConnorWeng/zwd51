@@ -11,7 +11,7 @@ class SpecSelector extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: null,
+      selected: 0,
     };
   }
 
