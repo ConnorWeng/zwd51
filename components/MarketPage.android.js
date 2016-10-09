@@ -30,7 +30,7 @@ class MarketPage extends Component {
     });
     this.state = {
       dataSource: dataSource,
-      shops: dataSource.cloneWithRows(props.shops),
+      shops: dataSource.cloneWithRows(props.getShopsRequest.data),
     };
   }
 
@@ -39,15 +39,15 @@ class MarketPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.message) {
-      ToastAndroid.show(nextProps.message, ToastAndroid.SHORT);
+    if (nextProps.getShopsRequest.message) {
+      ToastAndroid.show(nextProps.getShopsRequest.message, ToastAndroid.SHORT);
     } else {
       this.setState({
-        shops: this.state.dataSource.cloneWithRows(nextProps.shops),
+        shops: this.state.dataSource.cloneWithRows(nextProps.getShopsRequest.data),
       });
     }
     if (this.refs.pullToRefreshListView) {
-      this.refs.pullToRefreshListView.endLoadMore(nextProps.end);
+      this.refs.pullToRefreshListView.endLoadMore(nextProps.getShopsRequest.isEnd);
     }
   }
 
@@ -163,7 +163,7 @@ class MarketPage extends Component {
   }
 
   onLoadMore() {
-    this.props.getShops(this.props.mkId, this.props.page);
+    this.props.getShops(this.props.mkId, this.props.getShopsRequest.page);
   }
 
   onConfirm() {
