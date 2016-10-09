@@ -99,8 +99,8 @@ class ItemPage extends Component {
             <Text style={styles.arrow}>></Text>
           </TouchableOpacity>
           {(() => {
-            const html = '<html><head><title></title></head><body>' + this.props.description + '</body></html>';
-            if (this.props.description !== '') {
+            const html = '<html><head><title></title></head><body>' + this.props.getDescriptionRequest.description + '</body></html>';
+            if (this.props.getDescriptionRequest.description !== '') {
               return (
                 <WebView style={[styles.itemDesc, {height: this.state.webViewHeight}]}
                    javaScriptEnabled={true}
@@ -130,7 +130,7 @@ class ItemPage extends Component {
           <TouchableOpacity style={styles.modalCloseBtn} onPress={() => this.refs.modal.close()}>
             <Icon name="ios-close-circle-outline" size={24}/>
           </TouchableOpacity>
-          <SpecPicker ref="specPicker" specs={this.props.specs} specName1={this.props.specName1} specName2={this.props.specName2}/>
+          <SpecPicker ref="specPicker" specs={this.props.getSpecsRequest.specs} specName1={this.props.getSpecsRequest.specName1} specName2={this.props.getSpecsRequest.specName2}/>
           <SpecContainer specName="数量">
             <InputNumber ref="num" styles={inputNumberStyles} defaultValue={1} min={1}/>
           </SpecContainer>
@@ -138,20 +138,20 @@ class ItemPage extends Component {
             <Text style={[styles.itemActionText, {color: '#fff'}]}>立即购买</Text>
           </TouchableOpacity>
         </Modal>
-        <Spinner visible={this.props.isLoading || this.props.isLoadingSpecs}/>
+        <Spinner visible={this.props.getDescriptionRequest.isLoading || this.props.getSpecsRequest.isLoading}/>
       </View>
     );
   }
 
   onScroll(e) {
     const scrollY = e.nativeEvent.contentOffset.y;
-    if (scrollY > 100 && this.props.description === '') {
+    if (scrollY > 100 && this.props.getDescriptionRequest.description === '') {
       this.props.getDescription(this.props.goods_id);
     }
   }
 
   onModalOpened() {
-    if (this.props.specs.length === 0 || this.props.specs[0].goods_id !== this.props.goods_id) {
+    if (this.props.getSpecsRequest.specs.length === 0 || this.props.getSpecsRequest.specs[0].goods_id !== this.props.goods_id) {
       this.props.getSpecs(this.props.goods_id);
     }
   }

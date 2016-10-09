@@ -27,19 +27,19 @@ class ItemList extends Component {
     });
     this.state = {
       dataSource: dataSource,
-      goods: dataSource.cloneWithRows(props.goods),
+      goods: dataSource.cloneWithRows(props.getGoodsRequest.data),
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.message) {
-      ToastAndroid.show(nextProps.message, ToastAndroid.SHORT);
+    if (nextProps.getGoodsRequest.message) {
+      ToastAndroid.show(nextProps.getGoodsRequest.message, ToastAndroid.SHORT);
     } else {
       this.setState({
-        goods: this.state.dataSource.cloneWithRows(nextProps.goods),
+        goods: this.state.dataSource.cloneWithRows(nextProps.getGoodsRequest.data),
       });
     }
-    this.refs.pullToRefreshListView.endLoadMore(nextProps.end);
+    this.refs.pullToRefreshListView.endLoadMore(nextProps.getGoodsRequest.isEnd);
   }
 
   render() {
@@ -145,7 +145,7 @@ class ItemList extends Component {
   }
 
   onLoadMore() {
-    this.props.getGoods(this.props.shopId, this.props.page);
+    this.props.getGoods(this.props.shopId, this.props.getGoodsRequest.page);
   }
 
 }

@@ -33,20 +33,20 @@ class SearchPage extends Component {
     this.state = {
       keywords: '',
       dataSource: dataSource,
-      searchGoods: dataSource.cloneWithRows(props.searchGoods),
+      searchGoods: dataSource.cloneWithRows(props.searchGoodsRequest.data),
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.message) {
-      ToastAndroid.show(nextProps.message, ToastAndroid.SHORT);
+    if (nextProps.searchGoodsRequest.message) {
+      ToastAndroid.show(nextProps.searchGoodsRequest.message, ToastAndroid.SHORT);
     } else {
       this.setState({
-        searchGoods: this.state.dataSource.cloneWithRows(nextProps.searchGoods),
+        searchGoods: this.state.dataSource.cloneWithRows(nextProps.searchGoodsRequest.data),
       });
     }
     if (this.refs.pullToRefreshListView) {
-      this.refs.pullToRefreshListView.endLoadMore(nextProps.searchEnd);
+      this.refs.pullToRefreshListView.endLoadMore(nextProps.searchGoodsRequest.isEnd);
     }
   }
 
@@ -62,7 +62,7 @@ class SearchPage extends Component {
         </TouchableOpacity>
         </View>
         {
-          this.props.searchGoods.length > 0 ?
+          this.props.searchGoodsRequest.data.length > 0 ?
             <PullToRefreshListView
                  ref="pullToRefreshListView"
                  contentContainerStyle={styles.itemContainer}
@@ -81,7 +81,7 @@ class SearchPage extends Component {
                  pullUpDistance={35}
                  pullUpStayDistance={50}/> : null
         }
-        <Spinner visible={this.props.isSearching}/>
+        <Spinner visible={this.props.searchGoodsRequest.isLoading}/>
       </View>
     );
   }
@@ -167,12 +167,12 @@ class SearchPage extends Component {
   }
 
   onLoadMore() {
-    this.props.search(this.state.keywords, this.props.searchPage);
+    this.props.search(this.state.keywords, this.props.searchGoodsRequest.page);
   }
 
   search() {
     this.props.clearSearchGoods();
-    this.props.search(this.state.keywords, this.props.searchPage);
+    this.props.search(this.state.keywords, this.props.searchGoodsRequest.page);
   }
 
 }
