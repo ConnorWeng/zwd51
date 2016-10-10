@@ -31,6 +31,10 @@ class ItemList extends Component {
     };
   }
 
+  componentDidMount() {
+    this.onLoadMore();
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.getGoodsRequest.message) {
       ToastAndroid.show(nextProps.getGoodsRequest.message, ToastAndroid.SHORT);
