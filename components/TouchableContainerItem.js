@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
   StyleSheet,
-  TouchableHighlight,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -10,14 +10,14 @@ class TouchableContainerItem extends Component {
 
   render() {
     return (
-      <TouchableHighlight>
+      <TouchableOpacity onPress={this.props.onPress}>
         <View style={[styles.container, this.props.style]}>
           <View style={[styles.bodyContainer, this.props.bodyStyle]}>
             {this.props.children}
           </View>
           {this.props.arrow ? <Icon style={styles.arrow} name="ios-arrow-forward-outline" size={30} color="#000000" /> : <View />}
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 
