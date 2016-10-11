@@ -64,7 +64,7 @@ class OrderConfirmPage extends Component {
                     const images = [];
                     this.props.order.goodsInfo.items.forEach((item) => {
                       images.push(
-                        <Image style={styles.itemImage}
+                        <Image key={'image_' + item.goods_id} style={styles.itemImage}
                                source={{uri: item.goods_image}}/>
                       );
                     });
