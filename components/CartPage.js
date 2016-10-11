@@ -26,6 +26,7 @@ class CartPage extends Component {
       goodDataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
+      selected: [],
     };
   }
 
@@ -44,7 +45,7 @@ class CartPage extends Component {
           </ScrollView>
           <View style={styles.itemActionContainer}>
             <TouchableOpacity onPress={() => {this.props.navigator.push({OrderConfirmPage: true});}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
-              <Text style={[styles.itemActionText, {color: '#fff'}]}>结算</Text>
+              <Text style={[styles.itemActionText, {color: '#fff'}]}>结算({this.state.selected.length})</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -54,9 +55,30 @@ class CartPage extends Component {
 
   renderShop(shop) {
     return (
-      <View style={styles.shopContainer}>
+      <TouchableOpacity style={styles.shopContainer} onPress={() => {
+          const allSpecs = [];
+          const foundSpecs = [];
+          shop.goods.forEach((good) => {
+            if (~this.state.selected.indexOf(good.spec_id)) {
+              foundSpecs.push(good.spec_id);
+            }
+            allSpecs.push(good.spec_id);
+          });
+          if (foundSpecs.length === 0) {
+            this.setState({
+              selected: [...this.state.selected, ...allSpecs],
+            });
+          } else {
+            foundSpecs.forEach((foundSpecId) => {
+              this.state.selected.splice(this.state.selected.indexOf(foundSpecId), 1);
+            });
+            this.setState({
+              selected: this.state.selected,
+            });
+          }
+        }}>
         <View style={styles.shopHeadContainer}>
-          <Icon name="ios-home-outline" size={15} color="#000000"/>
+          <Icon name="ios-home-outline" size={18} color="#000000"/>
           <Text style={styles.shopName}>{shop.store_name}</Text>
         </View>
         <View style={styles.shopBodyContainer}>
@@ -64,13 +86,26 @@ class CartPage extends Component {
              dataSource={this.state.goodDataSource.cloneWithRows(shop.goods)}
              renderRow={this.renderGood.bind(this)}/>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 
   renderGood(good) {
     return (
-      <View style={styles.goodContainer}>
+      <TouchableOpacity style={styles.goodContainer} onPress={() => {
+          const index = this.state.selected.indexOf(good.spec_id);
+          if (~index) {
+            this.state.selected.splice(index, 1);
+            this.setState({
+              selected: this.state.selected,
+            });
+          } else {
+            this.setState({
+              selected: [...this.state.selected, good.spec_id],
+            });
+          }
+        }}>
+        {~this.state.selected.indexOf(good.spec_id) ? <Icon style={{marginLeft: 10}} name="ios-checkbox" size={20} color="rgb(0,200,0)" /> : <View style={{marginLeft: 25}}></View>}
         <Image style={styles.goodImage} source={{uri: good.goods_image}}/>
         <View style={styles.goodDetailsContainer}>
           <Text style={styles.goodName} numberOfLines={2}>{good.goods_name}</Text>
@@ -79,7 +114,7 @@ class CartPage extends Component {
             <Text style={styles.goodQuantity}>x{good.quantity}</Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 
@@ -96,6 +131,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 10,
     backgroundColor: '#ffffff',
+    height: 30,
   },
   shopName: {
     color: '#000000',
@@ -119,7 +155,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginRight: 5,
     marginBottom: 5,
-    marginLeft: 10,
+    marginLeft: 5,
   },
   goodPriceContainer: {
     flexDirection: 'row',
@@ -151,6 +187,9 @@ const styles = StyleSheet.create({
   itemActionText: {
     textAlign: 'center',
     fontSize: 24,
+  },
+  checkbox: {
+    marginRight: 5,
   },
 });
 
@@ -190,7 +229,7 @@ const MOCKED_DATA = {
         "store_id": "5651",
         "goods_id": "964652",
         "goods_name": "2015夏装新款欧美洋气清凉无袖背心上衣7124＃",
-        "spec_id": "5628819",
+        "spec_id": "5628820",
         "specification": "颜色分类:白色 尺码:均码",
         "price": "20.00",
         "quantity": "1",
