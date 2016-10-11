@@ -57,7 +57,7 @@ class OrderConfirmPage extends Component {
             </TouchableContainerItem>
           </TouchableContainerItemsGroup>
           <TouchableContainerItemsGroup style={{marginTop: 10}}>
-            <TouchableContainerItem style={{height: 100}} bodyStyle={{justifyContent: 'space-between'}} arrow={true}>
+            <TouchableContainerItem style={{height: 100}} bodyStyle={{justifyContent: 'space-between'}} arrow={true} onPress={() => {this.props.navigator.push({OrderGoodsPage: true, goods: this.props.order.goodsInfo.items});}}>
               <View style={{flexDirection: 'row'}}>
                 {(() => {
                   if (this.props.order.goodsInfo.items) {
