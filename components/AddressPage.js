@@ -41,7 +41,7 @@ class AddressPage extends Component {
     const addressList = [];
     this.props.address.getAddressesRequest.addresses.forEach((address) => {
       addressList.push(
-        <TouchableOpacity onPress={() => {this.setState({selected: address});}}>
+        <TouchableOpacity key={'address_' + address.addr_id} onPress={() => {this.setState({selected: address});}}>
           <View style={styles.addressContainer}>
             <View style={styles.receiverContainer}>
               <Text style={styles.receiverName}>{address.consignee}</Text>
