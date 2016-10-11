@@ -108,7 +108,11 @@ export function buildReducer(defaultState, defaultHandler, requestState) {
                   } else {
                     mappingValue = requestState[key].mapping[mappingKey].name;
                   }
-                  newState[key][mappingKey] = action.json[mappingValue];
+                  if (mappingValue) {
+                    newState[key][mappingKey] = action.json[mappingValue];
+                  } else {
+                    newState[key][mappingKey] = action.json;
+                  }
                 }
                 return Object.assign({}, state, newState);
               }

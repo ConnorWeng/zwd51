@@ -86,6 +86,12 @@ const order = (state = {
         goodsInfo: action.json,
       });
     }
+  case 'SET_ADDRESS':
+    return Object.assign({}, state, {
+      goodsInfo: Object.assign({}, state.goodsInfo, {
+        default_address: action.json,
+      }),
+    });
   default:
     return state;
   }

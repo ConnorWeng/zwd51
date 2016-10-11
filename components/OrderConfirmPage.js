@@ -50,7 +50,7 @@ class OrderConfirmPage extends Component {
       <View style={{flex: 1}}>
         <ScrollView>
           <TouchableContainerItemsGroup>
-            <TouchableContainerItem style={{height: 80}} arrow={true}>
+            <TouchableContainerItem style={{height: 80}} arrow={true} onPress={() => {this.props.navigator.push({AddressPage: true, addr: this.props.order.goodsInfo.default_address ? this.props.order.goodsInfo.default_address : {}})}}>
               <Text style={styles.receiverName}>{this.props.order.goodsInfo.default_address ? this.props.order.goodsInfo.default_address.consignee : ''}</Text>
               <Text style={styles.receiverMobile}>{this.props.order.goodsInfo.default_address ? this.props.order.goodsInfo.default_address.phone_mob : ''}</Text>
               <Text style={styles.receiverAddress} numberOfLines={1}>{this.props.order.goodsInfo.default_address ? this.props.order.goodsInfo.default_address.address : ''}</Text>
@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
   },
   receiverAddress: {
     marginTop: 10,
+    width: width - 60,
   },
   priceContainer: {
     flex: 3,

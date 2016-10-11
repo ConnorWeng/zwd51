@@ -13,6 +13,7 @@ import PaymentPage from '../components/PaymentPage';
 import OrderPage from '../components/OrderPage';
 import ShopPage from '../components/ShopPage';
 import SettingPage from '../components/SettingPage';
+import AddressPage from '../components/AddressPage';
 
 class App extends Component {
 
@@ -79,6 +80,11 @@ class App extends Component {
     if (route.SettingPage) {
       return (
         <SettingPage navigator={navigator} persistor={this.props.persistor}/>
+      );
+    }
+    if (route.AddressPage) {
+      return (
+        <AddressPage navigator={navigator} addr={route.addr}/>
       );
     }
     return (

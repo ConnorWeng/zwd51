@@ -4,6 +4,7 @@ import member from './member';
 import order from './order';
 import market from './market';
 import good from './good';
+import address from './address';
 
 const reducers = combineReducers({
   page,
@@ -11,6 +12,7 @@ const reducers = combineReducers({
   order,
   market,
   good,
+  address,
 });
 
 export default reducers;

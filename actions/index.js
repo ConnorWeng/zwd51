@@ -107,3 +107,16 @@ export function clearShopGoods() {
     type: 'CLEAR_SHOP_GOODS',
   };
 }
+
+export function getAddresses(accessToken) {
+  return serviceAction('GET_ADDRESSES', '/mobile_address/index', 'GET', {
+    access_token: accessToken,
+  });
+}
+
+export function setAddress(address) {
+  return {
+    type: 'SET_ADDRESS',
+    json: address,
+  };
+}
