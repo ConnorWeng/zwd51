@@ -9,8 +9,10 @@ import {
   Dimensions,
   TouchableOpacity,
   ToastAndroid,
+  RefreshControl,
 } from 'react-native';
 import {connect} from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PleaseLogin from './PleaseLogin';
 import {getCart} from '../actions';
@@ -61,14 +63,21 @@ class CartPage extends Component {
         <View style={{flex: 1}}>
           <ScrollView>
             <ListView
+               refreshControl={
+                   <RefreshControl
+                        refreshing={this.props.cart.getCartRequest.isLoading}
+                        onRefresh={this.onRefresh.bind(this)}/>
+                   }
                dataSource={this.state.shops}
-               renderRow={this.renderShop.bind(this)}/>
+               renderRow={this.renderShop.bind(this)}
+               enableEmptySections={true}/>
           </ScrollView>
           <View style={styles.itemActionContainer}>
-            <TouchableOpacity onPress={() => {this.props.navigator.push({OrderConfirmPage: true});}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
+            <TouchableOpacity onPress={this.buy.bind(this)} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
               <Text style={[styles.itemActionText, {color: '#fff'}]}>结算({this.state.selected.length})</Text>
             </TouchableOpacity>
           </View>
+          <Spinner visible={this.props.cart.getCartRequest.isLoading}/>
         </View>
       );
     }
@@ -80,18 +89,18 @@ class CartPage extends Component {
           const allSpecs = [];
           const foundSpecs = [];
           shop.goods.forEach((good) => {
-            if (~this.state.selected.indexOf(good.spec_id)) {
-              foundSpecs.push(good.spec_id);
+            if (~this.indexOfSelected(good.spec_id)) {
+              foundSpecs.push(good);
             }
-            allSpecs.push(good.spec_id);
+            allSpecs.push(good);
           });
           if (foundSpecs.length === 0) {
             this.setState({
               selected: [...this.state.selected, ...allSpecs],
             });
           } else {
-            foundSpecs.forEach((foundSpecId) => {
-              this.state.selected.splice(this.state.selected.indexOf(foundSpecId), 1);
+            foundSpecs.forEach((foundSpec) => {
+              this.state.selected.splice(this.indexOfSelected(foundSpec.spec_id), 1);
             });
             this.setState({
               selected: this.state.selected,
@@ -105,7 +114,8 @@ class CartPage extends Component {
         <View style={styles.shopBodyContainer}>
           <ListView
              dataSource={this.goodDataSource.cloneWithRows(shop.goods)}
-             renderRow={this.renderGood.bind(this)}/>
+             renderRow={this.renderGood.bind(this)}
+             enableEmptySections={true}/>
         </View>
       </TouchableOpacity>
     );
@@ -114,7 +124,7 @@ class CartPage extends Component {
   renderGood(good) {
     return (
       <TouchableOpacity style={styles.goodContainer} onPress={() => {
-          const index = this.state.selected.indexOf(good.spec_id);
+          const index = this.indexOfSelected(good.spec_id);
           if (~index) {
             this.state.selected.splice(index, 1);
             this.setState({
@@ -122,14 +132,17 @@ class CartPage extends Component {
             });
           } else {
             this.setState({
-              selected: [...this.state.selected, good.spec_id],
+              selected: [...this.state.selected, good],
             });
           }
         }}>
-        {~this.state.selected.indexOf(good.spec_id) ? <Icon style={{marginLeft: 10}} name="ios-checkbox" size={20} color="rgb(0,200,0)" /> : <View style={{marginLeft: 25}}></View>}
-        <Image style={styles.goodImage} source={{uri: good.goods_image}}/>
+        {~this.indexOfSelected(good.spec_id) ? <Icon style={{marginLeft: 10}} name="ios-checkbox" size={20} color="rgb(0,200,0)" /> : <View style={{marginLeft: 25}}></View>}
+        <TouchableOpacity onPress={() => this.props.navigator.push({ItemPage: true, item: good})}>
+          <Image style={styles.goodImage} source={{uri: good.goods_image}}/>
+        </TouchableOpacity>
         <View style={styles.goodDetailsContainer}>
           <Text style={styles.goodName} numberOfLines={2}>{good.goods_name}</Text>
+          <Text style={styles.goodSpecification} numberOfLines={1}>{good.specification}</Text>
           <View style={styles.goodPriceContainer}>
             <Text style={styles.goodSubtotal}>¥ {good.subtotal}</Text>
             <Text style={styles.goodQuantity}>x{good.quantity}</Text>
@@ -137,6 +150,33 @@ class CartPage extends Component {
         </View>
       </TouchableOpacity>
     );
+  }
+
+  indexOfSelected(specId) {
+    for(let i = 0; i < this.state.selected.length; i++) {
+      if (this.state.selected[i].spec_id === specId) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  onRefresh() {
+    this.props.getCart(this.props.member.accessToken);
+  }
+
+  buy() {
+    if (this.state.selected.length < 1) {
+      ToastAndroid.show('请选择需要结算的宝贝', ToastAndroid.SHORT);
+    } else {
+      const specIds = [];
+      const specNums = [];
+      this.state.selected.forEach((spec) => {
+        specIds.push(spec.spec_id);
+        specNums.push(spec.quantity);
+      });
+      this.props.navigator.push({OrderConfirmPage: true, specIds: specIds, specNums: specNums});
+    }
   }
 
 }
@@ -175,6 +215,9 @@ const styles = StyleSheet.create({
   goodName: {
     fontSize: 12,
     color: '#000000',
+  },
+  goodSpecification: {
+    fontSize: 12,
   },
   goodImage: {
     height: 60,
