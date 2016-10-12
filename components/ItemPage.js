@@ -19,7 +19,7 @@ import InputNumber from '../node_modules/rc-input-number/lib/index';
 import inputNumberStyles from '../node_modules/rc-input-number/lib/styles';
 import SpecPicker from './SpecPicker';
 import SpecContainer from './SpecContainer';
-import {getDescription, clearDescription, getSpecs} from '../actions';
+import {getDescription, clearDescription, getSpecs, addToCart} from '../actions';
 
 const {height, width} = Dimensions.get('window');
 
@@ -77,6 +77,7 @@ class ItemPage extends Component {
     super(props);
     this.state = {
       webViewHeight: 600,
+      selected: null,
     };
   }
 
@@ -95,12 +96,12 @@ class ItemPage extends Component {
             <Text style={styles.itemOriginPrice}>淘宝价 ¥ {this.props.price}</Text>
           </View>
           <TouchableOpacity style={styles.itemSku} onPress={()=>{this.refs.modal.open();}}>
-            <Text style={styles.pleaseSelect}>选择  尺码 颜色分类</Text>
+            {this.state.selected ? <Text style={styles.pleaseSelect}>已选择  {this.state.selected.specification}</Text> : <Text style={styles.pleaseSelect}>选择  尺码 颜色分类</Text>}
             <Text style={styles.arrow}>></Text>
           </TouchableOpacity>
           {(() => {
-            const html = '<html><head><title></title></head><body>' + this.props.getDescriptionRequest.description + '</body></html>';
-            if (this.props.getDescriptionRequest.description !== '') {
+            const html = '<html><head><title></title></head><body>' + this.props.good.getDescriptionRequest.description + '</body></html>';
+            if (this.props.good.getDescriptionRequest.description !== '') {
               return (
                 <WebView style={[styles.itemDesc, {height: this.state.webViewHeight}]}
                    javaScriptEnabled={true}
@@ -119,55 +120,86 @@ class ItemPage extends Component {
           })()}
         </ScrollView>
         <View style={styles.itemActionContainer}>
-          <TouchableOpacity onPress={() => {}} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
-            <Text style={[styles.itemActionText, {color: '#fff'}]}>上传淘宝</Text>
+          <TouchableOpacity onPress={() => {}} style={[styles.itemAction, {borderColor: '#F0CAB6', backgroundColor: '#FFE4D0'}]}>
+            <Text style={[styles.itemActionText, {color: '#E5511D'}]}>上传淘宝</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {this.refs.modal.open();}} style={[styles.itemAction, {borderColor: '#F0CAB6', backgroundColor: '#FFE4D0'}]}>
-            <Text style={[styles.itemActionText, {color: '#E5511D'}]}>立刻购买</Text>
+          <TouchableOpacity onPress={this.addToCart.bind(this)} style={styles.addToCartContainer}>
+            <Icon name="ios-cart" size={30} color="#f40"/>
+            <Text style={styles.addToCartText}>+</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.buy.bind(this)} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
+            <Text style={[styles.itemActionText, {color: '#fff'}]}>立刻购买</Text>
           </TouchableOpacity>
         </View>
         <Modal style={styles.modal} position={'bottom'} ref={'modal'} onOpened={this.onModalOpened.bind(this)}>
           <TouchableOpacity style={styles.modalCloseBtn} onPress={() => this.refs.modal.close()}>
             <Icon name="ios-close-circle-outline" size={24}/>
           </TouchableOpacity>
-          <SpecPicker ref="specPicker" specs={this.props.getSpecsRequest.specs} specName1={this.props.getSpecsRequest.specName1} specName2={this.props.getSpecsRequest.specName2}/>
+          <SpecPicker ref="specPicker" specs={this.props.good.getSpecsRequest.specs} specName1={this.props.good.getSpecsRequest.specName1} specName2={this.props.good.getSpecsRequest.specName2}/>
           <SpecContainer specName="数量">
             <InputNumber ref="num" styles={inputNumberStyles} defaultValue={1} min={1}/>
           </SpecContainer>
-          <TouchableOpacity onPress={this.buy.bind(this)} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
-            <Text style={[styles.itemActionText, {color: '#fff'}]}>立即购买</Text>
+          <TouchableOpacity onPress={this.selectSpec.bind(this)} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
+            <Text style={[styles.itemActionText, {color: '#fff'}]}>确认</Text>
           </TouchableOpacity>
         </Modal>
-        <Spinner visible={this.props.getDescriptionRequest.isLoading || this.props.getSpecsRequest.isLoading}/>
+        <Spinner visible={this.props.good.getDescriptionRequest.isLoading || this.props.good.getSpecsRequest.isLoading}/>
       </View>
     );
   }
 
   onScroll(e) {
     const scrollY = e.nativeEvent.contentOffset.y;
-    if (scrollY > 100 && this.props.getDescriptionRequest.description === '') {
+    if (scrollY > 100 && this.props.good.getDescriptionRequest.description === '') {
       this.props.getDescription(this.props.goods_id);
     }
   }
 
   onModalOpened() {
-    if (this.props.getSpecsRequest.specs.length === 0 || this.props.getSpecsRequest.specs[0].goods_id !== this.props.goods_id) {
+    if (this.props.good.getSpecsRequest.specs.length === 0 || this.props.good.getSpecsRequest.specs[0].goods_id !== this.props.goods_id) {
       this.props.getSpecs(this.props.goods_id);
     }
   }
 
-  buy() {
+  selectSpec() {
     const num = this.refs.num.getCurrentValidValue();
-    const specId = this.refs.specPicker.getSelected();
-    if (specId === '0') {
+    const spec = this.refs.specPicker.getSelected();
+    if (!spec) {
+      ToastAndroid.show('请选择商品规格', ToastAndroid.SHORT);
+      return ;
+    } else {
+      this.setState({
+        selected: {
+          specId: spec.spec_id,
+          quantity: num,
+          specification: spec.spec_1 + ' ' + spec.spec_2,
+        },
+      });
+      this.refs.modal.close();
+    }
+  }
+
+  buy() {
+    if (!this.state.selected) {
       ToastAndroid.show('请选择商品规格', ToastAndroid.SHORT);
       return ;
     } else {
       this.props.navigator.push({
         OrderConfirmPage: true,
-        specIds: [specId],
-        specNums: [num],
+        specIds: [this.state.selected.specId],
+        specNums: [this.state.selected.quantity],
       });
+    }
+  }
+
+  addToCart() {
+    if (!this.state.selected) {
+      ToastAndroid.show('请选择商品规格', ToastAndroid.SHORT);
+      return ;
+    } else {
+      this.props.addToCart(this.state.selected.specId,
+                           this.state.selected.quantity,
+                           this.props.member.accessToken);
     }
   }
 
@@ -182,6 +214,7 @@ const actions = (dispatch) => {
     getDescription: (goodsId) => dispatch(getDescription(goodsId)),
     clearDescription: () => dispatch(clearDescription()),
     getSpecs: (goodsId) => dispatch(getSpecs(goodsId)),
+    addToCart: (specId, quantity, accessToken) => dispatch(addToCart(specId, quantity, accessToken)),
   };
 }
 
@@ -198,13 +231,24 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   itemAction: {
-    flex: 1,
+    flex: 2,
     justifyContent: 'center',
     borderWidth: 1,
   },
   itemActionText: {
     textAlign: 'center',
     fontSize: 24,
+  },
+  addToCartContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+  },
+  addToCartText: {
+    fontSize: 20,
+    color: '#f40',
   },
   itemContainer: {
     marginBottom: 42,
@@ -267,4 +311,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(state => state.good, actions)(ItemPage);
+export default connect(state => state, actions)(ItemPage);

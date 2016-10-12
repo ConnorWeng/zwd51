@@ -11,6 +11,12 @@ const requestState = {
       shops: {init: []},
     },
   },
+  addToCartRequest: {
+    name: 'ADD_TO_CART',
+    mapping: {
+      success: 'success',
+    },
+  }
 };
 
 export default buildReducer(defaultState, defaultHandler, requestState);

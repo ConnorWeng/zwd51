@@ -81,11 +81,11 @@ class SpecPicker extends Component {
   }
 
   getSelected() {
-    let selectedSpec = '0';
+    let selectedSpec = null;
     this.props.specs.forEach((spec) => {
       if (spec.spec_vid_1 === this.state.selectedSpec1 &&
           spec.spec_vid_2 === this.state.selectedSpec2) {
-        selectedSpec = spec.spec_id;
+        selectedSpec = spec;
       }
     });
     return selectedSpec;

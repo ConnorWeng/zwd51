@@ -126,3 +126,11 @@ export function getCart(accessToken) {
     access_token: accessToken,
   });
 }
+
+export function addToCart(specId, quantity, accessToken) {
+  return serviceAction('ADD_TO_CART', '/mobile_cart/add', 'POST', {
+    spec_id: specId,
+    quantity: quantity,
+    access_token: accessToken,
+  });
+}
