@@ -89,7 +89,7 @@ class ItemPage extends Component {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.itemContainer} onScroll={this.onScroll.bind(this)}>
-          <Image style={styles.itemImage} source={{uri: this.props.default_image}}/>
+          <Image style={styles.itemImage} source={{uri: this.props.default_image.replace('_240x240.jpg', '')}}/>
           <View style={styles.itemHead}>
             <Text numberOfLines={2} style={styles.itemTitle}>{this.props.goods_name}</Text>
             <Text style={styles.itemPrice}>¥ {this.props.price}</Text>
