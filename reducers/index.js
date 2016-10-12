@@ -5,6 +5,7 @@ import order from './order';
 import market from './market';
 import good from './good';
 import address from './address';
+import cart from './cart';
 
 const reducers = combineReducers({
   page,
@@ -13,6 +14,7 @@ const reducers = combineReducers({
   market,
   good,
   address,
+  cart,
 });
 
 export default reducers;

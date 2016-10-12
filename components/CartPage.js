@@ -8,10 +8,12 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PleaseLogin from './PleaseLogin';
+import {getCart} from '../actions';
 
 const {height, width} = Dimensions.get('window');
 
@@ -19,15 +21,34 @@ class CartPage extends Component {
 
   constructor(props) {
     super(props);
+    this.shopDataSource = new ListView.DataSource({
+      rowHasChanged: (row1, row2) => row1 !== row2,
+    });
+    this.goodDataSource = new ListView.DataSource({
+      rowHasChanged: (row1, row2) => row1 !== row2,
+    });
     this.state = {
-      shopDataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-      }),
-      goodDataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-      }),
+      shops: this.shopDataSource.cloneWithRows(props.cart.getCartRequest.shops),
       selected: [],
     };
+  }
+
+  componentDidMount() {
+    if (this.props.member.accessToken) {
+      this.props.getCart(this.props.member.accessToken);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.member.accessToken) {
+      if (nextProps.cart.getCartRequest.message) {
+        ToastAndroid.show(nextProps.cart.getCartRequest.message, ToastAndroid.SHORT);
+      } else {
+        this.setState({
+          shops: this.shopDataSource.cloneWithRows(nextProps.cart.getCartRequest.shops),
+        });
+      }
+    }
   }
 
   render() {
@@ -40,7 +61,7 @@ class CartPage extends Component {
         <View style={{flex: 1}}>
           <ScrollView>
             <ListView
-               dataSource={this.state.shopDataSource.cloneWithRows(MOCKED_DATA.shops)}
+               dataSource={this.state.shops}
                renderRow={this.renderShop.bind(this)}/>
           </ScrollView>
           <View style={styles.itemActionContainer}>
@@ -83,7 +104,7 @@ class CartPage extends Component {
         </View>
         <View style={styles.shopBodyContainer}>
           <ListView
-             dataSource={this.state.goodDataSource.cloneWithRows(shop.goods)}
+             dataSource={this.goodDataSource.cloneWithRows(shop.goods)}
              renderRow={this.renderGood.bind(this)}/>
         </View>
       </TouchableOpacity>
@@ -119,6 +140,12 @@ class CartPage extends Component {
   }
 
 }
+
+const actions = (dispatch) => {
+  return {
+    getCart: (accessToken) => dispatch(getCart(accessToken)),
+  };
+};
 
 const styles = StyleSheet.create({
   shopContainer: {
@@ -258,4 +285,4 @@ const MOCKED_DATA = {
   }],
 };
 
-export default connect(state => state)(CartPage);
+export default connect(state => state, actions)(CartPage);

@@ -120,3 +120,9 @@ export function setAddress(address) {
     json: address,
   };
 }
+
+export function getCart(accessToken) {
+  return serviceAction('GET_CART', '/mobile_cart/index', 'GET', {
+    access_token: accessToken,
+  });
+}
