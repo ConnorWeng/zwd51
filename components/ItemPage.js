@@ -88,7 +88,7 @@ class ItemPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.itemContainer} onScroll={this.onScroll.bind(this)}>
+        <ScrollView style={styles.itemContainer}>
           <Image style={styles.itemImage} source={{uri: this.props.default_image.replace('_240x240.jpg', '')}}/>
           <View style={styles.itemHead}>
             <Text numberOfLines={2} style={styles.itemTitle}>{this.props.goods_name}</Text>
@@ -112,9 +112,9 @@ class ItemPage extends Component {
               );
             } else {
               return (
-                <View style={styles.pleaseScrollContainer}>
-                  <Text>------ 继续滚动，查看图文详情 ------</Text>
-                </View>
+                <TouchableOpacity style={styles.clickToDisplayContainer} onPress={this.getDescription.bind(this)}>
+                  <Text>点击查看图文详情</Text>
+                </TouchableOpacity>
               );
             }
           })()}
@@ -148,11 +148,8 @@ class ItemPage extends Component {
     );
   }
 
-  onScroll(e) {
-    const scrollY = e.nativeEvent.contentOffset.y;
-    if (scrollY > 100 && this.props.good.getDescriptionRequest.description === '') {
-      this.props.getDescription(this.props.goods_id);
-    }
+  getDescription(e) {
+    this.props.getDescription(this.props.goods_id);
   }
 
   onModalOpened() {
@@ -304,10 +301,18 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     marginRight: 10,
   },
-  pleaseScrollContainer: {
+  clickToDisplayContainer: {
     alignItems: 'center',
-    paddingTop: 10,
-    height: 150,
+    justifyContent: 'center',
+    height: 30,
+    marginTop: 10,
+    marginLeft: 20,
+    marginRight: 20,
+    borderWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.1)',
+    borderRightColor: 'rgba(0,0,0,0.3)',
+    borderBottomColor: 'rgba(0,0,0,0.3)',
+    borderLeftColor: 'rgba(0,0,0,0.1)',
   },
 });
 
