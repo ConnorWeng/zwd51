@@ -19,6 +19,11 @@ export function buildReducer(defaultState, defaultHandler, requestState) {
           return (state, action) => {
             const newState = {};
             switch (action.type) {
+            case `${requestName}_CLEAR_MESSAGE`:
+              newState[key] = Object.assign({}, state[key], {
+                message: '',
+              });
+              return Object.assign({}, state, newState);
             case `${requestName}_REQUEST`:
               newState[key] = {
                 isLoading: true,
@@ -70,6 +75,11 @@ export function buildReducer(defaultState, defaultHandler, requestState) {
           return (state, action) => {
             const newState = {};
             switch (action.type) {
+            case `${requestName}_CLEAR_MESSAGE`:
+              newState[key] = Object.assign({}, state[key], {
+                message: '',
+              });
+              return Object.assign({}, state, newState);
             case `${requestName}_REQUEST`:
               newState[key] = {
                 isLoading: true,

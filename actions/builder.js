@@ -15,6 +15,11 @@ export function serviceAction(serviceName, path, method, params) {
       type: serviceName + '_CHECK',
       json: json,
     });
+    setTimeout(() => {
+      dispatch({
+        type: serviceName + '_CLEAR_MESSAGE',
+      });
+    }, 5000);
   };
 }
 
