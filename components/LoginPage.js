@@ -10,16 +10,13 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
+import LabelAndInput from './LabelAndInput';
 import {login} from '../actions';
 
 class LoginPage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      username: '',
-      password: '',
-    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -35,16 +32,10 @@ class LoginPage extends Component {
     return (
       <ScrollView>
         <View style={styles.nameAndPasswordContainer}>
-          <View style={styles.userInputContainer}>
-            <Text style={styles.userInputLabel}>账号</Text>
-            <TextInput onChangeText={(text) => this.setState({username: text})} style={styles.userInput} underlineColorAndroid="rgba(0,0,0,0)" placeholder="用户名"/>
-          </View>
-          <View style={styles.userInputContainer}>
-            <Text style={styles.userInputLabel}>密码</Text>
-            <TextInput onChangeText={(text) => this.setState({password: text})} style={styles.userInput} underlineColorAndroid="rgba(0,0,0,0)" placeholder="密码" secureTextEntry={true}/>
-          </View>
+          <LabelAndInput ref="username" label="账号" placeholder="用户名"/>
+          <LabelAndInput ref="password" label="密码" placeholder="密码" secureTextEntry={true}/>
         </View>
-        <TouchableOpacity style={styles.loginButton} onPress={() => this.props.login(this.state.username, this.state.password)}>
+        <TouchableOpacity style={styles.loginButton} onPress={() => this.props.login(this.refs.username.getText(), this.refs.password.getText())}>
           <Text style={styles.loginButtonText}>{this.props.isLogging ? '登录中...' : '登录'}</Text>
         </TouchableOpacity>
         <Spinner visible={this.props.isLogging}/>
