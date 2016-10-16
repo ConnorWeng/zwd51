@@ -82,6 +82,12 @@ class OrderPage extends Component {
             this.props.getAlipayOrderInfo(order.order_id, this.props.member.accessToken)}>
             <Text style={styles.orderActionLabel}>{order.status == '11' ? '支付' : '查看订单'}</Text>
           </TouchableOpacity>
+          {
+            order.status != '11' ?
+                <TouchableOpacity style={styles.orderActionContainer} onPress={() => this.props.getAlipayOrderInfo(order.order_id, this.props.member.accessToken)}>
+                  <Text style={styles.orderActionLabel}>拿货单</Text>
+                </TouchableOpacity> : null
+          }
         </View>
       </View>
     );
@@ -122,16 +128,19 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   orderFootContainer: {
+    flexDirection: 'row',
     paddingRight: 10,
     backgroundColor: '#ffffff',
     borderTopWidth: 1,
     borderColor: 'rgba(0,0,0,0.1)',
+    justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
   orderActionContainer: {
     borderWidth: 1,
     borderColor: '#f40',
     marginTop: 3,
+    marginLeft: 3,
     paddingTop: 2,
     marginBottom: 3,
     paddingBottom: 2,
