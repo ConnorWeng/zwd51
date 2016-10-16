@@ -37,7 +37,7 @@ class zwd51 extends Component {
       return () => {
         ref.setState({welcomed: true});
       };
-    })(this), 100);
+    })(this), 2000);
   }
 
   render() {
