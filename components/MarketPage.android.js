@@ -17,6 +17,7 @@ import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TimerEnhance from 'react-native-smart-timer-enhance';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
+import Spinner from 'react-native-loading-spinner-overlay';
 import ShopInfo from './ShopInfo';
 import SpecSelector from './SpecSelector';
 import {getShops, changeMkId} from '../actions';
@@ -36,7 +37,9 @@ class MarketPage extends Component {
   }
 
   componentDidMount() {
-    // this.refs.pullToRefreshListView.beginRefresh();
+    if (this.props.getShopsRequest.data.length === 0) {
+      this.onLoadMore();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -96,6 +99,7 @@ class MarketPage extends Component {
              initialListSize={25}
              pageSize={25}/>
         </View>
+        <Spinner visible={this.props.getShopsRequest.isLoading}/>
       </DrawerLayoutAndroid>
     );
   }
