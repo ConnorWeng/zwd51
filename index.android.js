@@ -10,6 +10,7 @@ import {Provider} from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import {createStore, applyMiddleware, compose} from 'redux';
 import {persistStore, autoRehydrate} from 'redux-persist';
+import WelcomePage from './components/WelcomePage';
 import App from './containers/App';
 import reducers from './reducers';
 
@@ -24,12 +25,33 @@ const persistor = persistStore(store, {storage: AsyncStorage});
 
 class zwd51 extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      welcomed: false,
+    };
+  }
+
+  componentDidMount() {
+    setTimeout(((ref) => {
+      return () => {
+        ref.setState({welcomed: true});
+      };
+    })(this), 100);
+  }
+
   render() {
-    return (
-      <Provider store={store}>
-        <App persistor={persistor}/>
-      </Provider>
-    );
+    if (this.state.welcomed) {
+      return (
+        <Provider store={store}>
+          <App persistor={persistor}/>
+        </Provider>
+      );
+    } else {
+      return (
+        <WelcomePage/>
+      );
+    }
   }
 
 }
