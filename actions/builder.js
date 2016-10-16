@@ -19,7 +19,7 @@ export function serviceAction(serviceName, path, method, params) {
       dispatch({
         type: serviceName + '_CLEAR_MESSAGE',
       });
-    }, 5000);
+    }, 3000);
   };
 }
 

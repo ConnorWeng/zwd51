@@ -134,3 +134,23 @@ export function addToCart(specId, quantity, accessToken) {
     access_token: accessToken,
   });
 }
+
+export function addAddress(consignee, regionId, regionName, address, zipcode, phoneMob, accessToken) {
+  return serviceAction('ADD_ADDRESS', '/mobile_address/add', 'POST', {
+    consignee: consignee,
+    region_id: regionId,
+    region_name: regionName,
+    address: address,
+    zipcode: zipcode,
+    phone_mob: phoneMob,
+    access_token: accessToken,
+  });
+}
+
+export function getRegions(pid, layer, accessToken) {
+  return serviceAction('GET_REGIONS', '/mobile_address/get_regions', 'GET', {
+    pid: pid,
+    layer: layer,
+    access_token: accessToken,
+  });
+}
