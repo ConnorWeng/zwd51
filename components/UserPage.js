@@ -40,7 +40,6 @@ class UserPage extends Component {
                 <MyItemsGroup>
                   <MyItem title="我的订单" iconName="ios-list-box-outline"
                           onPress={() => {this.props.navigator.push({OrderPage: true});}}/>
-                    <MyItem title="淘宝订单" iconName="ios-list-box-outline"/>
                 </MyItemsGroup>
                 <MyItemsGroup>
                   <MyItem title="设置" iconName="ios-settings-outline"
