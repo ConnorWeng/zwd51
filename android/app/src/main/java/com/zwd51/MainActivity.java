@@ -8,6 +8,7 @@ import com.alibaba.sdk.android.callback.InitResultCallback;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+import com.loveplusplus.update.UpdateChecker;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactnativecomponent.swiperefreshlayout.RCTSwipeRefreshLayoutPackage;
 import com.zwd51.packages.AlibabaAPIPackage;
@@ -64,5 +65,7 @@ public class MainActivity extends ReactActivity {
                 Log.e("MainActivity", "onFailure: SDK fail");
             }
         });
+
+        UpdateChecker.checkForDialog(this);
     }
 }

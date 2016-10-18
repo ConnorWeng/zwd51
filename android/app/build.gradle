@@ -141,6 +141,7 @@ dependencies {
     compile project(":OneSDK")
     compile project(':react-native-vector-icons')
     compile project(':react-native-smart-swipe-refresh-layout')
+    compile project(':android-auto-update')
 }
 
 // Run this once to be able to run the application with BUCK
