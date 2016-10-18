@@ -9,49 +9,76 @@ import {
   ListView,
   Image,
   ToastAndroid,
+  Dimensions,
+  ActivityIndicator,
+  ProgressBarAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Spinner from 'react-native-loading-spinner-overlay';
+import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
+import {getOrders, getAlipayOrderInfo, clearAlipayOrderInfo, clearOrders} from '../actions';
 
-import {getOrders, getAlipayOrderInfo} from '../actions';
+const {height, width} = Dimensions.get('window');
 
 class OrderPage extends Component {
 
   constructor(props) {
     super(props);
+    this.dataSource = new ListView.DataSource({
+      rowHasChanged: (row1, row2) => row1 !== row2,
+    });
     this.state = {
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-      }),
+      orders: this.dataSource.cloneWithRows(props.order.getOrdersRequest.data),
     };
   }
 
   componentDidMount() {
-    this.props.getOrders(this.props.member.accessToken);
+    this.props.clearOrders();
+    this.onLoadMore();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.order.message) {
-      ToastAndroid.show(nextProps.order.message, ToastAndroid.SHORT);
+    if (nextProps.order.getOrdersRequest.message) {
+      ToastAndroid.show(nextProps.order.getOrdersRequest.message, ToastAndroid.SHORT);
     }
-    if (nextProps.order.lastProcessed) {
+    if (nextProps.order.getOrdersRequest.data) {
+      this.setState({
+        orders: this.dataSource.cloneWithRows(nextProps.order.getOrdersRequest.data),
+      });
+    }
+    this.refs.pullToRefreshListView.endLoadMore(nextProps.order.getOrdersRequest.isEnd);
+    if (nextProps.order.getAlipayOrderInfoRequest.orderInfo) {
       this.props.navigator.push({
         PaymentPage: true,
-        orderInfo: nextProps.order.lastProcessed.order_info,
-        orderAmount: nextProps.order.lastProcessed.order_amount,
+        orderInfo: nextProps.order.getAlipayOrderInfoRequest.orderInfo.order_info,
+        orderAmount: nextProps.order.getAlipayOrderInfoRequest.orderInfo.order_amount,
       });
+      this.props.clearAlipayOrderInfo();
     }
   }
 
   render() {
     return (
-      <ScrollView>
-        <ListView
-           dataSource={this.state.dataSource.cloneWithRows(this.props.order.orders)}
-           renderRow={this.renderOrder.bind(this)}/>
-        <Spinner visible={this.props.order.isProcessing}/>
-      </ScrollView>
+      <View>
+        <PullToRefreshListView
+           ref="pullToRefreshListView"
+           dataSource={this.state.orders}
+           viewType={PullToRefreshListView.constants.viewType.listView}
+           style={styles.orderListView}
+           initialListSize={25}
+           enableEmptySections={true}
+           pageSize={25}
+           renderRow={this.renderOrder.bind(this)}
+           renderHeader={this.renderHeader.bind(this)}
+           renderFooter={this.renderFooter.bind(this)}
+           onRefresh={this.onRefresh.bind(this)}
+           onLoadMore={this.onLoadMore.bind(this)}
+           enabledPullDown={false}
+           pullUpDistance={35}
+           pullUpStayDistance={50}/>
+        <Spinner visible={this.props.order.getOrdersRequest.isLoading || this.props.order.submitOrderRequest.isLoading}/>
+      </View>
     );
   }
 
@@ -93,16 +120,88 @@ class OrderPage extends Component {
     );
   }
 
+  renderHeader(viewState) {
+    return (
+      <View style={{width: width}}></View>
+    );
+  }
+
+  renderFooter(viewState) {
+    let {pullState, pullDistancePercent} = viewState;
+    const {load_more_none, load_more_idle, will_load_more, loading_more, loaded_all,} = PullToRefreshListView.constants.viewState;
+    pullDistancePercent = Math.round(pullDistancePercent * 100);
+    switch(pullState) {
+    case load_more_none:
+      return (
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Text>上拉加载更多</Text>
+        </View>
+      );
+    case load_more_idle:
+      return (
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Text>上拉加载更多</Text>
+        </View>
+      );
+    case will_load_more:
+      return (
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Text>放开加载更多</Text>
+        </View>
+      );
+    case loading_more:
+      return (
+        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          {this.renderActivityIndicator()}<Text>加载中...</Text>
+        </View>
+      );
+    case loaded_all:
+      return (
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Text>没有更多了</Text>
+        </View>
+      );
+    }
+  }
+
+  renderActivityIndicator() {
+    return ActivityIndicator ? (
+      <ActivityIndicator
+         style={{marginRight: 10,}}
+         animating={true}
+         color={'#ff0000'}
+         size={'small'}/>
+    ) : (
+      <ProgressBarAndroid
+         style={{marginRight: 10,}}
+         color={'#ff0000'}
+         styleAttr={'Small'}/>
+    );
+  }
+
+  onRefresh() {
+    this.refs.pullToRefreshListView.endRefresh(true);
+  }
+
+  onLoadMore() {
+    this.props.getOrders(this.props.order.getOrdersRequest.page, this.props.member.accessToken);
+  }
+
 }
 
 const actions = (dispatch) => {
   return {
-    getOrders: (accessToken) => dispatch(getOrders(accessToken)),
+    getOrders: (page, accessToken) => dispatch(getOrders(page, accessToken)),
     getAlipayOrderInfo: (orderId, accessToken) => dispatch(getAlipayOrderInfo(orderId, accessToken)),
+    clearAlipayOrderInfo: () => dispatch(clearAlipayOrderInfo()),
+    clearOrders: () => dispatch(clearOrders()),
   };
 };
 
 const styles = StyleSheet.create({
+  orderListView: {
+    height: height - 35,
+  },
   orderContainer: {
     marginTop: 10,
   },

@@ -28,10 +28,23 @@ export function submitOrder(specIds, specNums, addressId,
   });
 }
 
-export function getOrders(accessToken) {
+export function clearSubmitOrderInfo() {
+  return {
+    type: 'CLEAR_SUBMIT_ORDER_INFO',
+  };
+}
+
+export function getOrders(page, accessToken) {
   return serviceAction('GET_ORDERS', '/mobile_order/index', 'GET', {
+    page: page,
     access_token: accessToken,
   });
+}
+
+export function clearOrders() {
+  return {
+    type: 'CLEAR_ORDERS',
+  };
 }
 
 export function getAlipayOrderInfo(orderId, accessToken) {
@@ -39,6 +52,12 @@ export function getAlipayOrderInfo(orderId, accessToken) {
     order_id: orderId,
     access_token: accessToken,
   });
+}
+
+export function clearAlipayOrderInfo() {
+  return {
+    type: 'CLEAR_ALIPAY_ORDER_INFO',
+  };
 }
 
 export function getShops(mkId, keywords, page) {

@@ -7,7 +7,6 @@ import {
   TouchableHighlight,
   Image,
   Dimensions,
-  Platform,
   ActivityIndicator,
   ProgressBarAndroid,
   ToastAndroid,

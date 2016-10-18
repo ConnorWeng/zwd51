@@ -1,100 +1,54 @@
-const order = (state = {
-  isProcessing: false,
-  orders: [],
-  lastProcessed: null,
-  goodsInfo: {},
-  message: '',
-}, action) => {
+import {buildReducer, REQUEST_INITIAL_STATE} from './builder';
+
+const defaultState = {};
+
+const defaultHandler = (state, action) => {
+  const newState = {};
   switch (action.type) {
-  case 'SUBMIT_ORDER_REQUEST': ;
-    return Object.assign({}, state, {
-      isProcessing: true,
-      lastProcessed: null,
-      message: '',
-    });
-  case 'SUBMIT_ORDER_CHECK': ;
-    if (action.json.error) {
-      return Object.assign({}, state, {
-        isProcessing: false,
-        message: action.json.message,
-      });
-    } else {
-      const newOrder = {
-        order_id: action.json.order_id,
-        order_sn: action.json.order_sn,
-        order_amount: action.json.order_amount,
-        order_info: action.json.order_info,
-        status: action.json.status,
-      };
-      return Object.assign({}, state, {
-        isProcessing: false,
-        orders: [
-          ...state.orders,
-          newOrder,
-        ],
-        lastProcessed: newOrder,
-        message: '提交成功',
-      });
-    }
-  case 'GET_ORDERS_REQUEST':
-    return Object.assign({}, state, {
-      isProcessing: true,
-      orders: [],
-      lastProcessed: null,
-      message: '',
-    });
-  case 'GET_ORDERS_CHECK':
-    return Object.assign({}, state, {
-      isProcessing: false,
-      orders: action.json
-    });
-  case 'GET_ALIPAY_ORDER_INFO_REQUEST':
-    return Object.assign({}, state, {
-      isProcessing: true,
-      lastProcessed: null,
-      message: '',
-    });
-  case 'GET_ALIPAY_ORDER_INFO_CHECK':
-    if (action.json.error) {
-      return Object.assign({}, state, {
-        isProcessing: false,
-        message: action.json.message,
-      });
-    } else {
-      return Object.assign({}, state, {
-        isProcessing: false,
-        lastProcessed: action.json,
-      });
-    }
-  case 'GET_ORDER_GOODS_INFO_REQUEST':
-    return Object.assign({}, state, {
-      isProcessing: true,
-      lastProcessed: null,
-      message: '',
-      goodsInfo: {},
-    });
-  case 'GET_ORDER_GOODS_INFO_CHECK':
-    if (action.json.error) {
-      return Object.assign({}, state, {
-        isProcessing: false,
-        message: action.json.message,
-      });
-    } else {
-      return Object.assign({}, state, {
-        isProcessing: false,
-        message: '',
-        goodsInfo: action.json,
-      });
-    }
   case 'SET_ADDRESS':
-    return Object.assign({}, state, {
-      goodsInfo: Object.assign({}, state.goodsInfo, {
+    newState.getOrderGoodsRequest = Object.assign({}, state.getOrderGoodsRequest, {
+      goodsInfo: Object.assign({}, state.getOrderGoodsRequest.goodsInfo, {
         default_address: action.json,
       }),
     });
-  default:
-    return state;
+    return Object.assign({}, state, newState);
+  case 'CLEAR_ORDERS':
+    return Object.assign({}, state, {
+      getOrdersRequest: REQUEST_INITIAL_STATE,
+    });
+  case 'CLEAR_ALIPAY_ORDER_INFO':
+    newState.getAlipayOrderInfoRequest = Object.assign({}, state.getAlipayOrderInfoRequest, {
+      orderInfo: false,
+    });
+    return Object.assign({}, state, newState);
+  case 'CLEAR_SUBMIT_ORDER_INFO':
+    newState.submitOrderRequest = Object.assign({}, state.submitOrderRequest, {
+      orderInfo: false,
+    });
+    return Object.assign({}, state, newState);
   }
 };
 
-export default order;
+const requestState = {
+  submitOrderRequest: {
+    name: 'SUBMIT_ORDER',
+    mapping: {
+      orderInfo: {init: false},
+    },
+  },
+  getOrdersRequest: 'GET_ORDERS',
+  getAlipayOrderInfoRequest: {
+    name: 'GET_ALIPAY_ORDER_INFO',
+    mapping: {
+      orderInfo: {init: false},
+    },
+  },
+  getOrderGoodsRequest: {
+    name: 'GET_ORDER_GOODS_INFO',
+    mapping: {
+      goodsInfo: {init: false},
+    }
+  },
+};
+
+export default buildReducer(defaultState, defaultHandler, requestState);

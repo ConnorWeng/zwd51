@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import TouchableContainerItem from './TouchableContainerItem';
 import TouchableContainerItemsGroup from './TouchableContainerItemsGroup';
-import {submitOrder, getOrderGoodsInfo} from '../actions';
+import {submitOrder, getOrderGoodsInfo, clearSubmitOrderInfo} from '../actions';
 
 const {height, width} = Dimensions.get('window');
 
@@ -32,16 +32,20 @@ class OrderConfirmPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.order.message) {
-      ToastAndroid.show(nextProps.order.message, ToastAndroid.SHORT);
+    if (nextProps.order.getOrderGoodsRequest.message) {
+      ToastAndroid.show(nextProps.order.getOrderGoodsRequest.message, ToastAndroid.SHORT);
     }
-    if (nextProps.order.lastProcessed) {
-      const newOrder = nextProps.order.lastProcessed;
+    if (nextProps.order.submitOrderRequest.message) {
+      ToastAndroid.show(nextProps.order.submitOrderRequest.message, ToastAndroid.SHORT);
+    }
+    if (nextProps.order.submitOrderRequest.orderInfo) {
+      const newOrder = nextProps.order.submitOrderRequest.orderInfo;
       this.props.navigator.push({
         PaymentPage: true,
         orderInfo: newOrder.order_info,
         orderAmount: newOrder.order_amount,
       });
+      this.props.clearSubmitOrderInfo();
     }
   }
 
@@ -50,19 +54,19 @@ class OrderConfirmPage extends Component {
       <View style={{flex: 1}}>
         <ScrollView>
           <TouchableContainerItemsGroup>
-            <TouchableContainerItem style={{height: 80}} arrow={true} onPress={() => {this.props.navigator.push({AddressPage: true, addr: this.props.order.goodsInfo.default_address ? this.props.order.goodsInfo.default_address : {}})}}>
-              <Text style={styles.receiverName}>{this.props.order.goodsInfo.default_address ? this.props.order.goodsInfo.default_address.consignee : ''}</Text>
-              <Text style={styles.receiverMobile}>{this.props.order.goodsInfo.default_address ? this.props.order.goodsInfo.default_address.phone_mob : ''}</Text>
-              <Text style={styles.receiverAddress} numberOfLines={1}>{this.props.order.goodsInfo.default_address ? this.props.order.goodsInfo.default_address.address : ''}</Text>
+            <TouchableContainerItem style={{height: 80}} arrow={true} onPress={() => {this.props.navigator.push({AddressPage: true, addr: this.props.order.getOrderGoodsRequest.goodsInfo.default_address ? this.props.order.getOrderGoodsRequest.goodsInfo.default_address : {}})}}>
+              <Text style={styles.receiverName}>{this.props.order.getOrderGoodsRequest.goodsInfo.default_address ? this.props.order.getOrderGoodsRequest.goodsInfo.default_address.consignee : ''}</Text>
+              <Text style={styles.receiverMobile}>{this.props.order.getOrderGoodsRequest.goodsInfo.default_address ? this.props.order.getOrderGoodsRequest.goodsInfo.default_address.phone_mob : ''}</Text>
+              <Text style={styles.receiverAddress} numberOfLines={1}>{this.props.order.getOrderGoodsRequest.goodsInfo.default_address ? this.props.order.getOrderGoodsRequest.goodsInfo.default_address.address : ''}</Text>
             </TouchableContainerItem>
           </TouchableContainerItemsGroup>
           <TouchableContainerItemsGroup style={{marginTop: 10}}>
-            <TouchableContainerItem style={{height: 100}} bodyStyle={{justifyContent: 'space-between'}} arrow={true} onPress={() => {this.props.navigator.push({OrderGoodsPage: true, goods: this.props.order.goodsInfo.items});}}>
+            <TouchableContainerItem style={{height: 100}} bodyStyle={{justifyContent: 'space-between'}} arrow={true} onPress={() => {this.props.navigator.push({OrderGoodsPage: true, goods: this.props.order.getOrderGoodsRequest.goodsInfo.items});}}>
               <View style={{flexDirection: 'row'}}>
                 {(() => {
-                  if (this.props.order.goodsInfo.items) {
+                  if (this.props.order.getOrderGoodsRequest.goodsInfo.items) {
                     const images = [];
-                    this.props.order.goodsInfo.items.forEach((item) => {
+                    this.props.order.getOrderGoodsRequest.goodsInfo.items.forEach((item) => {
                       images.push(
                         <Image key={'image_' + item.goods_id} style={styles.itemImage}
                                source={{uri: item.goods_image}}/>
@@ -72,7 +76,7 @@ class OrderConfirmPage extends Component {
                   }
                 })()}
               </View>
-              <Text>共{this.props.order.goodsInfo.items ? this.props.order.goodsInfo.items.length : 0}件</Text>
+              <Text>共{this.props.order.getOrderGoodsRequest.goodsInfo.items ? this.props.order.getOrderGoodsRequest.goodsInfo.items.length : 0}件</Text>
             </TouchableContainerItem>
             <TouchableContainerItem style={{height: 60}} arrow={false}>
               <Text style={{fontSize: 16}}>配送：51代发</Text>
@@ -81,30 +85,30 @@ class OrderConfirmPage extends Component {
           <TouchableContainerItemsGroup style={{marginTop: 10}}>
             <TouchableContainerItem style={{height: 40}} bodyStyle={{justifyContent: 'space-between'}} arrow={false}>
               <Text>商品金额</Text>
-              <Text style={{color: '#f40'}}>{this.props.order.goodsInfo.amount}</Text>
+              <Text style={{color: '#f40'}}>{this.props.order.getOrderGoodsRequest.goodsInfo.amount}</Text>
             </TouchableContainerItem>
             <TouchableContainerItem style={{height: 40}} bodyStyle={{justifyContent: 'space-between'}} arrow={false}>
               <Text>代发费用</Text>
-              <Text style={{color: '#f40'}}>+ {this.props.order.goodsInfo.behalf_fee}</Text>
+              <Text style={{color: '#f40'}}>+ {this.props.order.getOrderGoodsRequest.goodsInfo.behalf_fee}</Text>
             </TouchableContainerItem>
           </TouchableContainerItemsGroup>
         </ScrollView>
         <View style={styles.actionContainer}>
           <View style={styles.priceContainer}>
-            <Text style={styles.priceText}>实付款：¥{this.props.order.goodsInfo.amount + this.props.order.goodsInfo.behalf_fee}</Text>
+            <Text style={styles.priceText}>实付款：¥{this.props.order.getOrderGoodsRequest.goodsInfo.amount + this.props.order.getOrderGoodsRequest.goodsInfo.behalf_fee}</Text>
           </View>
           <TouchableOpacity onPress={this.submitOrder.bind(this)} style={[styles.submitAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
-            <Text style={[styles.submitActionText, {color: '#fff'}]}>{this.props.order.isProcessing ? '处理中...' : '提交订单'}</Text>
+            <Text style={[styles.submitActionText, {color: '#fff'}]}>{this.props.order.submitOrderRequest.isLoading ? '处理中...' : '提交订单'}</Text>
           </TouchableOpacity>
         </View>
-        <Spinner visible={this.props.order.isProcessing}/>
+        <Spinner visible={this.props.order.getOrderGoodsRequest.isLoading || this.props.order.submitOrderRequest.isLoading}/>
       </View>
     );
   }
 
   submitOrder() {
     this.props.submitOrder(this.props.specIds.join(','), this.props.specNums.join(','),
-                           this.props.order.goodsInfo.default_address.addr_id, 10919, 28, '', this.props.member.accessToken);
+                           this.props.order.getOrderGoodsRequest.goodsInfo.default_address.addr_id, 10919, 28, '', this.props.member.accessToken);
   }
 
 }
@@ -119,6 +123,7 @@ const actions = (dispatch) => {
                                 accessToken)
                   ),
     getOrderGoodsInfo: (specIds, specNums, accessToken) => dispatch(getOrderGoodsInfo(specIds, specNums, accessToken)),
+    clearSubmitOrderInfo: () => dispatch(clearSubmitOrderInfo()),
   };
 };
 
