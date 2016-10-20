@@ -47,11 +47,12 @@ class HomePage extends Component {
 
   onBridgeMessage(message) {
     const parts = message.split('|,|');
-    if (parts.length === 3) {
+    if (parts.length === 4) {
       this.props.navigator.push({ItemPage: true, item: {
-        goods_name: parts[0],
-        default_image: parts[1],
-        price: parts[2],
+        goods_id: parts[0],
+        goods_name: parts[1],
+        default_image: parts[2],
+        price: parts[3],
       }});
     }
   }
