@@ -85,6 +85,15 @@ class ItemPage extends Component {
     this.props.clearDescription();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.cart.addToCartRequest.message) {
+      ToastAndroid.show(nextProps.cart.addToCartRequest.message, ToastAndroid.SHORT);
+    }
+    if (nextProps.cart.addToCartRequest.success) {
+      ToastAndroid.show('添加成功', ToastAndroid.SHORT);
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -190,6 +199,9 @@ class ItemPage extends Component {
   }
 
   addToCart() {
+    if (!this.props.member.accessToken) {
+      return this.props.navigator.push({LoginPage: true});
+    }
     if (!this.state.selected) {
       ToastAndroid.show('请选择商品规格', ToastAndroid.SHORT);
       return ;
