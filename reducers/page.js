@@ -1,4 +1,4 @@
-const page = (state = {}, action) => {
+const page = (state = {welcomed: false}, action) => {
   switch (action.type) {
   case 'CHANGE_MAIN_TAB':
     return Object.assign({}, state, {
@@ -16,6 +16,14 @@ const page = (state = {}, action) => {
           return '';
         }
       })(),
+    });
+  case 'WELCOMED':
+    return Object.assign({}, state, {
+      welcomed: true,
+    });
+  case 'CLEAR_WELCOMED':
+    return Object.assign({}, state, {
+      welcomed: false,
     });
   default:
     return state;

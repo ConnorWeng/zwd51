@@ -6,14 +6,19 @@ import {
   ListView,
   ScrollView,
   TouchableHighlight,
+  TouchableOpacity,
   Image,
   Dimensions,
   ToastAndroid,
 } from 'react-native';
+import {connect} from 'react-redux';
 import WebViewBridge from 'react-native-webview-bridge';
 import ItemPage from './ItemPage';
 import ItemList from './ItemList';
 import {SERVICE_URL} from "../service.json";
+import {welcomed} from '../actions';
+
+const {height, width} = Dimensions.get('window');
 
 class HomePage extends Component {
 
@@ -30,9 +35,11 @@ class HomePage extends Component {
     return (
       <View>
         <WebViewBridge
+           ref="webView"
            onBridgeMessage={this.onBridgeMessage.bind(this)}
            style={styles.webViewBridge}
            source={{uri: SERVICE_URL + '/index.php?app=mobile_home'}}
+           onLoadEnd={this.onWebViewLoadEnd.bind(this)}
            renderError={this.renderWebViewError.bind(this)}/>
       </View>
     );
@@ -62,17 +69,25 @@ class HomePage extends Component {
     );
   }
 
+  onWebViewLoadEnd() {
+    this.props.welcomed();
+  }
+
   renderWebViewError() {
     return (
-      <View style={{alignItems: 'center'}}>
-        <Text style={{fontSize: 18}}>首页加载失败，请稍后重试！</Text>
-      </View>
+      <TouchableOpacity style={{alignItems: 'center', height: height}} onPress={() => {this.refs.webView.reload();}}>
+        <Text style={{fontSize: 18}}>首页加载失败，请点击重试！</Text>
+      </TouchableOpacity>
     );
   }
 
 }
 
-var {height, width} = Dimensions.get('window');
+const actions = (dispatch) => {
+  return {
+    welcomed: () => dispatch(welcomed()),
+  };
+};
 
 const styles = StyleSheet.create({
   webViewBridge: {
@@ -107,4 +122,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomePage;
+export default connect(state => state.page, actions)(HomePage);

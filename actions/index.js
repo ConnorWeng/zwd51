@@ -173,3 +173,15 @@ export function getRegions(pid, layer, accessToken) {
     access_token: accessToken,
   });
 }
+
+export function welcomed() {
+  return {
+    type: 'WELCOMED',
+  };
+}
+
+export function clearWelcomed() {
+  return {
+    type: 'CLEAR_WELCOMED',
+  };
+}

@@ -3,19 +3,31 @@ import {
   StyleSheet,
   View,
   ScrollView,
+  AppState,
 } from 'react-native';
 import {connect} from 'react-redux';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TabBar from './TabBar';
-import {changeMainTab} from '../actions';
+import {changeMainTab, clearWelcomed} from '../actions';
 import HomePage from './HomePage';
 import SearchPage from './SearchPage';
 import MarketPage from './MarketPage';
 import UserPage from './UserPage';
 import CartPage from './CartPage';
+import WelcomePage from './WelcomePage';
 
 class MainPage extends Component {
+
+  componentDidMount() {
+    AppState.addEventListener('change', this.handleAppStateChange);
+  }
+
+  handleAppStateChange(currentAppState) {
+    if (currentAppState === 'inactive') {
+      this.props.clearWelcomed();
+    }
+  }
 
   render() {
     return (
@@ -41,8 +53,9 @@ class MainPage extends Component {
           <SearchPage navigator={this.props.navigator} tabLabel="ios-search-outline" style={styles.tabView}/>
           <CartPage navigator={this.props.navigator} tabLabel="ios-cart-outline" style={styles.tabView}/>
           <MarketPage navigator={this.props.navigator} tabLabel="ios-globe-outline" style={styles.tabView}/>
-          <UserPage navigator={this.props.navigator} tabLabel="ios-contact-outline" style={styles.tabView}/>
+           <UserPage navigator={this.props.navigator} tabLabel="ios-contact-outline" style={styles.tabView}/>
         </ScrollableTabView>
+        {this.props.page.welcomed ? null : <WelcomePage/>}
       </View>
     );
   }
@@ -56,6 +69,7 @@ class MainPage extends Component {
 const actions = (dispatch) => {
   return {
     onChangeTab: (ins) => dispatch(changeMainTab(ins.i)),
+    clearWelcomed: () => dispatch(clearWelcomed()),
   };
 };
 
