@@ -21,6 +21,15 @@ class SpecPicker extends Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.specs.length > 0) {
+      this.relations = [];
+      nextProps.specs.forEach((spec) => {
+        this.relations.push(spec.spec_vid_1 + ':' + spec.spec_vid_2);
+      });
+    }
+  }
+
   render() {
     const spec1Values = [];
     const spec1s = [];
