@@ -23,6 +23,7 @@ class CartPage extends Component {
 
   constructor(props) {
     super(props);
+    this.refreshed = false;
     this.shopDataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
     });
@@ -50,6 +51,10 @@ class CartPage extends Component {
           shops: this.shopDataSource.cloneWithRows(nextProps.cart.getCartRequest.shops),
         });
       }
+      if (!this.refreshed) {
+        this.refreshed = true;
+        this.props.getCart(nextProps.member.accessToken);
+      }
     }
   }
 
@@ -63,6 +68,7 @@ class CartPage extends Component {
         <View style={{flex: 1}}>
           <ScrollView>
             <ListView
+               style={styles.cartList}
                refreshControl={
                    <RefreshControl
                         refreshing={this.props.cart.getCartRequest.isLoading}
@@ -188,6 +194,9 @@ const actions = (dispatch) => {
 };
 
 const styles = StyleSheet.create({
+  cartList: {
+    height: height - 56 - 40 - 68,
+  },
   shopContainer: {
     marginBottom: 10,
     borderBottomWidth: 1,
