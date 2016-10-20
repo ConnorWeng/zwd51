@@ -11,6 +11,7 @@ import com.facebook.react.shell.MainReactPackage;
 import com.loveplusplus.update.UpdateChecker;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactnativecomponent.swiperefreshlayout.RCTSwipeRefreshLayoutPackage;
+import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import com.zwd51.packages.AlibabaAPIPackage;
 
 import java.util.Arrays;
@@ -46,7 +47,8 @@ public class MainActivity extends ReactActivity {
             new MainReactPackage(),
             new VectorIconsPackage(),
             new RCTSwipeRefreshLayoutPackage(),
-            new AlibabaAPIPackage(MainActivity.this)
+            new AlibabaAPIPackage(MainActivity.this),
+            new WebViewBridgePackage()
         );
     }
 
