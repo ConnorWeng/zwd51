@@ -32,7 +32,8 @@ class HomePage extends Component {
         <WebViewBridge
            onBridgeMessage={this.onBridgeMessage.bind(this)}
            style={styles.webViewBridge}
-           source={{uri: SERVICE_URL + '/index.php?app=mobile_home'}}/>
+           source={{uri: SERVICE_URL + '/index.php?app=mobile_home'}}
+           renderError={this.renderWebViewError.bind(this)}/>
       </View>
     );
   }
@@ -58,6 +59,14 @@ class HomePage extends Component {
           </View>
         </View>
       </TouchableHighlight>
+    );
+  }
+
+  renderWebViewError() {
+    return (
+      <View style={{alignItems: 'center'}}>
+        <Text style={{fontSize: 18}}>首页加载失败，请稍后重试！</Text>
+      </View>
     );
   }
 
