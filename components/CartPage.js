@@ -56,6 +56,9 @@ class CartPage extends Component {
         this.refreshed = true;
         this.props.getCart(nextProps.member.accessToken);
       }
+      if (nextProps.cart.dropFromCartRequest.message) {
+        ToastAndroid.show(nextProps.cart.dropFromCartRequest.message, ToastAndroid.SHORT);
+      }
     }
   }
 
