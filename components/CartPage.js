@@ -152,7 +152,7 @@ class CartPage extends Component {
           <Text style={styles.goodSpecification} numberOfLines={1}>{good.specification}</Text>
           <View style={styles.goodPriceContainer}>
             <Text style={styles.goodSubtotal}>¥ {good.subtotal}</Text>
-            <InputNumber ref="num" styles={numberStyles} defaultValue={good.quantity} min={1} max={99}/>
+            <InputNumber ref="num" styles={numberStyles} defaultValue={parseInt(good.quantity)} min={1} max={99}/>
           </View>
         </View>
       </TouchableOpacity>
