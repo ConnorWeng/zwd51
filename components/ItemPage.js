@@ -9,6 +9,8 @@ import {
   Dimensions,
   ScrollView,
   WebView,
+  ActivityIndicator,
+  ProgressBarAndroid,
   ToastAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
@@ -133,7 +135,7 @@ class ItemPage extends Component {
             <Text style={[styles.itemActionText, {color: '#E5511D'}]}>上传淘宝</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.addToCart.bind(this)} style={styles.addToCartContainer}>
-            <Icon name="ios-cart" size={30} color="#f40"/>
+            {this.props.cart.addToCartRequest.isLoading ? this.renderActivityIndicator() : <Icon name="ios-cart" size={30} color="#f40"/>}
             <Text style={styles.addToCartText}>+</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.buy.bind(this)} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
@@ -154,6 +156,21 @@ class ItemPage extends Component {
         </Modal>
         <Spinner visible={this.props.good.getDescriptionRequest.isLoading || this.props.good.getSpecsRequest.isLoading}/>
       </View>
+    );
+  }
+
+  renderActivityIndicator() {
+    return ActivityIndicator ? (
+      <ActivityIndicator
+         style={{marginRight: 10,}}
+         animating={true}
+         color={'#ff0000'}
+         size={'small'}/>
+    ) : (
+      <ProgressBarAndroid
+         style={{marginRight: 10,}}
+         color={'#ff0000'}
+         styleAttr={'Small'}/>
     );
   }
 
