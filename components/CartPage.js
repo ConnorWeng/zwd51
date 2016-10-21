@@ -14,6 +14,7 @@ import {
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/Ionicons';
+import InputNumber from '../node_modules/rc-input-number/lib/index';
 import PleaseLogin from './PleaseLogin';
 import {getCart} from '../actions';
 
@@ -151,7 +152,7 @@ class CartPage extends Component {
           <Text style={styles.goodSpecification} numberOfLines={1}>{good.specification}</Text>
           <View style={styles.goodPriceContainer}>
             <Text style={styles.goodSubtotal}>¥ {good.subtotal}</Text>
-            <Text style={styles.goodQuantity}>x{good.quantity}</Text>
+            <InputNumber ref="num" styles={numberStyles} defaultValue={good.quantity} min={1} max={99}/>
           </View>
         </View>
       </TouchableOpacity>
@@ -241,10 +242,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   goodSubtotal: {
+    flex: 1,
     color: '#f40',
-  },
-  goodQuantity: {
-
+    height: 25,
   },
   itemActionContainer: {
     flexDirection: 'row',
@@ -272,69 +272,47 @@ const styles = StyleSheet.create({
   },
 });
 
-const MOCKED_DATA = {
-  shops: [{
-    "store_name": '第一家店',
-    "amount": 20,
-    "quantity": 1,
-    "goods": [
-      {
-        "rec_id": "1113",
-        "user_id": "8",
-        "session_id": "c2fd35f79a49f530c33aa6fab0ea796c",
-        "store_id": "5651",
-        "goods_id": "964652",
-        "goods_name": "2015夏装新款欧美洋气清凉无袖背心上衣7124＃",
-        "spec_id": "5628819",
-        "specification": "颜色分类:白色 尺码:均码",
-        "price": "20.00",
-        "quantity": "1",
-        "goods_image": "http://img.alicdn.com/bao/uploaded/i1/TB1ZuMfHFXXXXcEXVXXXXXXXXXX_!!0-item_pic.jpg_240x240.jpg",
-        "store_name": null,
-        "subtotal": 20
-      }
-    ],
-    "store_id": "5651",
-    "kinds": 1
-  }, {
-    "store_name": '第二家店',
-    "amount": 20,
-    "quantity": 1,
-    "goods": [
-      {
-        "rec_id": "1113",
-        "user_id": "8",
-        "session_id": "c2fd35f79a49f530c33aa6fab0ea796c",
-        "store_id": "5651",
-        "goods_id": "964652",
-        "goods_name": "2015夏装新款欧美洋气清凉无袖背心上衣7124＃",
-        "spec_id": "5628820",
-        "specification": "颜色分类:白色 尺码:均码",
-        "price": "20.00",
-        "quantity": "1",
-        "goods_image": "http://img.alicdn.com/bao/uploaded/i1/TB1ZuMfHFXXXXcEXVXXXXXXXXXX_!!0-item_pic.jpg_240x240.jpg",
-        "store_name": null,
-        "subtotal": 20
-      },
-      {
-        "rec_id": "19142",
-        "user_id": "8",
-        "session_id": "b78032360fc361104cb983170fd1fde5",
-        "store_id": "15729",
-        "goods_id": "1142193",
-        "goods_name": "1513#  夏季新款不规则修身显瘦打底裙a字裙无袖背心连衣裙",
-        "spec_id": "6640856",
-        "specification": "颜色分类:黑色 尺码:S",
-        "price": "20.00",
-        "quantity": "1",
-        "goods_image": "http://img.alicdn.com/bao/uploaded/i4/TB1QP6fHpXXXXbrXXXXXXXXXXXX_!!2-item_pic.png_240x240.jpg",
-        "store_name": null,
-        "subtotal": 20
-      }
-    ],
-    "store_id": "15729",
-    "kinds": 1
-  }],
-};
+const numberStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 25,
+  },
+  input: {
+    flex: 1,
+    textAlign: 'center',
+    paddingHorizontal: 8,
+    fontSize: 14,
+    color: '#222'
+  },
+  stepWrap: {
+    width: 18,
+    height: 18,
+    borderWidth: 1,
+    borderColor: '#d9d9d9',
+    backgroundColor: 'white'
+  },
+  stepText: {
+    textAlign: 'center',
+    fontSize: 12,
+    color: '#999',
+    backgroundColor: 'transparent'
+  },
+  stepDisabled: {
+    borderColor: '#d9d9d9',
+    backgroundColor: 'rgba(239, 239, 239, 0.72)'
+  },
+  disabledStepTextColor: {
+    color: '#ccc'
+  },
+  highlightStepTextColor: {
+    color: '#2DB7F5'
+  },
+  highlightStepBorderColor: {
+    borderColor: '#2DB7F5'
+  },
+});
 
 export default connect(state => state, actions)(CartPage);
