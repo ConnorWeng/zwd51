@@ -16,7 +16,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/Ionicons';
 import InputNumber from '../node_modules/rc-input-number/lib/index';
 import PleaseLogin from './PleaseLogin';
-import {getCart} from '../actions';
+import {getCart, dropFromCart, dropFromCartLocal} from '../actions';
 
 const {height, width} = Dimensions.get('window');
 
@@ -152,7 +152,12 @@ class CartPage extends Component {
           <Text style={styles.goodSpecification} numberOfLines={1}>{good.specification}</Text>
           <View style={styles.goodPriceContainer}>
             <Text style={styles.goodSubtotal}>¥ {good.subtotal}</Text>
-            <InputNumber ref="num" styles={numberStyles} defaultValue={parseInt(good.quantity)} min={1} max={99}/>
+            <InputNumber styles={numberStyles} defaultValue={parseInt(good.quantity)} min={0} max={99} onChange={(number) => {
+                if (number === 0) {
+                  this.props.dropFromCart(good.rec_id, this.props.member.accessToken);
+                  this.props.dropFromCartLocal(good.store_id, good.rec_id);
+                }
+              }}/>
           </View>
         </View>
       </TouchableOpacity>
@@ -191,6 +196,8 @@ class CartPage extends Component {
 const actions = (dispatch) => {
   return {
     getCart: (accessToken) => dispatch(getCart(accessToken)),
+    dropFromCart: (recId, accessToken) => dispatch(dropFromCart(recId, accessToken)),
+    dropFromCartLocal: (storeId, recId) => dispatch(dropFromCartLocal(storeId, recId)),
   };
 };
 

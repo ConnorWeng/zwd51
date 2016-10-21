@@ -154,6 +154,21 @@ export function addToCart(specId, quantity, accessToken) {
   });
 }
 
+export function dropFromCart(recId, accessToken) {
+  return serviceAction('DROP_FROM_CART', '/mobile_cart/drop', 'POST', {
+    rec_id: recId,
+    access_token: accessToken,
+  });
+}
+
+export function dropFromCartLocal(storeId, recId) {
+  return {
+    type: 'DROP_FROM_CART_LOCAL',
+    store_id: storeId,
+    rec_id: recId,
+  };
+}
+
 export function addAddress(consignee, regionId, regionName, address, zipcode, phoneMob, accessToken) {
   return serviceAction('ADD_ADDRESS', '/mobile_address/add', 'POST', {
     consignee: consignee,
