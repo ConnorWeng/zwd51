@@ -36,14 +36,19 @@ class RegionPicker extends Component {
         if (regions[0].layer === '1') {
           this.setState({
             layer1: regions,
+            selected1: regions[0].region_id + ':' + regions[0].region_name,
           });
+          this.props.getRegions(regions[0].region_id, 2, this.props.member.accessToken);
         } else if (regions[0].layer === '2') {
           this.setState({
             layer2: regions,
+            selected2: regions[0].region_id + ':' + regions[0].region_name,
           });
+          this.props.getRegions(regions[0].region_id, 3, this.props.member.accessToken);
         } else if (regions[0].layer === '3') {
           this.setState({
             layer3: regions,
+            selected3: regions[0].region_id + ':' + regions[0].region_name,
           });
         }
       }

@@ -98,7 +98,7 @@ class AddressPage extends Component {
           <LabelAndInput ref="zipcode" label="邮政编码"/>
           <PrimaryButton label={'确认'} onPress={this.addAddress.bind(this)} />
         </Modal>
-        <Spinner visible={this.props.address.getAddressesRequest.isLoading}/>
+        <Spinner visible={this.props.address.getAddressesRequest.isLoading || this.props.address.addAddressRequest.isLoading}/>
       </View>
     );
   }
