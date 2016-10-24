@@ -17,4 +17,15 @@ const reducers = combineReducers({
   cart,
 });
 
-export default reducers;
+const rootReducer = (state, action) => {
+  if (action.type === 'LOGOUT') {
+    state = {
+      page: {
+        welcomed: true,
+      }
+    };
+  }
+  return reducers(state, action);
+};
+
+export default rootReducer;

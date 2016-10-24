@@ -3,11 +3,12 @@ import {
   StyleSheet,
   View,
   Text,
-
 } from 'react-native';
+import {connect} from 'react-redux';
 import PrimaryButton from './PrimaryButton';
 import MyItemsGroup from './MyItemsGroup';
 import MyItem from './MyItem';
+import {logout} from '../actions';
 
 class SettingPage extends Component {
 
@@ -20,6 +21,7 @@ class SettingPage extends Component {
         </MyItemsGroup>
         <PrimaryButton label="退出登录" onPress={() => {
             this.props.persistor.purge();
+            this.props.logout();
             this.props.navigator.pop();
           }}/>
       </View>
@@ -28,8 +30,14 @@ class SettingPage extends Component {
 
 }
 
+const actions = (dispatch) => {
+  return {
+    logout: () => dispatch(logout()),
+  };
+};
+
 const styles = StyleSheet.create({
 
 });
 
-export default SettingPage;
+export default connect(state => state, actions)(SettingPage);

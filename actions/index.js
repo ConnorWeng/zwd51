@@ -14,6 +14,12 @@ export function login(username, password) {
   });
 };
 
+export function logout() {
+  return {
+    type: 'LOGOUT',
+  };
+}
+
 export function submitOrder(specIds, specNums, addressId,
                             behalfId, deliveryId, postscript,
                             accessToken) {
