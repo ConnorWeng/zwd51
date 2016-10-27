@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
   Text,
+  ToastAndroid,
 } from 'react-native';
 import CheckBox from 'react-native-checkbox';
 import PrimaryButton from './PrimaryButton';
@@ -36,9 +37,22 @@ class PaymentPage extends Component {
           containerStyle={styles.checkboxContainter}
           labelStyle={styles.checkboxLabel}
           onChange={(checked) => this.setState({alipay: checked, remain: !checked})}/>
-        <PrimaryButton label={'确认支付 ¥' + this.props.orderAmount} onPress={() => NativeModules.AlibabaAPI.pay(this.props.orderInfo)}/>
+        <PrimaryButton label={'确认支付 ¥' + this.props.orderAmount} onPress={this.pay.bind(this)}/>
       </ScrollView>
     );
+  }
+
+  pay() {
+    NativeModules.AlibabaAPI.pay(this.props.orderInfo,
+                                 ((navigator) => {
+                                   return () => {
+                                     navigator.pop();
+                                     navigator.pop();
+                                   };
+                                 })(this.props.navigator),
+                                 (msg) => {
+                                   ToastAndroid.show(msg, ToastAndroid.SHORT);
+                                 });
   }
 
   isChecked(method) {
