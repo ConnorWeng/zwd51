@@ -17,7 +17,8 @@ import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
-import {getOrders, getAlipayOrderInfo, clearAlipayOrderInfo, clearOrders} from '../actions';
+import {getOrders, getAlipayOrderInfo, clearAlipayOrderInfo} from '../actions';
+import STATUS from '../status.json';
 
 const {height, width} = Dimensions.get('window');
 
@@ -34,7 +35,6 @@ class OrderPage extends Component {
   }
 
   componentDidMount() {
-    this.props.clearOrders();
     this.onLoadMore();
   }
 
@@ -95,6 +95,7 @@ class OrderPage extends Component {
       <View style={styles.orderContainer}>
         <View style={styles.orderHeadContainer}>
           <Text style={styles.orderSn}>订单号：{order.order_sn}</Text>
+          <Text style={styles.orderStatus}>{STATUS[order.status]}</Text>
         </View>
         <View style={styles.orderBodyContainer}>
           <View style={styles.orderGoodsContainer}>
@@ -105,15 +106,22 @@ class OrderPage extends Component {
           </View>
         </View>
         <View style={styles.orderFootContainer}>
-          <TouchableOpacity style={styles.orderActionContainer} onPress={() =>
-            this.props.getAlipayOrderInfo(order.order_id, this.props.member.accessToken)}>
-            <Text style={styles.orderActionLabel}>{order.status == '11' ? '支付' : '查看订单'}</Text>
-          </TouchableOpacity>
-          {
-            order.status != '11' ?
-                <TouchableOpacity style={styles.orderActionContainer} onPress={() => this.props.getAlipayOrderInfo(order.order_id, this.props.member.accessToken)}>
-                  <Text style={styles.orderActionLabel}>拿货单</Text>
-                </TouchableOpacity> : null
+          { order.status === '11' ?
+              <TouchableOpacity style={styles.orderActionContainer} onPress={() =>
+                this.props.getAlipayOrderInfo(order.order_id, this.props.member.accessToken)}>
+                <Text style={styles.orderActionLabel}>支付</Text>
+              </TouchableOpacity>
+                :
+              <View style={{flexDirection: 'row',}}>
+              <TouchableOpacity style={styles.orderActionContainer} onPress={() =>
+                ToastAndroid.show('即将上线', ToastAndroid.SHORT)}>
+                <Text style={styles.orderActionLabel}>查看订单</Text>
+              </TouchableOpacity>
+                <TouchableOpacity style={styles.orderActionContainer} onPress={() =>
+                ToastAndroid.show('即将上线', ToastAndroid.SHORT)}>
+                <Text style={styles.orderActionLabel}>拿货单</Text>
+              </TouchableOpacity>
+              </View>
           }
         </View>
       </View>
@@ -194,7 +202,6 @@ const actions = (dispatch) => {
     getOrders: (page, accessToken) => dispatch(getOrders(page, accessToken)),
     getAlipayOrderInfo: (orderId, accessToken) => dispatch(getAlipayOrderInfo(orderId, accessToken)),
     clearAlipayOrderInfo: () => dispatch(clearAlipayOrderInfo()),
-    clearOrders: () => dispatch(clearOrders()),
   };
 };
 
@@ -207,10 +214,16 @@ const styles = StyleSheet.create({
   },
   orderHeadContainer: {
     paddingLeft: 10,
+    paddingRight: 10,
     backgroundColor: '#ffffff',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   orderSn: {
     color: '#000000',
+  },
+  orderStatus: {
+    color: '#f40',
   },
   orderBodyContainer: {
   },

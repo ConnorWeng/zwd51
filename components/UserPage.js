@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MyItemsGroup from './MyItemsGroup';
 import MyItem from './MyItem';
 import PleaseLogin from './PleaseLogin';
+import {clearOrders} from '../actions';
 
 class UserPage extends Component {
 
@@ -39,7 +40,7 @@ class UserPage extends Component {
                 </TouchableHighlight>
                 <MyItemsGroup>
                   <MyItem title="我的订单" iconName="ios-list-box-outline"
-                          onPress={() => {this.props.navigator.push({OrderPage: true});}}/>
+                          onPress={() => {this.props.clearOrders(); this.props.navigator.push({OrderPage: true});}}/>
                 </MyItemsGroup>
                 <MyItemsGroup>
                   <MyItem title="设置" iconName="ios-settings-outline"
@@ -54,6 +55,12 @@ class UserPage extends Component {
   }
 
 }
+
+const actions = (dispatch) => {
+  return {
+    clearOrders: () => dispatch(clearOrders()),
+  };
+};
 
 const styles = StyleSheet.create({
   headContainer: {
@@ -84,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(state => state.member)(UserPage);
+export default connect(state => state.member, actions)(UserPage);
