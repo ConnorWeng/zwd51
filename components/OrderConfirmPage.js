@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   Image,
+  Picker,
   ToastAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
@@ -20,6 +21,15 @@ import {submitOrder, getOrderGoodsInfo, clearSubmitOrderInfo} from '../actions';
 const {height, width} = Dimensions.get('window');
 
 class OrderConfirmPage extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      bhId: null,
+      dlId: null,
+      deliveries: [],
+    };
+  }
 
   componentDidMount() {
     if (!this.props.member.accessToken) {
@@ -46,6 +56,9 @@ class OrderConfirmPage extends Component {
         orderAmount: newOrder.order_amount,
       });
       this.props.clearSubmitOrderInfo();
+    }
+    if (this.state.bhId === null && nextProps.order.getOrderGoodsRequest.goodsInfo.behalfs) {
+      this.onSelectBehalf(nextProps.order.getOrderGoodsRequest.goodsInfo.behalfs[0].bh_id);
     }
   }
 
@@ -85,7 +98,29 @@ class OrderConfirmPage extends Component {
               <Text>共{this.props.order.getOrderGoodsRequest.goodsInfo.items ? this.props.order.getOrderGoodsRequest.goodsInfo.items.length : 0}件</Text>
             </TouchableContainerItem>
             <TouchableContainerItem style={{height: 60}} arrow={false}>
-              <Text style={{fontSize: 16}}>配送：51代发</Text>
+              <Text style={{fontSize: 16}}>代发：</Text>
+              <Picker style={{flex: 1}} selectedValue={this.state.bhId} onValueChange={this.onSelectBehalf.bind(this)}>
+              {
+                this.props.order.getOrderGoodsRequest.goodsInfo.behalfs ?
+                  this.props.order.getOrderGoodsRequest.goodsInfo.behalfs.map((behalf) => {
+                    return (
+                      <Picker.Item key={behalf.bh_id} label={behalf.bh_name} value={behalf.bh_id}/>
+                    );
+                  }) : null
+              }
+              </Picker>
+            </TouchableContainerItem>
+            <TouchableContainerItem style={{height: 60}} arrow={false}>
+              <Text style={{fontSize: 16}}>快递：</Text>
+              <Picker style={{flex: 1}} selectedValue={this.state.dlId} onValueChange={this.onSelectDelivery.bind(this)}>
+              {
+                this.state.deliveries.map((dl) => {
+                  return (
+                    <Picker.Item key={dl.dl_id} label={dl.dl_name} value={dl.dl_id}/>
+                  );
+                })
+              }
+              </Picker>
             </TouchableContainerItem>
           </TouchableContainerItemsGroup>
           <TouchableContainerItemsGroup style={{marginTop: 10}}>
@@ -113,12 +148,44 @@ class OrderConfirmPage extends Component {
   }
 
   submitOrder() {
-    if (this.props.order.getOrderGoodsRequest.goodsInfo.default_address) {
-      this.props.submitOrder(this.props.specIds.join(','), this.props.specNums.join(','),
-                           this.props.order.getOrderGoodsRequest.goodsInfo.default_address.addr_id, 10919, 28, '', this.props.member.accessToken);
-    } else {
-      ToastAndroid.show('请选择收货地址', ToastAndroid.SHORT);
+    if (!this.props.order.getOrderGoodsRequest.goodsInfo.default_address) {
+      return ToastAndroid.show('请选择收货地址', ToastAndroid.SHORT);
     }
+    if (!this.state.bhId) {
+      return ToastAndroid.show('请选择代发', ToastAndroid.SHORT);
+    }
+    if (!this.state.dlId) {
+      return ToastAndroid.show('请选择快递', ToastAndroid.SHORT);
+    }
+    this.props.submitOrder(this.props.specIds.join(','), this.props.specNums.join(','),
+                           this.props.order.getOrderGoodsRequest.goodsInfo.default_address.addr_id, this.state.bhId, this.state.dlId, '', this.props.member.accessToken);
+  }
+
+  onSelectBehalf(value) {
+    if (this.props.order.getOrderGoodsRequest.goodsInfo.behalfs) {
+      const deliveries = [];
+      const selectedBehalfs = this.props.order.getOrderGoodsRequest.goodsInfo.behalfs.filter((behalf) => {
+        if (behalf.bh_id === value) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      for (const dlId in selectedBehalfs[0]['deliveries']) {
+        deliveries.push(selectedBehalfs[0]['deliveries'][dlId]);
+      }
+      this.setState({
+        bhId: value,
+        dlId: deliveries[0].dl_id,
+        deliveries: deliveries,
+      });
+    }
+  }
+
+  onSelectDelivery(value) {
+    this.setState({
+      dlId: value,
+    });
   }
 
 }
