@@ -5,6 +5,7 @@ import {
   BackAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
+import PageContainer from '../components/PageContainer';
 import MainPage from '../components/MainPage';
 import ItemPage from '../components/ItemPage';
 import LoginPage from '../components/LoginPage';
@@ -50,7 +51,9 @@ class App extends Component {
   renderScene(route, navigator) {
     if (route.ItemPage) {
       return (
-        <ItemPage navigator={navigator} {...route.item}/>
+        <PageContainer navigator={navigator}>
+          <ItemPage navigator={navigator} {...route.item}/>
+        </PageContainer>
       );
     }
     if (route.LoginPage) {
