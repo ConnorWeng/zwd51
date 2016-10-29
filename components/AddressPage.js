@@ -149,7 +149,7 @@ const actions = (dispatch) => {
 
 const styles = StyleSheet.create({
   addressListView: {
-    height: height - 42 - 80 - 60,
+    height: height - 42 - 80 - 60 - 56,
   },
   addressContainer: {
     flexDirection: 'row',

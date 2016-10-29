@@ -22,7 +22,7 @@ class ShopPage extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <ShopInfo {...this.props.shop}/>
         <ItemList shopId={this.props.shop.store_id} navigator={this.props.navigator}/>
       </View>
@@ -38,7 +38,9 @@ const actions = (dispatch) => {
 };
 
 const styles = StyleSheet.create({
-
+  container: {
+    flex: 1,
+  }
 });
 
 export default connect(state => state.good, actions)(ShopPage);

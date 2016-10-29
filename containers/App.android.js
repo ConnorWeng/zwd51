@@ -39,7 +39,7 @@ class App extends Component {
       <Navigator
          ref="navigator"
          style={styles.container}
-         initialRoute={{}}
+         initialRoute={{MainPage: true}}
          renderScene={this.renderScene.bind(this)}
          configureScene={(route) => {
            return Navigator.SceneConfigs.FloatFromBottomAndroid;
@@ -49,55 +49,61 @@ class App extends Component {
   }
 
   renderScene(route, navigator) {
-    if (route.ItemPage) {
+    if (route.MainPage) {
       return (
-        <PageContainer navigator={navigator}>
-          <ItemPage navigator={navigator} {...route.item}/>
-        </PageContainer>
-      );
-    }
-    if (route.LoginPage) {
-      return (
-        <LoginPage navigator={navigator}/>
-      );
-    }
-    if (route.OrderConfirmPage) {
-      return (
-        <OrderConfirmPage navigator={navigator} specIds={route.specIds} specNums={route.specNums}/>
-      );
-    }
-    if (route.PaymentPage) {
-      return (
-        <PaymentPage navigator={navigator} orderInfo={route.orderInfo} orderAmount={route.orderAmount}/>
-      );
-    }
-    if (route.OrderPage) {
-      return (
-        <OrderPage navigator={navigator}/>
-      );
-    }
-    if (route.ShopPage) {
-      return (
-        <ShopPage navigator={navigator} shop={route.shop}/>
-      );
-    }
-    if (route.SettingPage) {
-      return (
-        <SettingPage navigator={navigator} persistor={this.props.persistor}/>
-      );
-    }
-    if (route.AddressPage) {
-      return (
-        <AddressPage navigator={navigator} addr={route.addr}/>
-      );
-    }
-    if (route.OrderGoodsPage) {
-      return (
-        <OrderGoodsPage navigator={navigator} goods={route.goods}/>
+        <MainPage navigator={navigator}/>
       );
     }
     return (
-      <MainPage navigator={navigator}/>
+      <PageContainer navigator={navigator}>
+        {(() => {
+          if (route.ItemPage) {
+            return (
+              <ItemPage navigator={navigator} {...route.item}/>
+            );
+          }
+          if (route.LoginPage) {
+            return (
+              <LoginPage navigator={navigator}/>
+            );
+          }
+          if (route.OrderConfirmPage) {
+            return (
+              <OrderConfirmPage navigator={navigator} specIds={route.specIds} specNums={route.specNums}/>
+            );
+          }
+          if (route.PaymentPage) {
+            return (
+              <PaymentPage navigator={navigator} orderInfo={route.orderInfo} orderAmount={route.orderAmount}/>
+            );
+          }
+          if (route.OrderPage) {
+            return (
+              <OrderPage navigator={navigator}/>
+            );
+          }
+          if (route.ShopPage) {
+            return (
+              <ShopPage navigator={navigator} shop={route.shop}/>
+            );
+          }
+          if (route.SettingPage) {
+            return (
+              <SettingPage navigator={navigator} persistor={this.props.persistor}/>
+            );
+          }
+          if (route.AddressPage) {
+            return (
+              <AddressPage navigator={navigator} addr={route.addr}/>
+            );
+          }
+          if (route.OrderGoodsPage) {
+            return (
+              <OrderGoodsPage navigator={navigator} goods={route.goods}/>
+            );
+          }
+        })()}
+      </PageContainer>
     );
   }
 

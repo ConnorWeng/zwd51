@@ -18,7 +18,7 @@ class MyItemsGroup extends Component {
 
 const styles = StyleSheet.create({
   bodyContainer: {
-    marginTop: 20,
+    marginBottom: 20,
     backgroundColor: '#ffffff',
     borderTopWidth: 0.5,
     borderColor: 'rgba(0,0,0,0.1)',

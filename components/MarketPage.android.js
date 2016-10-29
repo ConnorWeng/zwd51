@@ -216,6 +216,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     flexDirection: 'row',
+    marginBottom: 10,
   },
   searchInputContainer: {
     flex: 5,

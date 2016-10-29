@@ -33,7 +33,6 @@ class ShopInfo extends Component {
 
 const styles = StyleSheet.create({
   storeContainer: {
-    marginTop: 10,
     backgroundColor: '#ffffff',
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.1)',

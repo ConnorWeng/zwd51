@@ -28,7 +28,7 @@ class UserPage extends Component {
           } else {
             return (
               <View>
-                <TouchableHighlight style={{marginTop: 0}}>
+                <TouchableHighlight style={{marginBottom: 20}}>
                   <View style={styles.headContainer}>
                     <Image style={styles.headImage}
                            source={{uri: 'http://img.qq745.com/uploads/allimg/150510/1-150510223546-53.jpg'}}/>

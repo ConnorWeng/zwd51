@@ -53,7 +53,6 @@ const actions = (dispatch) => {
 
 const styles = StyleSheet.create({
   nameAndPasswordContainer: {
-    marginTop: 20,
     backgroundColor: '#ffffff',
     borderTopWidth: 0.5,
     borderColor: 'rgba(0,0,0,0.1)',

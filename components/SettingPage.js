@@ -14,7 +14,7 @@ class SettingPage extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <MyItemsGroup>
           <MyItem title="收货地址管理" iconName="ios-settings-outline"
                   onPress={() => {this.props.navigator.push({AddressPage: true, addr: {}});}}/>
@@ -37,7 +37,9 @@ const actions = (dispatch) => {
 };
 
 const styles = StyleSheet.create({
-
+  container: {
+    flex: 1,
+  },
 });
 
 export default connect(state => state, actions)(SettingPage);

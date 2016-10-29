@@ -60,7 +60,7 @@ class OrderPage extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <PullToRefreshListView
            ref="pullToRefreshListView"
            dataSource={this.state.orders}
@@ -203,11 +203,14 @@ const actions = (dispatch) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   orderListView: {
     height: height - 35,
   },
   orderContainer: {
-    marginTop: 10,
+    marginBottom: 10,
   },
   orderBodyContainer: {
   },
