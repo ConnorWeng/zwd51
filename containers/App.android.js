@@ -16,6 +16,7 @@ import ShopPage from '../components/ShopPage';
 import SettingPage from '../components/SettingPage';
 import AddressPage from '../components/AddressPage';
 import OrderGoodsPage from '../components/OrderGoodsPage';
+import OrderInfoPage from '../components/OrderInfoPage';
 
 class App extends Component {
 
@@ -100,6 +101,11 @@ class App extends Component {
           if (route.OrderGoodsPage) {
             return (
               <OrderGoodsPage navigator={navigator} goods={route.goods}/>
+            );
+          }
+          if (route.OrderInfoPage) {
+            return (
+              <OrderInfoPage navigator={navigator} {...route.order}/>
             );
           }
         })()}
