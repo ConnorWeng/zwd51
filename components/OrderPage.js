@@ -17,8 +17,8 @@ import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
+import OrderHead from './OrderHead';
 import {getOrders, getAlipayOrderInfo, clearAlipayOrderInfo} from '../actions';
-import STATUS from '../status.json';
 
 const {height, width} = Dimensions.get('window');
 
@@ -93,10 +93,7 @@ class OrderPage extends Component {
     }
     return (
       <View style={styles.orderContainer}>
-        <View style={styles.orderHeadContainer}>
-          <Text style={styles.orderSn}>订单号：{order.order_sn}</Text>
-          <Text style={styles.orderStatus}>{STATUS[order.status]}</Text>
-        </View>
+        <OrderHead orderSn={order.order_sn} orderStatus={order.status}/>
         <View style={styles.orderBodyContainer}>
           <View style={styles.orderGoodsContainer}>
             {goods}
@@ -211,19 +208,6 @@ const styles = StyleSheet.create({
   },
   orderContainer: {
     marginTop: 10,
-  },
-  orderHeadContainer: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: '#ffffff',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  orderSn: {
-    color: '#000000',
-  },
-  orderStatus: {
-    color: '#f40',
   },
   orderBodyContainer: {
   },
