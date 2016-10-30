@@ -53,7 +53,7 @@ class MainPage extends Component {
           <SearchPage navigator={this.props.navigator} tabLabel="ios-search-outline" style={styles.tabView}/>
           <CartPage navigator={this.props.navigator} tabLabel="ios-cart-outline" style={styles.tabView}/>
           <MarketPage navigator={this.props.navigator} tabLabel="ios-globe-outline" style={styles.tabView}/>
-           <UserPage navigator={this.props.navigator} tabLabel="ios-contact-outline" style={styles.tabView}/>
+          <UserPage navigator={this.props.navigator} tabLabel="ios-contact-outline" style={styles.tabView}/>
         </ScrollableTabView>
         {this.props.page.welcomed ? null : <WelcomePage/>}
       </View>
@@ -76,6 +76,7 @@ const actions = (dispatch) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#f5f5f5',
   },
   toolbar: {
     height: 56,
