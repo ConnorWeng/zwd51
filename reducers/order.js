@@ -49,6 +49,12 @@ const requestState = {
       goodsInfo: {init: false},
     }
   },
+  getOrderInfoRequest: {
+    name: 'GET_ORDER_INFO',
+    mapping: {
+      orderInfo: {init: false},
+    },
+  },
 };
 
 export default buildReducer(defaultState, defaultHandler, requestState);

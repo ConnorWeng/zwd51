@@ -110,14 +110,10 @@ class OrderPage extends Component {
               </TouchableOpacity>
                 :
               <View style={{flexDirection: 'row',}}>
-              <TouchableOpacity style={styles.orderActionContainer} onPress={() =>
-                this.props.navigator.push({OrderInfoPage: true, order: order})}>
-                <Text style={styles.orderActionLabel}>查看订单</Text>
-              </TouchableOpacity>
                 <TouchableOpacity style={styles.orderActionContainer} onPress={() =>
-                ToastAndroid.show('即将上线', ToastAndroid.SHORT)}>
-                <Text style={styles.orderActionLabel}>拿货单</Text>
-              </TouchableOpacity>
+                  this.props.navigator.push({OrderInfoPage: true, orderId: order.order_id})}>
+                  <Text style={styles.orderActionLabel}>查看订单</Text>
+                </TouchableOpacity>
               </View>
           }
         </View>

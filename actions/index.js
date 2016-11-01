@@ -206,3 +206,10 @@ export function clearWelcomed() {
     type: 'CLEAR_WELCOMED',
   };
 }
+
+export function getOrderInfo(orderId, accessToken) {
+  return serviceAction('GET_ORDER_INFO', '/mobile_order/get_order_info', 'GET', {
+    order_id: orderId,
+    access_token: accessToken,
+  });
+}

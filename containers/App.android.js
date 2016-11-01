@@ -105,7 +105,7 @@ class App extends Component {
           }
           if (route.OrderInfoPage) {
             return (
-              <OrderInfoPage navigator={navigator} {...route.order}/>
+              <OrderInfoPage navigator={navigator} orderId={route.orderId}/>
             );
           }
         })()}
