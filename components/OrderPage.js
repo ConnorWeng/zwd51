@@ -77,7 +77,7 @@ class OrderPage extends Component {
            enabledPullDown={false}
            pullUpDistance={35}
            pullUpStayDistance={50}/>
-        <Spinner visible={this.props.order.getOrdersRequest.isLoading || this.props.order.submitOrderRequest.isLoading}/>
+        <Spinner visible={this.props.order.getOrdersRequest.isLoading || this.props.order.submitOrderRequest.isLoading || this.props.order.getAlipayOrderInfoRequest.isLoading}/>
       </View>
     );
   }
