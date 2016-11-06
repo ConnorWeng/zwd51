@@ -6,8 +6,10 @@ import {
   ScrollView,
   Text,
   ToastAndroid,
+  Image,
+  TouchableOpacity,
 } from 'react-native';
-import CheckBox from 'react-native-checkbox';
+import Icon from 'react-native-vector-icons/Ionicons';
 import PrimaryButton from './PrimaryButton';
 
 class PaymentPage extends Component {
@@ -15,28 +17,25 @@ class PaymentPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      remain: false,
-      alipay: true,
+      selected: '支付宝',
     };
   }
 
   render() {
     return (
-      <ScrollView>
-        <CheckBox
-          label='余额'
-          labelBefore={true}
-          checked={this.state.remain}
-          containerStyle={styles.checkboxContainter}
-          labelStyle={styles.checkboxLabel}
-          onChange={(checked) => this.setState({remain: checked, alipay: !checked})}/>
-        <CheckBox
-          label='支付宝'
-          labelBefore={true}
-          checked={this.state.alipay}
-          containerStyle={styles.checkboxContainter}
-          labelStyle={styles.checkboxLabel}
-          onChange={(checked) => this.setState({alipay: checked, remain: !checked})}/>
+      <ScrollView style={styles.container}>
+        <TouchableOpacity onPress={() => {this.setState({selected: '支付宝'});}}>
+          <View style={styles.paymentContainer}>
+            <View style={styles.paymentLogoContainer}>
+              <Image source={require('../images/alipay48x48.png')}/>
+              <View style={styles.paymentTitleContainer}>
+                <Text style={{fontSize: 18, color: '#000000',}}>支付宝</Text>
+                <Text>数亿用户都在用，安全可托付</Text>
+              </View>
+            </View>
+            {'支付宝' == this.state.selected ? <Icon style={styles.checkbox} name="ios-checkbox-outline" size={30} color="rgb(0,200,0)" /> : null}
+          </View>
+        </TouchableOpacity>
         <PrimaryButton label={'确认支付 ¥' + this.props.orderAmount} onPress={this.pay.bind(this)}/>
       </ScrollView>
     );
@@ -55,32 +54,31 @@ class PaymentPage extends Component {
                                  });
   }
 
-  isChecked(method) {
-    if (this.state.paymentMethod === method) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
 }
 
 const styles = StyleSheet.create({
-  checkboxContainter: {
+  container: {
+    backgroundColor: '#f5f5f5',
+  },
+  paymentContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    height: 40,
+    padding: 10,
+    backgroundColor: '#ffffff',
     borderWidth: 0.5,
     borderColor: 'rgba(0,0,0,0.1)',
-    backgroundColor: '#ffffff',
-    paddingLeft: 20,
-    paddingRight: 20,
   },
-  checkboxLabel: {
-    fontSize: 20,
-    color: '#000000',
+  paymentLogoContainer: {
+    flexDirection: 'row',
+    flex: 8,
   },
+  checkbox: {
+    flex: 1,
+  },
+  paymentTitleContainer: {
+    justifyContent: 'space-between',
+    marginLeft: 10,
+  }
 });
 
 export default PaymentPage;
