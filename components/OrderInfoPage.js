@@ -21,7 +21,6 @@ const {height, width} = Dimensions.get('window');
 class OrderInfoPage extends Component {
 
   componentDidMount() {
-    ToastAndroid.show(this.props.orderId, ToastAndroid.SHORT);
     this.props.getOrderInfo(this.props.orderId, this.props.member.accessToken);
   }
 
