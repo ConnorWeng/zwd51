@@ -26,7 +26,9 @@ class OrderConfirmPage extends Component {
     super(props);
     this.state = {
       bhId: null,
+      behalf: null,
       dlId: null,
+      deliveryFee: 10,
       deliveries: [],
     };
   }
@@ -132,11 +134,15 @@ class OrderConfirmPage extends Component {
               <Text>代发费用</Text>
               <Text style={{color: '#f40'}}>+ {this.props.order.getOrderGoodsRequest.goodsInfo.behalf_fee}</Text>
             </TouchableContainerItem>
+            <TouchableContainerItem style={{height: 40}} bodyStyle={{justifyContent: 'space-between'}} arrow={false}>
+              <Text>快递费用</Text>
+              <Text style={{color: '#f40'}}>+ {this.state.deliveryFee}</Text>
+            </TouchableContainerItem>
           </TouchableContainerItemsGroup>
         </ScrollView>
         <View style={styles.actionContainer}>
           <View style={styles.priceContainer}>
-            <Text style={styles.priceText}>实付款：¥{this.props.order.getOrderGoodsRequest.goodsInfo.amount + this.props.order.getOrderGoodsRequest.goodsInfo.behalf_fee}</Text>
+            <Text style={styles.priceText}>实付款：¥{this.props.order.getOrderGoodsRequest.goodsInfo.amount + this.props.order.getOrderGoodsRequest.goodsInfo.behalf_fee + this.state.deliveryFee}</Text>
           </View>
           <TouchableOpacity onPress={this.submitOrder.bind(this)} style={[styles.submitAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
             <Text style={[styles.submitActionText, {color: '#fff'}]}>{this.props.order.submitOrderRequest.isLoading ? '处理中...' : '提交订单'}</Text>
@@ -176,7 +182,9 @@ class OrderConfirmPage extends Component {
       }
       this.setState({
         bhId: value,
+        behalf: selectedBehalfs[0],
         dlId: deliveries[0].dl_id,
+        deliveryFee: this.caculateDeliveryFee(deliveries[0]),
         deliveries: deliveries,
       });
     }
@@ -185,7 +193,21 @@ class OrderConfirmPage extends Component {
   onSelectDelivery(value) {
     this.setState({
       dlId: value,
+      deliveryFee: this.caculateDeliveryFee(this.state.behalf.deliveries[value]),
     });
+  }
+
+  caculateDeliveryFee(delivery) {
+    const items =  this.props.order.getOrderGoodsRequest.goodsInfo.items;
+    if (delivery && items.length > 0) {
+      const firstPrice = parseInt(parseFloat(delivery.first_price) * 100);
+      const firstAmount = parseInt(delivery.first_amount);
+      const stepPrice = parseInt(parseFloat(delivery.step_price) * 100);
+      const stepAmount = parseInt(delivery.step_amount);
+      return (((firstAmount * firstPrice) + (items.length - firstAmount) * stepPrice) / 100.0);
+    } else {
+      return 0;
+    }
   }
 
 }
