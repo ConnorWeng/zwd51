@@ -68,6 +68,6 @@ public class MainActivity extends ReactActivity {
             }
         });
 
-        UpdateChecker.checkForDialog(this);
+        UpdateChecker.checkForNotification(this);
     }
 }
