@@ -48,6 +48,10 @@ class OrderInfoPage extends Component {
       const store = mergeSgoods[storeId];
       const storeInfo = store.store_info;
       const goodsList = store.goods_list;
+      let quantity = 0;
+      goodsList.forEach((good) => {
+        quantity += parseInt(good.quantity);
+      });
       stores.push(
         <TouchableContainerItemsGroup key={storeInfo.store_id} style={{marginTop: 10}}>
           <TouchableContainerItem style={{height: 40}} bodyStyle={{justifyContent: 'space-between'}} arrow={false}>
@@ -81,7 +85,7 @@ class OrderInfoPage extends Component {
                 }
               })()}
           </View>
-          <Text>共{goodsList.length}件</Text>
+          <Text>共{quantity}件</Text>
           </TouchableContainerItem>
         </TouchableContainerItemsGroup>
       );

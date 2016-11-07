@@ -97,7 +97,7 @@ class OrderConfirmPage extends Component {
                   }
                 })()}
               </View>
-              <Text>共{this.props.order.getOrderGoodsRequest.goodsInfo.items ? this.props.order.getOrderGoodsRequest.goodsInfo.items.length : 0}件</Text>
+              <Text>共{this.props.order.getOrderGoodsRequest.goodsInfo ? this.props.order.getOrderGoodsRequest.goodsInfo.quantity : 0}件</Text>
             </TouchableContainerItem>
             <TouchableContainerItem style={{height: 60}} arrow={false}>
               <Text style={{fontSize: 16}}>代发：</Text>
@@ -198,13 +198,13 @@ class OrderConfirmPage extends Component {
   }
 
   caculateDeliveryFee(delivery) {
-    const items =  this.props.order.getOrderGoodsRequest.goodsInfo.items;
-    if (delivery && items.length > 0) {
+    const quantity =  this.props.order.getOrderGoodsRequest.goodsInfo.quantity;
+    if (delivery && quantity > 0) {
       const firstPrice = parseInt(parseFloat(delivery.first_price) * 100);
       const firstAmount = parseInt(delivery.first_amount);
       const stepPrice = parseInt(parseFloat(delivery.step_price) * 100);
       const stepAmount = parseInt(delivery.step_amount);
-      return (((firstAmount * firstPrice) + (items.length - firstAmount) * stepPrice) / 100.0);
+      return (((firstAmount * firstPrice) + (quantity - firstAmount) * stepPrice) / 100.0);
     } else {
       return 0;
     }
