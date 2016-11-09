@@ -7,6 +7,7 @@ import {
   Dimensions,
   ToastAndroid,
   Image,
+  Clipboard,
 } from 'react-native';
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -126,11 +127,15 @@ class OrderInfoPage extends Component {
         <Text>快递</Text>
         <Text>{orderExtm.dl_id}</Text>
         </TouchableContainerItem>
+        <TouchableContainerItem onPress={() => {this.clip(order.invoice_no)}} style={{height: 40}} bodyStyle={{justifyContent: 'space-between'}} arrow={false}>
+        <Text>物流单号</Text>
+        <Text>{order.invoice_no}</Text>
+        </TouchableContainerItem>
         <TouchableContainerItem style={{height: 40}} bodyStyle={{justifyContent: 'space-between'}} arrow={false}>
         <Text>代发电话</Text>
         <Text>{behalfInfo.bh_tel}</Text>
         </TouchableContainerItem>
-        <TouchableContainerItem style={{height: 40}} bodyStyle={{justifyContent: 'space-between'}} arrow={false}>
+        <TouchableContainerItem onPress={() => {this.clip(behalfInfo.bh_qq)}} style={{height: 40}} bodyStyle={{justifyContent: 'space-between'}} arrow={false}>
         <Text>代发QQ</Text>
         <Text>{behalfInfo.bh_qq}</Text>
         </TouchableContainerItem>
@@ -140,6 +145,11 @@ class OrderInfoPage extends Component {
       </View>
     );
 
+  }
+
+  clip(invoiceNo) {
+    Clipboard.setString(invoiceNo);
+    ToastAndroid.show('已复制', ToastAndroid.SHORT);
   }
 
 }
