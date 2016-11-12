@@ -17,6 +17,7 @@ import SettingPage from '../components/SettingPage';
 import AddressPage from '../components/AddressPage';
 import OrderGoodsPage from '../components/OrderGoodsPage';
 import OrderInfoPage from '../components/OrderInfoPage';
+import AboutPage from '../components/AboutPage';
 
 class App extends Component {
 
@@ -106,6 +107,11 @@ class App extends Component {
           if (route.OrderInfoPage) {
             return (
               <OrderInfoPage navigator={navigator} orderId={route.orderId}/>
+            );
+          }
+          if (route.AboutPage) {
+            return (
+              <AboutPage navigator={navigator}/>
             );
           }
         })()}

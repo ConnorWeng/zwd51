@@ -77,6 +77,23 @@ def enableSeparateBuildPerCPUArchitecture = false
  */
 def enableProguardInReleaseBuilds = false
 
+import groovy.json.JsonSlurper
+
+def getGitVersion() {
+    def process = "git rev-list master --first-parent --count".execute()
+    return process.text.toInteger()
+}
+def vCode = getGitVersion()
+
+def getNpmVersion() {
+    def packageFile = new File("../package.json")
+    def packageJson = new JsonSlurper().parseText(packageFile.text)
+    return packageJson["version"]
+}
+def vName = getNpmVersion()
+
+println "Building zwd51 app $vName $vCode"
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -85,8 +102,8 @@ android {
         applicationId "com.zwd51"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 5
-        versionName "0.1.5"
+        versionCode vCode
+        versionName vName
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }

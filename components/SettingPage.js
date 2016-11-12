@@ -19,6 +19,10 @@ class SettingPage extends Component {
           <MyItem title="收货地址管理" iconName="ios-settings-outline"
                   onPress={() => {this.props.navigator.push({AddressPage: true, addr: {}});}}/>
         </MyItemsGroup>
+        <MyItemsGroup>
+          <MyItem title="关于" iconName="ios-information-circle-outline"
+                  onPress={() => {this.props.navigator.push({AboutPage: true, addr: {}});}}/>
+        </MyItemsGroup>
         <PrimaryButton label="退出登录" onPress={() => {
             this.props.persistor.purge();
             this.props.logout();
