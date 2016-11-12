@@ -108,14 +108,13 @@ class OrderPage extends Component {
                 this.props.getAlipayOrderInfo(order.order_id, this.props.member.accessToken)}>
                 <Text style={styles.orderActionLabel}>支付</Text>
               </TouchableOpacity>
-                :
-              <View style={{flexDirection: 'row',}}>
-                <TouchableOpacity style={styles.orderActionContainer} onPress={() =>
-                  this.props.navigator.push({OrderInfoPage: true, orderId: order.order_id})}>
-                  <Text style={styles.orderActionLabel}>查看订单</Text>
-                </TouchableOpacity>
-              </View>
-          }
+            : null }
+          <View style={{flexDirection: 'row',}}>
+            <TouchableOpacity style={styles.orderActionContainer} onPress={() =>
+              this.props.navigator.push({OrderInfoPage: true, orderId: order.order_id})}>
+              <Text style={styles.orderActionLabel}>查看订单</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
