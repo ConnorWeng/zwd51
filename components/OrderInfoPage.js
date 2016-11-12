@@ -34,7 +34,9 @@ class OrderInfoPage extends Component {
   render() {
     if (!this.props.order.getOrderInfoRequest.orderInfo) {
       return (
-        <View></View>
+        <View>
+          <Spinner visible={this.props.order.getOrderInfoRequest.isLoading}/>
+        </View>
       );
     }
     const orderInfo = this.props.order.getOrderInfoRequest.orderInfo;
