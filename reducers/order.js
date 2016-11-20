@@ -61,6 +61,12 @@ const requestState = {
       success: 'success',
     },
   },
+  applyRefundRequest: {
+    name: 'APPLY_REFUND',
+    mapping: {
+      success: 'success',
+    },
+  },
 };
 
 export default buildReducer(defaultState, defaultHandler, requestState);

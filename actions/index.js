@@ -66,6 +66,16 @@ export function clearAlipayOrderInfo() {
   };
 }
 
+export function applyRefund(orderId, refundAmount, refundReason, refundIntro, accessToken) {
+  return serviceAction('APPLY_REFUND', '/mobile_order/apply_refund', 'POST', {
+    order_id: orderId,
+    refund_amount: refundAmount,
+    refund_reason: refundReason,
+    refund_intro: refundIntro,
+    access_token: accessToken,
+  });
+}
+
 export function confirmOrder(orderId, accessToken) {
   return serviceAction('CONFIRM_ORDER', '/mobile_order/confirm_order', 'POST', {
     order_id: orderId,

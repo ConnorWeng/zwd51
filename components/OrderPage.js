@@ -121,7 +121,7 @@ class OrderPage extends Component {
                 <Text style={styles.orderActionLabel}>确认收货</Text>
               </TouchableOpacity>
               : null }
-          { order.status === '20' || order.status === '30' || order.status === '40' ?
+          { order.status === '20' ?
               <TouchableOpacity style={styles.orderActionContainer} onPress={() => {
                 this.props.navigator.push({RefundPage: true, orderAmount: order.order_amount, orderId: order.order_id});}}>
                 <Text style={styles.orderActionLabel}>退货退款</Text>
