@@ -18,6 +18,7 @@ import AddressPage from '../components/AddressPage';
 import OrderGoodsPage from '../components/OrderGoodsPage';
 import OrderInfoPage from '../components/OrderInfoPage';
 import AboutPage from '../components/AboutPage';
+import RefundPage from '../components/RefundPage';
 
 class App extends Component {
 
@@ -112,6 +113,11 @@ class App extends Component {
           if (route.AboutPage) {
             return (
               <AboutPage navigator={navigator}/>
+            );
+          }
+          if (route.RefundPage) {
+            return (
+              <RefundPage navigator={navigator} orderAmount={route.orderAmount} orderId={route.orderId}/>
             );
           }
         })()}
