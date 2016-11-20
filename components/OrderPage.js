@@ -18,7 +18,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import OrderHead from './OrderHead';
-import {getOrders, getAlipayOrderInfo, clearAlipayOrderInfo} from '../actions';
+import {getOrders, getAlipayOrderInfo, clearAlipayOrderInfo, confirmOrder} from '../actions';
 
 const {height, width} = Dimensions.get('window');
 
@@ -56,6 +56,12 @@ class OrderPage extends Component {
       });
       this.props.clearAlipayOrderInfo();
     }
+    if (nextProps.order.confirmOrderRequest.message) {
+      ToastAndroid.show(nextProps.order.confirmOrderRequest.message, ToastAndroid.SHORT);
+    }
+    if (nextProps.order.confirmOrderRequest.success) {
+      ToastAndroid.show('确认成功', ToastAndroid.SHORT);
+    }
   }
 
   render() {
@@ -77,7 +83,7 @@ class OrderPage extends Component {
            enabledPullDown={false}
            pullUpDistance={35}
            pullUpStayDistance={50}/>
-        <Spinner visible={this.props.order.getOrdersRequest.isLoading || this.props.order.submitOrderRequest.isLoading || this.props.order.getAlipayOrderInfoRequest.isLoading}/>
+        <Spinner visible={this.props.order.getOrdersRequest.isLoading || this.props.order.submitOrderRequest.isLoading || this.props.order.getAlipayOrderInfoRequest.isLoading|| this.props.order.confirmOrderRequest.isLoading}/>
       </View>
     );
   }
@@ -107,6 +113,12 @@ class OrderPage extends Component {
               <TouchableOpacity style={styles.orderActionContainer} onPress={() =>
                 this.props.getAlipayOrderInfo(order.order_id, this.props.member.accessToken)}>
                 <Text style={styles.orderActionLabel}>支付</Text>
+              </TouchableOpacity>
+            : null }
+          { order.status === '30' ?
+              <TouchableOpacity style={styles.orderActionContainer} onPress={() =>
+                this.props.confirmOrder(order.order_id, this.props.member.accessToken)}>
+                <Text style={styles.orderActionLabel}>确认收货</Text>
               </TouchableOpacity>
             : null }
           <View style={{flexDirection: 'row',}}>
@@ -194,6 +206,7 @@ const actions = (dispatch) => {
     getOrders: (page, accessToken) => dispatch(getOrders(page, accessToken)),
     getAlipayOrderInfo: (orderId, accessToken) => dispatch(getAlipayOrderInfo(orderId, accessToken)),
     clearAlipayOrderInfo: () => dispatch(clearAlipayOrderInfo()),
+    confirmOrder: (orderId, accessToken) => dispatch(confirmOrder(orderId, accessToken)),
   };
 };
 

@@ -55,6 +55,12 @@ const requestState = {
       orderInfo: {init: false},
     },
   },
+  confirmOrderRequest: {
+    name: 'CONFIRM_ORDER',
+    mapping: {
+      success: 'success',
+    },
+  },
 };
 
 export default buildReducer(defaultState, defaultHandler, requestState);

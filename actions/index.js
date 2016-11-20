@@ -66,6 +66,13 @@ export function clearAlipayOrderInfo() {
   };
 }
 
+export function confirmOrder(orderId, accessToken) {
+  return serviceAction('CONFIRM_ORDER', '/mobile_order/confirm_order', 'POST', {
+    order_id: orderId,
+    access_token: accessToken,
+  });
+}
+
 export function getShops(mkId, keywords, page) {
   return serviceAction('GET_SHOPS', '/mobile_shop/index', 'GET', {
     mk_id: mkId,
