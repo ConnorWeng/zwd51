@@ -18,7 +18,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import OrderHead from './OrderHead';
-import {getOrders, getAlipayOrderInfo, clearAlipayOrderInfo, confirmOrder} from '../actions';
+import {getOrders, getAlipayOrderInfo, clearAlipayOrderInfo, confirmOrder, clearOrders, refreshOrders} from '../actions';
 
 const {height, width} = Dimensions.get('window');
 
@@ -46,6 +46,7 @@ class OrderPage extends Component {
       this.setState({
         orders: this.dataSource.cloneWithRows(nextProps.order.getOrdersRequest.data),
       });
+      this.refs.pullToRefreshListView.endRefresh();
     }
     this.refs.pullToRefreshListView.endLoadMore(nextProps.order.getOrdersRequest.isEnd);
     if (nextProps.order.getAlipayOrderInfoRequest.orderInfo) {
@@ -80,7 +81,8 @@ class OrderPage extends Component {
            renderFooter={this.renderFooter.bind(this)}
            onRefresh={this.onRefresh.bind(this)}
            onLoadMore={this.onLoadMore.bind(this)}
-           enabledPullDown={false}
+           pullDownDistance={35}
+           pullDownStayDistance={50}
            pullUpDistance={35}
            pullUpStayDistance={50}/>
         <Spinner visible={this.props.order.getOrdersRequest.isLoading || this.props.order.submitOrderRequest.isLoading || this.props.order.getAlipayOrderInfoRequest.isLoading|| this.props.order.confirmOrderRequest.isLoading}/>
@@ -139,9 +141,35 @@ class OrderPage extends Component {
   }
 
   renderHeader(viewState) {
-    return (
-      <View style={{width: width}}></View>
-    );
+    let {pullState, pullDistancePercent} = viewState;
+    let {refresh_none, refresh_idle, will_refresh, refreshing,} = PullToRefreshListView.constants.viewState;
+    pullDistancePercent = Math.round(pullDistancePercent * 100);
+    switch(pullState) {
+    case refresh_none:
+      return (
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Text>下拉刷新</Text>
+        </View>
+      );
+    case refresh_idle:
+      return (
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Text>继续下拉刷新</Text>
+        </View>
+      );
+    case will_refresh:
+      return (
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Text>放开立即刷新</Text>
+        </View>
+      );
+    case refreshing:
+      return (
+        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          {this.renderActivityIndicator()}<Text>加载中</Text>
+        </View>
+      );
+    }
   }
 
   renderFooter(viewState) {
@@ -198,7 +226,8 @@ class OrderPage extends Component {
   }
 
   onRefresh() {
-    this.refs.pullToRefreshListView.endRefresh(true);
+    this.props.clearOrders();
+    this.props.refreshOrders(this.props.member.accessToken);
   }
 
   onLoadMore() {
@@ -213,6 +242,8 @@ const actions = (dispatch) => {
     getAlipayOrderInfo: (orderId, accessToken) => dispatch(getAlipayOrderInfo(orderId, accessToken)),
     clearAlipayOrderInfo: () => dispatch(clearAlipayOrderInfo()),
     confirmOrder: (orderId, accessToken) => dispatch(confirmOrder(orderId, accessToken)),
+    clearOrders: () => dispatch(clearOrders()),
+    refreshOrders: (accessToken) => dispatch(refreshOrders(accessToken)),
   };
 };
 

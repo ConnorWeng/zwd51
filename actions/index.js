@@ -47,6 +47,13 @@ export function getOrders(page, accessToken) {
   });
 }
 
+export function refreshOrders(accessToken) {
+  return serviceAction('GET_ORDERS', '/mobile_order/index', 'GET', {
+    page: 1,
+    access_token: accessToken,
+  });
+}
+
 export function clearOrders() {
   return {
     type: 'CLEAR_ORDERS',
