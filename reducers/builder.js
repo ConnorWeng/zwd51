@@ -22,6 +22,7 @@ export function buildReducer(defaultState, defaultHandler, requestState) {
             case `${requestName}_CLEAR_MESSAGE`:
               newState[key] = Object.assign({}, state[key], {
                 message: '',
+                isLoading: false,
               });
               if (state[key].success) {
                 newState[key].success = '';
@@ -81,6 +82,7 @@ export function buildReducer(defaultState, defaultHandler, requestState) {
             case `${requestName}_CLEAR_MESSAGE`:
               newState[key] = Object.assign({}, state[key], {
                 message: '',
+                isLoading: false,
               });
               if (state[key].success) {
                 newState[key].success = '';

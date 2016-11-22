@@ -32,6 +32,7 @@ class OrderPage extends Component {
     this.state = {
       orders: this.dataSource.cloneWithRows(props.order.getOrdersRequest.data),
     };
+    this.confirmTimer = false;
   }
 
   componentDidMount() {
@@ -62,6 +63,15 @@ class OrderPage extends Component {
     }
     if (nextProps.order.confirmOrderRequest.success) {
       ToastAndroid.show('确认成功', ToastAndroid.SHORT);
+      if (!this.confirmTimer) {
+        // 等待CLEAR_MESSAGE事件触发之后再触发刷新
+        this.confirmTimer = setTimeout(((ref) => {
+          return () => {
+            ref.onRefresh();
+            ref.confirmTimer = false;
+          };
+        })(this), 3000);
+      }
     }
   }
 
