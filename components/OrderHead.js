@@ -21,11 +21,13 @@ class OrderHead extends Component {
 
 const styles = StyleSheet.create({
   orderHeadContainer: {
+    height: 35,
     paddingLeft: 10,
     paddingRight: 10,
     backgroundColor: '#ffffff',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   orderSn: {
     color: '#000000',
