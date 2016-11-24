@@ -103,6 +103,7 @@ class ItemPage extends Component {
           <Image style={styles.itemImage} source={{uri: this.props.default_image.replace('_240x240.jpg', '')}}/>
           <View style={styles.itemHead}>
             <Text numberOfLines={2} style={styles.itemTitle}>{this.props.goods_name}</Text>
+            <Text style={styles.itemOuterIid}>商家编码：{this.getOuterIid()}</Text>
             <Text style={styles.itemPrice}>¥ {this.props.price}</Text>
             <Text style={styles.itemOriginPrice}>淘宝价 ¥ {this.props.price}</Text>
           </View>
@@ -176,6 +177,17 @@ class ItemPage extends Component {
 
   getDescription(e) {
     this.props.getDescription(this.props.goods_id);
+  }
+
+  getOuterIid() {
+    let outerIid = '';
+    if (this.props.goods_attr) {
+      for (var k in this.props.goods_attr) {
+        outerIid = this.props.goods_attr[k].attr_value
+        break;
+      }
+    }
+    return outerIid;
   }
 
   onModalOpened() {
@@ -299,6 +311,9 @@ const styles = StyleSheet.create({
   itemOriginPrice: {
     fontSize: 14,
     textDecorationLine: 'line-through',
+  },
+  itemOuterIid: {
+    fontSize: 14,
   },
   itemSku: {
     flexDirection: 'row',
