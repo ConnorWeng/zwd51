@@ -117,7 +117,7 @@ class App extends Component {
           }
           if (route.RefundPage) {
             return (
-              <RefundPage navigator={navigator} orderAmount={route.orderAmount} orderId={route.orderId}/>
+              <RefundPage navigator={navigator} orderAmount={route.orderAmount} orderId={route.orderId} orderStatus={route.orderStatus}/>
             );
           }
         })()}

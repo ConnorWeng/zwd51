@@ -26,6 +26,13 @@ const defaultHandler = (state, action) => {
       orderInfo: false,
     });
     return Object.assign({}, state, newState);
+  case 'CLEAR_ORDER_INFO_FOR_REFUND':
+    newState.getOrderInfoForRefundRequest = Object.assign({}, state.getOrderInfoForRefundRequest, {
+      order: null,
+      deliverys: null,
+      levyRebackGoodsFee: null,
+    });
+    return Object.assign({}, state, newState);
   }
 };
 
@@ -67,6 +74,14 @@ const requestState = {
       success: 'success',
     },
   },
+  getOrderInfoForRefundRequest: {
+    name: 'GET_ORDER_INFO_FOR_REFUND',
+    mapping: {
+      order: 'order',
+      deliverys: 'deliverys',
+      levyRebackGoodsFee: 'levy_reback_goods_fee',
+    },
+  }
 };
 
 export default buildReducer(defaultState, defaultHandler, requestState);
