@@ -29,8 +29,7 @@ class RefundPage extends Component {
       intro: '',
       reason: '退还商品差价(换货)',
       deliveryName: '',
-      invoiceNo: 0,
-      returnGoods: '',
+      invoiceNo: '',
     };
   }
 
@@ -61,7 +60,7 @@ class RefundPage extends Component {
         for (var k in gwh) {
           const g = gwh[k];
           returnGoods.push(
-            <View value={g.id} style={styles.returnGood}>
+            <View key={g.id} myKey={g.id} value={g.id} style={styles.returnGood}>
               <Text>商品编码：{g.goods_no}   ¥{g.goods_price}</Text>
             </View>
           );
@@ -149,9 +148,26 @@ class RefundPage extends Component {
   }
 
   apply() {
+    if (!this.state.amount) {
+      ToastAndroid.show('请填写退款金额', ToastAndroid.SHORT);
+      return false;
+    }
+
     let goodsIds = '';
     if (this.state.reason === '申请退货' && this.refs.multiSelect) {
       goodsIds = this.refs.multiSelect.getSelected().join(',');
+      if (!goodsIds) {
+        ToastAndroid.show('请选择需要退货的商品', ToastAndroid.SHORT);
+        return false;
+      }
+      if (!this.state.invoiceNo) {
+        ToastAndroid.show('请填写回寄单号', ToastAndroid.SHORT);
+        return false;
+      }
+      if (!this.state.deliveryName) {
+        ToastAndroid.show('请选择回寄物流', ToastAndroid.SHORT);
+        return false;
+      }
     }
     this.props.applyRefund(this.props.orderId, this.state.amount, this.state.reason, this.state.intro, goodsIds, this.state.invoiceNo, this.state.deliveryName, this.props.member.accessToken);
   }

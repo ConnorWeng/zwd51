@@ -21,7 +21,7 @@ class MultiSelect extends Component {
     const childrenArray = Array.isArray(this.props.children) ? this.props.children : [this.props.children];
     const children = childrenArray.map((child, i) => {
       return (
-        <TouchableOpacity onPress={() => {this.setState({selected: Math.pow(2, i) ^ this.state.selected})}}>
+        <TouchableOpacity key={child.props.myKey} onPress={() => {this.setState({selected: Math.pow(2, i) ^ this.state.selected})}}>
           <View style={styles.itemContainer}>
             <View style={styles.bodyContainer}>
               {child}
