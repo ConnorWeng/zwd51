@@ -28,8 +28,8 @@ class RefundPage extends Component {
       amount: this.props.orderAmount,
       intro: '',
       reason: '退还商品差价(换货)',
-      delivery: '',
-      invoiceNo: '',
+      deliveryName: '',
+      invoiceNo: 0,
       returnGoods: '',
     };
   }
@@ -61,7 +61,7 @@ class RefundPage extends Component {
         for (var k in gwh) {
           const g = gwh[k];
           returnGoods.push(
-            <View value={1} style={styles.returnGood}>
+            <View value={g.id} style={styles.returnGood}>
               <Text>商品编码：{g.goods_no}   ¥{g.goods_price}</Text>
             </View>
           );
@@ -76,11 +76,11 @@ class RefundPage extends Component {
         <TouchableContainerItemsGroup>
           <TouchableContainerItem style={{height: 60}} arrow={false}>
             <Text style={{fontSize: 16}}>回寄物流：</Text>
-            <Picker style={{flex: 1}} selectedValue={this.state.delivery} onValueChange={(value) => this.setState({delivery: value})}>
+            <Picker style={{flex: 1}} selectedValue={this.state.deliveryName} onValueChange={(value) => this.setState({deliveryName: value})}>
               {
                 this.props.order.getOrderInfoForRefundRequest.deliverys.map((d, i) => {
                   return (
-                    <Picker.Item key={i} label={d.dl_name} value={d.dl_id}/>
+                    <Picker.Item key={i} label={d.dl_name} value={d.dl_id + ':' + d.dl_name + ':' + d.dl_desc}/>
                   );
                 })
               }
@@ -125,7 +125,7 @@ class RefundPage extends Component {
             </TouchableContainerItem>
             <TouchableContainerItem style={{height: 60}} arrow={false}>
               <Text style={{fontSize: 16}}>退款金额：</Text>
-              <TextInput ref="amountInput" style={{flex: 1}} keyboardType="numeric" value={this.state.amount} onChangeText={(text) => this.setState({amount: text})}/>
+              <TextInput ref="amountInput" style={{flex: 1}} value={this.state.amount} onChangeText={(text) => this.setState({amount: text})}/>
             </TouchableContainerItem>
             {
               this.state.reason !== '申请退货' ? (
@@ -139,13 +139,21 @@ class RefundPage extends Component {
           {returnGoodsView}
         </ScrollView>
         <View style={styles.actionContainer}>
-          <TouchableOpacity onPress={() => {this.props.applyRefund(this.props.orderId, this.state.amount, this.state.reason, this.state.intro, this.props.member.accessToken);}} style={[styles.submitAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
+          <TouchableOpacity onPress={this.apply.bind(this)} style={[styles.submitAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
             <Text style={[styles.submitActionText, {color: '#fff'}]}>提交</Text>
           </TouchableOpacity>
         </View>
         <Spinner visible={this.props.order.applyRefundRequest.isLoading || this.props.order.getOrderInfoForRefundRequest.isLoading}/>
       </View>
     );
+  }
+
+  apply() {
+    let goodsIds = '';
+    if (this.state.reason === '申请退货' && this.refs.multiSelect) {
+      goodsIds = this.refs.multiSelect.getSelected().join(',');
+    }
+    this.props.applyRefund(this.props.orderId, this.state.amount, this.state.reason, this.state.intro, goodsIds, this.state.invoiceNo, this.state.deliveryName, this.props.member.accessToken);
   }
 
   onReasonChange(value) {
@@ -159,7 +167,7 @@ class RefundPage extends Component {
 
 const actions = (dispatch) => {
   return {
-    applyRefund: (orderId, refundAmount, refundReason, refundIntro, accessToken) => dispatch(applyRefund(orderId, refundAmount, refundReason, refundIntro, accessToken)),
+    applyRefund: (orderId, refundAmount, refundReason, refundIntro, goodsIds, invoiceNo, deliveryName, accessToken) => dispatch(applyRefund(orderId, refundAmount, refundReason, refundIntro, goodsIds, invoiceNo, deliveryName, accessToken)),
     getOrderInfoForRefund: (orderId, accessToken) => dispatch(getOrderInfoForRefund(orderId, accessToken)),
     clearOrderInfoForRefund: () => dispatch(clearOrderInfoForRefund()),
   };

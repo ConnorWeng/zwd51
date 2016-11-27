@@ -86,12 +86,15 @@ export function clearOrderInfoForRefund() {
   };
 }
 
-export function applyRefund(orderId, refundAmount, refundReason, refundIntro, accessToken) {
+export function applyRefund(orderId, refundAmount, refundReason, refundIntro, goodsIds, invoiceNo, deliveryName, accessToken) {
   return serviceAction('APPLY_REFUND', '/mobile_order/apply_refund', 'POST', {
     order_id: orderId,
     refund_amount: refundAmount,
     refund_reason: refundReason,
     refund_intro: refundIntro,
+    goods_ids: goodsIds,
+    invoice_no: invoiceNo,
+    delivery_name: deliveryName,
     access_token: accessToken,
   });
 }
