@@ -3,6 +3,7 @@ const member = (state = {
   username: '',
   isLogging: false,
   message: '',
+  isTaobao: false,
 }, action) => {
   switch (action.type) {
   case 'LOGIN_REQUEST':
@@ -43,6 +44,7 @@ const member = (state = {
         userId: action.json.user_id,
         username: action.json.user_name,
         message: '登录成功',
+        isTaobao: true,
       });
     }
   default:

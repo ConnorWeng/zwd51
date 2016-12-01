@@ -250,6 +250,10 @@ class ItemPage extends Component {
   }
 
   taobaoUpload() {
+    if (!this.props.member.isTaobao) {
+      ToastAndroid.show('只有使用淘宝登录的用户才能上传宝贝，请退出账户后使用淘宝用户重新登录', ToastAndroid.LONG);
+      return false;
+    }
     this.props.addItem(this.props.goods_id, this.props.member.accessToken);
   }
 
