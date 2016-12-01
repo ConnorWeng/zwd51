@@ -1,6 +1,5 @@
 package com.zwd51.packages;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +11,7 @@ import com.alibaba.sdk.android.AlibabaSDK;
 import com.alibaba.sdk.android.login.LoginService;
 import com.alibaba.sdk.android.login.callback.LoginCallback;
 import com.alibaba.sdk.android.session.model.Session;
+import com.alibaba.sdk.android.session.model.User;
 import com.alipay.sdk.app.PayTask;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -41,17 +41,24 @@ public class AlibabaAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void login() {
+    public void login(final Callback successCallback, final Callback errorCallback) {
         LoginService loginService = AlibabaSDK.getService(LoginService.class);
         loginService.showLogin(mainActivity, new LoginCallback() {
             @Override
             public void onSuccess(Session session) {
                 Log.i("AlibabaAPIModule", "onSuccess: "+session.isLogin()+"-UserId-" + session.getUserId() + "-LoginTime-"+ session.getLoginTime()+"[user]:nick="+session.getUser().nick + "头像"+ session.getUser().avatarUrl);
+                User user = session.getUser();
+                successCallback.invoke(
+                        user.id,
+                        user.nick,
+                        user.avatarUrl,
+                        session.getAuthorizationCode());
             }
 
             @Override
             public void onFailure(int code, String message) {
                 Log.e("AlibabaAPIMoudle", "onFailure: "+code+message);
+                errorCallback.invoke(code, message);
             }
         });
 

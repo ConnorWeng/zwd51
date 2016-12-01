@@ -19,7 +19,7 @@ class LabelAndInput extends Component {
     return (
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>{this.props.label}</Text>
-        {this.props.children ? this.props.children : <TextInput onChangeText={(text) => this.setState({text: text})} style={styles.input} underlineColorAndroid="rgba(0,0,0,0)" {...this.props}/>}
+        {this.props.children ? this.props.children : <TextInput onChangeText={(text) => this.setState({text: text})} style={[styles.input, this.props.inputStyle]} underlineColorAndroid="rgba(0,0,0,0)" {...this.props}/>}
       </View>
     );
   }

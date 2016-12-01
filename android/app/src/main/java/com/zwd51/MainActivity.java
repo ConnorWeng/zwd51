@@ -1,9 +1,11 @@
 package com.zwd51;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.alibaba.sdk.android.AlibabaSDK;
+import com.alibaba.sdk.android.callback.CallbackContext;
 import com.alibaba.sdk.android.callback.InitResultCallback;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
@@ -69,5 +71,10 @@ public class MainActivity extends ReactActivity {
         });
 
         UpdateChecker.checkForNotification(this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        CallbackContext.onActivityResult(requestCode, resultCode, data);
     }
 }

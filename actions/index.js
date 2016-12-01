@@ -20,6 +20,16 @@ export function logout() {
   };
 }
 
+export function check(taobaoUsername, id, nick, avatarUrl, authorizationCode) {
+  return serviceAction('CHECK', '/mobile_member/check', 'POST', {
+    taobao_username: taobaoUsername,
+    id: id,
+    nick: nick,
+    avatar_url: avatarUrl,
+    authorization_code: authorizationCode,
+  });
+}
+
 export function submitOrder(specIds, specNums, addressId,
                             behalfId, deliveryId, postscript,
                             accessToken) {
