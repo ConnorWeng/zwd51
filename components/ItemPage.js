@@ -21,7 +21,7 @@ import InputNumber from '../node_modules/rc-input-number/lib/index';
 import inputNumberStyles from '../node_modules/rc-input-number/lib/styles';
 import SpecPicker from './SpecPicker';
 import SpecContainer from './SpecContainer';
-import {getDescription, clearDescription, getSpecs, addToCart} from '../actions';
+import {getDescription, clearDescription, getSpecs, addToCart, addItem} from '../actions';
 
 const {height, width} = Dimensions.get('window');
 
@@ -97,6 +97,14 @@ class ItemPage extends Component {
   }
 
   render() {
+    if (this.props.taobao.addItemRequest.message) {
+      ToastAndroid.show(this.props.taobao.addItemRequest.message, ToastAndroid.SHORT);
+    }
+
+    if (this.props.taobao.addItemRequest.success) {
+      ToastAndroid.show('上传成功，请前往淘宝网页端进行编辑', ToastAndroid.LONG);
+    }
+
     return (
       <View style={styles.container}>
         <ScrollView style={styles.itemContainer}>
@@ -132,7 +140,7 @@ class ItemPage extends Component {
           })()}
         </ScrollView>
         <View style={styles.itemActionContainer}>
-          <TouchableOpacity onPress={() => {}} style={[styles.itemAction, {borderColor: '#F0CAB6', backgroundColor: '#FFE4D0'}]}>
+          <TouchableOpacity onPress={this.taobaoUpload.bind(this)} style={[styles.itemAction, {borderColor: '#F0CAB6', backgroundColor: '#FFE4D0'}]}>
             <Text style={[styles.itemActionText, {color: '#E5511D'}]}>上传淘宝</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.addToCart.bind(this)} style={styles.addToCartContainer}>
@@ -155,7 +163,7 @@ class ItemPage extends Component {
             <Text style={[styles.itemActionText, {color: '#fff'}]}>确认</Text>
           </TouchableOpacity>
         </Modal>
-        <Spinner visible={this.props.good.getDescriptionRequest.isLoading || this.props.good.getSpecsRequest.isLoading}/>
+        <Spinner visible={this.props.good.getDescriptionRequest.isLoading || this.props.good.getSpecsRequest.isLoading || this.props.taobao.addItemRequest.isLoading}/>
       </View>
     );
   }
@@ -242,7 +250,7 @@ class ItemPage extends Component {
   }
 
   taobaoUpload() {
-    NativeModules.AlibabaAPI.login();
+    this.props.addItem(this.props.goods_id, this.props.member.accessToken);
   }
 
 }
@@ -253,6 +261,7 @@ const actions = (dispatch) => {
     clearDescription: () => dispatch(clearDescription()),
     getSpecs: (goodsId) => dispatch(getSpecs(goodsId)),
     addToCart: (specId, quantity, accessToken) => dispatch(addToCart(specId, quantity, accessToken)),
+    addItem: (goodsId, accessToken) => dispatch(addItem(goodsId, accessToken)),
   };
 }
 

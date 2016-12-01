@@ -263,3 +263,10 @@ export function getOrderInfo(orderId, accessToken) {
     access_token: accessToken,
   });
 }
+
+export function addItem(goodsId, accessToken) {
+  return serviceAction('ADD_ITEM', '/mobile_taobao/add_item', 'POST', {
+    goods_id: goodsId,
+    access_token: accessToken,
+  });
+}
