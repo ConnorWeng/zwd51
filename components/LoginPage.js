@@ -12,7 +12,7 @@ import {
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import LabelAndInput from './LabelAndInput';
-import {login, check} from '../actions';
+import {mapDispatchToProps} from '../actions/mapper'
 
 class LoginPage extends Component {
 
@@ -106,13 +106,6 @@ class LoginPage extends Component {
 
 }
 
-const actions = (dispatch) => {
-  return {
-    login: (username, password) => dispatch(login(username, password)),
-    check: (taobaoUsername, id, nick, avatarUrl, authorizationCode) => dispatch(check(taobaoUsername, id, nick, avatarUrl, authorizationCode)),
-  };
-};
-
 const styles = StyleSheet.create({
   nameAndPasswordContainer: {
     backgroundColor: '#ffffff',
@@ -166,4 +159,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(state => state.member, actions)(LoginPage);
+export default connect(state => state.member, mapDispatchToProps)(LoginPage);
