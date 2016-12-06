@@ -70,7 +70,7 @@ public class MainActivity extends ReactActivity {
             }
         });
 
-        UpdateChecker.checkForNotification(this);
+        UpdateChecker.checkForDialog(this);
     }
 
     @Override
