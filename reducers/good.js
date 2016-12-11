@@ -29,6 +29,8 @@ const requestState = {
     name: 'GET_DESCRIPTION',
     mapping: {
       description: 'description',
+      imgsInDesc: {name: 'imgs_in_desc', init: []},
+      needMovePics: 'need_move_pics',
     },
   },
   getSpecsRequest: {

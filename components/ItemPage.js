@@ -21,7 +21,7 @@ import InputNumber from '../node_modules/rc-input-number/lib/index';
 import inputNumberStyles from '../node_modules/rc-input-number/lib/styles';
 import SpecPicker from './SpecPicker';
 import SpecContainer from './SpecContainer';
-import {getDescription, clearDescription, getSpecs, addToCart, addItem} from '../actions';
+import {getDescription, clearDescription, getSpecs, addToCart} from '../actions';
 
 const {height, width} = Dimensions.get('window');
 
@@ -97,14 +97,6 @@ class ItemPage extends Component {
   }
 
   render() {
-    if (this.props.taobao.addItemRequest.message) {
-      ToastAndroid.show(this.props.taobao.addItemRequest.message, ToastAndroid.SHORT);
-    }
-
-    if (this.props.taobao.addItemRequest.success) {
-      ToastAndroid.show('上传成功，请前往淘宝网页端进行编辑', ToastAndroid.LONG);
-    }
-
     return (
       <View style={styles.container}>
         <ScrollView style={styles.itemContainer}>
@@ -163,7 +155,7 @@ class ItemPage extends Component {
             <Text style={[styles.itemActionText, {color: '#fff'}]}>确认</Text>
           </TouchableOpacity>
         </Modal>
-        <Spinner visible={this.props.good.getDescriptionRequest.isLoading || this.props.good.getSpecsRequest.isLoading || this.props.taobao.addItemRequest.isLoading}/>
+        <Spinner visible={this.props.good.getDescriptionRequest.isLoading || this.props.good.getSpecsRequest.isLoading}/>
       </View>
     );
   }
@@ -254,7 +246,13 @@ class ItemPage extends Component {
       ToastAndroid.show('只有使用淘宝登录的用户才能上传宝贝，请退出账户后使用淘宝用户重新登录', ToastAndroid.LONG);
       return false;
     }
-    this.props.addItem(this.props.goods_id, this.props.member.accessToken);
+
+    this.props.navigator.push({UploadItemPage: true, item: {
+      goods_id: this.props.goods_id,
+      goods_name: this.props.goods_name,
+      price: this.props.price,
+      desc: this.props.good.getDescriptionRequest.description,
+    }});
   }
 
 }
@@ -265,7 +263,6 @@ const actions = (dispatch) => {
     clearDescription: () => dispatch(clearDescription()),
     getSpecs: (goodsId) => dispatch(getSpecs(goodsId)),
     addToCart: (specId, quantity, accessToken) => dispatch(addToCart(specId, quantity, accessToken)),
-    addItem: (goodsId, accessToken) => dispatch(addItem(goodsId, accessToken)),
   };
 }
 

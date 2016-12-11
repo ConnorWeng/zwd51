@@ -19,6 +19,7 @@ import OrderGoodsPage from '../components/OrderGoodsPage';
 import OrderInfoPage from '../components/OrderInfoPage';
 import AboutPage from '../components/AboutPage';
 import RefundPage from '../components/RefundPage';
+import UploadItemPage from '../components/UploadItemPage';
 
 class App extends Component {
 
@@ -118,6 +119,11 @@ class App extends Component {
           if (route.RefundPage) {
             return (
               <RefundPage navigator={navigator} orderAmount={route.orderAmount} orderId={route.orderId} orderStatus={route.orderStatus}/>
+            );
+          }
+          if (route.UploadItemPage) {
+            return (
+              <UploadItemPage navigator={navigator} {...route.item}/>
             );
           }
         })()}

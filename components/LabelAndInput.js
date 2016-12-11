@@ -17,8 +17,8 @@ class LabelAndInput extends Component {
 
   render() {
     return (
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>{this.props.label}</Text>
+      <View style={[styles.inputContainer, this.props.flexDirection === 'column' ? {flexDirection: 'column', alignItems: 'flex-start'} : {}]}>
+        <Text style={[styles.inputLabel, this.props.flexDirection === 'column' ? {textAlign: 'right'} : {}]}>{this.props.label}</Text>
         {this.props.children ? this.props.children : <TextInput onChangeText={(text) => this.setState({text: text})} style={[styles.input, this.props.inputStyle]} underlineColorAndroid="rgba(0,0,0,0)" {...this.props}/>}
       </View>
     );
