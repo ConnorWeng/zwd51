@@ -270,3 +270,9 @@ export function addItem(goodsId, accessToken) {
     access_token: accessToken,
   });
 }
+
+export function makePictureCategory(accessToken) {
+  return serviceAction('MAKE_PICTURE_CATEGORY', '/mobile_taobao/make_picture_category', 'POST', {
+    access_token: accessToken,
+  });
+}

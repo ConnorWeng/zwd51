@@ -11,6 +11,12 @@ const requestState = {
       success: 'success',
     }
   },
+  makePictureCategoryRequest: {
+    name: 'MAKE_PICTURE_CATEGORY',
+    mapping: {
+      pcid: 'pcid',
+    }
+  }
 };
 
 export default buildReducer(defaultState, defaultHandler, requestState);
