@@ -15,8 +15,15 @@ import PrimaryButton from './PrimaryButton';
 class UploadItemPage extends Component {
 
   componentDidMount() {
-    this.props.getDescription(this.props.goods_id);
-    this.props.makePictureCategory(this.props.member.accessToken);
+    if (!this.props.member.accessToken) {
+      this.props.navigator.push({LoginPage: true});
+    } else if (!this.props.member.isTaobao) {
+      ToastAndroid.show('该功能需要使用淘宝登录，请重新登录', ToastAndroid.LONG);
+      this.props.navigator.push({LoginPage: true});
+    } else {
+      this.props.getDescription(this.props.goods_id);
+      this.props.makePictureCategory(this.props.member.accessToken);
+    }
   }
 
   render() {
