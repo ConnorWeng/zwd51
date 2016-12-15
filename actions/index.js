@@ -276,3 +276,11 @@ export function makePictureCategory(accessToken) {
     access_token: accessToken,
   });
 }
+
+export function uploadPictures(pcid, imgUrls, accessToken) {
+  return serviceAction('UPLOAD_PICTURES', '/mobile_taobao/upload_pictures', 'POST', {
+    access_token: accessToken,
+    pcid: pcid,
+    img_urls: imgUrls,
+  });
+}

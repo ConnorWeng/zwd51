@@ -31,6 +31,14 @@ class UploadItemPage extends Component {
       ToastAndroid.show(this.props.taobao.makePictureCategoryRequest.message, ToastAndroid.SHORT);
     }
 
+    if (this.props.taobao.uploadPicturesRequest.message) {
+      ToastAndroid.show(this.props.taobao.uploadPicturesRequest.message, ToastAndroid.SHORT);
+    }
+
+    if (this.props.taobao.uploadPicturesRequest.urlPairs) {
+      ToastAndroid.show('图片搬家成功', ToastAndroid.SHORT);
+    }
+
     return (
       <ScrollView>
         <LabelAndInput label="宝贝标题:" flexDirection="column" value={this.props.goods_name} multiline={true} inputStyle={{fontSize: 14, color: 'rgb(100,100,100)'}}/>
@@ -45,17 +53,20 @@ class UploadItemPage extends Component {
           }
         </LabelAndInput>
         <PrimaryButton label="一键上传" onPress={this.upload.bind(this)}></PrimaryButton>
-        <Spinner visible={this.props.good.getDescriptionRequest.isLoading || this.props.taobao.makePictureCategoryRequest.isLoading}/>
+        <Spinner visible={this.props.good.getDescriptionRequest.isLoading || this.props.taobao.makePictureCategoryRequest.isLoading || this.props.taobao.uploadPicturesRequest.isLoading}/>
       </ScrollView>
     );
   }
 
   upload() {
-    if (!this.props.taobao.makePictureCategoryRequest.pcid) {
+    const pcid = this.props.taobao.makePictureCategoryRequest.pcid;
+    const imgUrls = this.props.good.getDescriptionRequest.imgsInDesc.join(',');
+    if (!pcid) {
       ToastAndroid.show('获取淘宝相册失败，无法完成图片搬家，请重试', ToastAndroid.SHORT);
       this.props.navigator.pop();
       return ;
     }
+    this.props.uploadPictures(pcid, imgUrls, this.props.member.accessToken);
   }
 
 }

@@ -16,6 +16,12 @@ const requestState = {
     mapping: {
       pcid: 'pcid',
     }
+  },
+  uploadPicturesRequest: {
+    name: 'UPLOAD_PICTURES',
+    mapping: {
+      urlPairs: {init: []},
+    }
   }
 };
 
