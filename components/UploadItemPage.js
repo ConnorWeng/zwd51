@@ -35,8 +35,13 @@ class UploadItemPage extends Component {
       ToastAndroid.show(this.props.taobao.uploadPicturesRequest.message, ToastAndroid.SHORT);
     }
 
-    if (this.props.taobao.uploadPicturesRequest.urlPairs) {
-      ToastAndroid.show('图片搬家成功', ToastAndroid.SHORT);
+    if (this.props.taobao.addItemRequest.message) {
+      ToastAndroid.show(this.props.taobao.addItemRequest.message, ToastAndroid.SHORT);
+    }
+
+    if (this.props.taobao.addItemRequest.success) {
+      ToastAndroid.show('宝贝上传成功', ToastAndroid.SHORT);
+      this.props.navigator.pop();
     }
 
     return (
@@ -53,12 +58,12 @@ class UploadItemPage extends Component {
           }
         </LabelAndInput>
         <PrimaryButton label="一键上传" onPress={this.upload.bind(this)}></PrimaryButton>
-        <Spinner visible={this.props.good.getDescriptionRequest.isLoading || this.props.taobao.makePictureCategoryRequest.isLoading || this.props.taobao.uploadPicturesRequest.isLoading}/>
+        <Spinner visible={this.props.good.getDescriptionRequest.isLoading || this.props.taobao.makePictureCategoryRequest.isLoading || this.props.taobao.uploadPicturesRequest.isLoading || this.props.taobao.addItemRequest.isLoading}/>
       </ScrollView>
     );
   }
 
-  upload() {
+  async upload() {
     const pcid = this.props.taobao.makePictureCategoryRequest.pcid;
     const imgUrls = this.props.good.getDescriptionRequest.imgsInDesc.join(',');
     if (!pcid) {
@@ -66,7 +71,14 @@ class UploadItemPage extends Component {
       this.props.navigator.pop();
       return ;
     }
-    this.props.uploadPictures(pcid, imgUrls, this.props.member.accessToken);
+    const result = await this.props.uploadPictures(pcid, imgUrls, this.props.member.accessToken);
+    const urlPairs = this.props.taobao.uploadPicturesRequest.urlPairs;
+    let desc = this.props.good.getDescriptionRequest.description;
+    for (var i in urlPairs) {
+      const pair = urlPairs[i];
+      desc = desc.replace(pair.oldImgUrl, pair.newImgUrl);
+    }
+    this.props.addItem(this.props.goods_id, desc, this.props.member.accessToken);
   }
 
 }
