@@ -31,10 +31,6 @@ class UploadItemPage extends Component {
       ToastAndroid.show(this.props.taobao.makePictureCategoryRequest.message, ToastAndroid.SHORT);
     }
 
-    if (this.props.taobao.uploadPicturesRequest.message) {
-      ToastAndroid.show(this.props.taobao.uploadPicturesRequest.message, ToastAndroid.SHORT);
-    }
-
     if (this.props.taobao.addItemRequest.message) {
       ToastAndroid.show(this.props.taobao.addItemRequest.message, ToastAndroid.SHORT);
     }
@@ -46,8 +42,8 @@ class UploadItemPage extends Component {
 
     return (
       <ScrollView>
-        <LabelAndInput label="宝贝标题:" flexDirection="column" value={this.props.goods_name} multiline={true} inputStyle={{fontSize: 14, color: 'rgb(100,100,100)'}}/>
-        <LabelAndInput label="一口价:" flexDirection="column" value={this.props.price} inputStyle={{fontSize: 14, color: 'rgb(100,100,100)'}}/>
+        <LabelAndInput ref="title" label="宝贝标题:" flexDirection="column" value={this.props.goods_name} multiline={true} inputStyle={{fontSize: 14, color: 'rgb(100,100,100)'}}/>
+        <LabelAndInput ref="price" label="一口价:" flexDirection="column" value={this.props.price} inputStyle={{fontSize: 14, color: 'rgb(100,100,100)'}}/>
         <LabelAndInput label="图片搬家:" flexDirection="column">
           {
             this.props.good.getDescriptionRequest.imgsInDesc ? this.props.good.getDescriptionRequest.imgsInDesc.map((img, i) => {
@@ -72,13 +68,17 @@ class UploadItemPage extends Component {
       return ;
     }
     const result = await this.props.uploadPictures(pcid, imgUrls, this.props.member.accessToken);
+    if (result.error) {
+      ToastAndroid.show(result.message, ToastAndroid.SHORT);
+      return ;
+    }
     const urlPairs = this.props.taobao.uploadPicturesRequest.urlPairs;
     let desc = this.props.good.getDescriptionRequest.description;
     for (var i in urlPairs) {
       const pair = urlPairs[i];
       desc = desc.replace(pair.oldImgUrl, pair.newImgUrl);
     }
-    this.props.addItem(this.props.goods_id, desc, this.props.member.accessToken);
+    this.props.addItem(this.props.goods_id, this.refs.title.getText(), this.refs.price.getText(), desc, this.props.member.accessToken);
   }
 
 }

@@ -20,6 +20,7 @@ export function serviceAction(serviceName, path, method, params) {
         type: serviceName + '_CLEAR_MESSAGE',
       });
     }, 3000);
+    return json;
   };
 }
 
