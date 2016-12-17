@@ -11,7 +11,7 @@ class LabelAndInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: this.props.value ? this.props.value : '',
+      text: this.props.defaultValue ? this.props.defaultValue : '',
     };
   }
 
