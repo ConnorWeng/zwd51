@@ -8,8 +8,8 @@ import {
 import {connect} from 'react-redux';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {mapDispatchToProps} from '../actions/mapper';
 import TabBar from './TabBar';
-import {changeMainTab, clearWelcomed} from '../actions';
 import HomePage from './HomePage';
 import SearchPage from './SearchPage';
 import MarketPage from './MarketPage';
@@ -48,7 +48,7 @@ class MainPage extends Component {
            locked={true}
            initialPage={0}
            renderTabBar={() => <TabBar />}
-          onChangeTab={this.props.onChangeTab}>
+           onChangeTab={ins => this.props.changeMainTab(ins.i)}>
           <HomePage navigator={this.props.navigator} tabLabel="ios-home-outline" style={styles.tabView}/>
           <SearchPage navigator={this.props.navigator} tabLabel="ios-search-outline" style={styles.tabView}/>
           <CartPage navigator={this.props.navigator} tabLabel="ios-cart-outline" style={styles.tabView}/>
@@ -65,13 +65,6 @@ class MainPage extends Component {
   }
 
 }
-
-const actions = (dispatch) => {
-  return {
-    onChangeTab: (ins) => dispatch(changeMainTab(ins.i)),
-    clearWelcomed: () => dispatch(clearWelcomed()),
-  };
-};
 
 const styles = StyleSheet.create({
   container: {
@@ -90,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(state => state, actions)(MainPage);
+export default connect(state => state, mapDispatchToProps)(MainPage);
