@@ -50,12 +50,11 @@ class HomePage extends Component {
     switch (content.type) {
     case 'viewItem':
       const item = content.data;
-      this.props.navigator.push({ItemPage: true, item: {
-        goods_id: item.goods_id,
-        goods_name: item.goods_name,
-        default_image: item.default_image,
-        price: item.price,
-      }});
+      this.props.navigator.push({ItemPage: true, item: item});
+      break;
+    case 'viewShop':
+      const shop = content.data;
+      this.props.navigator.push({ShopPage: true, shop: shop});
       break;
     }
   }
