@@ -6,6 +6,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {connect} from 'react-redux';
+import Spinner from 'react-native-loading-spinner-overlay';
 import ShopInfo from './ShopInfo';
 import ItemList from './ItemList';
 import {clearShopGoods} from  '../actions';
@@ -25,6 +26,7 @@ class ShopPage extends Component {
       <View style={styles.container}>
         <ShopInfo {...this.props.shop}/>
         <ItemList shopId={this.props.shop.store_id} navigator={this.props.navigator}/>
+        <Spinner visible={this.props.getGoodsRequest.isLoading}/>
       </View>
     );
   }
