@@ -46,14 +46,17 @@ class HomePage extends Component {
   }
 
   onBridgeMessage(message) {
-    const parts = message.split('|,|');
-    if (parts.length === 4) {
+    const content = JSON.parse(message);
+    switch (content.type) {
+    case 'viewItem':
+      const item = content.data;
       this.props.navigator.push({ItemPage: true, item: {
-        goods_id: parts[0],
-        goods_name: parts[1],
-        default_image: parts[2],
-        price: parts[3],
+        goods_id: item.goods_id,
+        goods_name: item.goods_name,
+        default_image: item.default_image,
+        price: item.price,
       }});
+      break;
     }
   }
 
