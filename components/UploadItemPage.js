@@ -28,11 +28,11 @@ class UploadItemPage extends Component {
 
   render() {
     if (this.props.taobao.makePictureCategoryRequest.message) {
-      ToastAndroid.show(this.props.taobao.makePictureCategoryRequest.message, ToastAndroid.SHORT);
+      ToastAndroid.show(this.props.taobao.makePictureCategoryRequest.message, ToastAndroid.LONG);
     }
 
     if (this.props.taobao.addItemRequest.message) {
-      ToastAndroid.show(this.props.taobao.addItemRequest.message, ToastAndroid.SHORT);
+      ToastAndroid.show(this.props.taobao.addItemRequest.message, ToastAndroid.LONG);
     }
 
     if (this.props.taobao.addItemRequest.success) {
@@ -61,19 +61,25 @@ class UploadItemPage extends Component {
 
   async upload() {
     const pcid = this.props.taobao.makePictureCategoryRequest.pcid;
-    const imgUrls = this.props.good.getDescriptionRequest.imgsInDesc.join(',');
     if (!pcid) {
-      ToastAndroid.show('获取淘宝相册失败，无法完成图片搬家，请重试', ToastAndroid.SHORT);
+      ToastAndroid.show('获取淘宝相册失败，无法完成图片搬家，请重试', ToastAndroid.LONG);
       this.props.navigator.pop();
       return ;
     }
+    let desc = this.props.good.getDescriptionRequest.description;
+    if (!desc) {
+      ToastAndroid.show('获取宝贝详情失败，请重试', ToastAndroid.LONG);
+      this.props.navigator.pop();
+      return ;
+    }
+    const imgUrls = this.props.good.getDescriptionRequest.imgsInDesc.join(',');
     const result = await this.props.uploadPictures(pcid, imgUrls, this.props.member.accessToken);
     if (result.error) {
-      ToastAndroid.show(result.message, ToastAndroid.SHORT);
+      ToastAndroid.show(result.message, ToastAndroid.LONG);
       return ;
     }
     const urlPairs = this.props.taobao.uploadPicturesRequest.urlPairs;
-    let desc = this.props.good.getDescriptionRequest.description;
+
     for (var i in urlPairs) {
       const pair = urlPairs[i];
       desc = desc.replace(pair.oldImgUrl, pair.newImgUrl);
