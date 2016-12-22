@@ -64,7 +64,7 @@ async function callPostService(path, params) {
 function buildQueryString(params) {
   let query = '';
   for (var key in params) {
-    query += `&${key}=${params[key]}`;
+    query += `&${key}=${encodeURIComponent(params[key])}`;
   }
   return query;
 }
