@@ -287,3 +287,9 @@ export function uploadPictures(pcid, imgUrls, accessToken) {
     img_urls: imgUrls,
   });
 }
+
+export function getNextLayer(cateId) {
+  return serviceAction('GET_NEXT_LAYER', '/mobile_category/next_layer', 'GET', {
+    cate_id: cateId,
+  });
+}
