@@ -58,7 +58,7 @@ class HomePage extends Component {
       break;
     case 'viewCategory':
       const category = content.data;
-      this.props.navigator.push({CategoryPage: true, category: category});
+      this.props.navigator.push({CategoryItemsPage: true, category: category});
       break;
     }
   }

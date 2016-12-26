@@ -60,6 +60,9 @@ class SearchPage extends Component {
         <TouchableOpacity style={styles.searchFilter} onPress={this.search.bind(this)}>
           <Icon name="ios-search-outline" size={30} color="#000000" />
         </TouchableOpacity>
+        <TouchableOpacity style={styles.categoryContainer} onPress={() => {this.props.navigator.push({CategoryPage: true})}}>
+          <Text style={styles.category}>分类</Text>
+        </TouchableOpacity>
         </View>
         {
           this.props.searchGoodsRequest.data.length > 0 ?
@@ -203,6 +206,15 @@ const styles = StyleSheet.create({
   searchFilter: {
     flex: 1,
     alignItems: 'center',
+  },
+  categoryContainer: {
+    flex: 1.2,
+    height: 40,
+    alignItems: 'center',
+  },
+  category: {
+    color: '#000000',
+    fontSize: 20,
   },
   goodsListView: {
     marginTop: 10,
