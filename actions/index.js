@@ -293,3 +293,15 @@ export function getNextLayer(cateId) {
     cate_id: cateId,
   });
 }
+
+export function getGoodsInCate(cateId) {
+  return serviceAction('GET_GOODS_IN_CATE', '/mobile_goods/goods_in_cate', 'GET', {
+    cate_id: cateId,
+  });
+}
+
+export function clearGoodsInCate() {
+  return {
+    type: 'CLEAR_GOODS_IN_CATE',
+  };
+}

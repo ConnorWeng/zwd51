@@ -21,6 +21,7 @@ import AboutPage from '../components/AboutPage';
 import RefundPage from '../components/RefundPage';
 import UploadItemPage from '../components/UploadItemPage';
 import CategoryPage from '../components/CategoryPage';
+import CategoryItemsPage from '../components/CategoryItemsPage';
 
 class App extends Component {
 
@@ -130,6 +131,11 @@ class App extends Component {
           if (route.CategoryPage) {
             return (
               <CategoryPage navigator={navigator} {...route.category}/>
+            );
+          }
+          if (route.CategoryItemsPage) {
+            return (
+              <CategoryItemsPage navigator={navigator} {...route.category}/>
             );
           }
         })()}

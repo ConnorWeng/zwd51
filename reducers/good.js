@@ -20,6 +20,10 @@ const defaultHandler = (state, action) => {
         description: '',
       }
     });
+  case 'CLEAR_GOODS_IN_CATE':
+    return Object.assign({}, state, {
+      getGoodsInCateRequest: REQUEST_INITIAL_STATE,
+    });
   }
 };
 
@@ -42,6 +46,7 @@ const requestState = {
     },
   },
   searchGoodsRequest: 'SEARCH_GOODS',
+  getGoodsInCateRequest: 'GET_GOODS_IN_CATE',
 };
 
 export default buildReducer(defaultState, defaultHandler, requestState);

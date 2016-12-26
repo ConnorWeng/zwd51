@@ -67,7 +67,7 @@ class CategoryPage extends Component {
             {
               this.props.category.getNextLayerRequest.categories.map((subCate) => {
                 return (
-                  <TouchableOpacity key={subCate.cate_id} style={styles.subCategoryContainer}>
+                  <TouchableOpacity key={subCate.cate_id} style={styles.subCategoryContainer} onPress={() => this.props.navigator.push({CategoryItemsPage: true, category: subCate})}>
                     <Image source={{uri: 'http://www.51zwd.com/data/files/mall/template/48x48-m.png'}} style={styles.subCategoryLogo}/>
                     <Text style={{color: '#000000'}}>{subCate.cate_mname ? subCate.cate_mname : subCate.cate_name}</Text>
                   </TouchableOpacity>
