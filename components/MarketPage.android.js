@@ -21,6 +21,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import ShopInfo from './ShopInfo';
 import SpecSelector from './SpecSelector';
 import {getShops, changeMkId} from '../actions';
+import {PAGE_SIZE} from '../service.json';
 
 class MarketPage extends Component {
 
@@ -96,8 +97,8 @@ class MarketPage extends Component {
              enabledPullDown={true}
              pullUpDistance={35}
              pullUpStayDistance={50}
-             initialListSize={25}
-             pageSize={25}/>
+             initialListSize={PAGE_SIZE}
+             pageSize={PAGE_SIZE}/>
         </View>
         <Spinner visible={this.props.getShopsRequest.isLoading}/>
       </DrawerLayoutAndroid>

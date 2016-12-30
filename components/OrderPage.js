@@ -19,6 +19,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import OrderHead from './OrderHead';
 import {getOrders, getAlipayOrderInfo, clearAlipayOrderInfo, confirmOrder, clearOrders, refreshOrders} from '../actions';
+import {PAGE_SIZE} from '../service.json';
 
 const {height, width} = Dimensions.get('window');
 
@@ -83,9 +84,9 @@ class OrderPage extends Component {
            dataSource={this.state.orders}
            viewType={PullToRefreshListView.constants.viewType.listView}
            style={styles.orderListView}
-           initialListSize={25}
+           initialListSize={PAGE_SIZE}
            enableEmptySections={true}
-           pageSize={25}
+           pageSize={PAGE_SIZE}
            renderRow={this.renderOrder.bind(this)}
            renderHeader={this.renderHeader.bind(this)}
            renderFooter={this.renderFooter.bind(this)}

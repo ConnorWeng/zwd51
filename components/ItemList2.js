@@ -14,6 +14,7 @@ import {
 import {connect} from 'react-redux';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import {getGoods} from '../actions';
+import {PAGE_SIZE} from '../service.json';
 
 const {height, width} = Dimensions.get('window');
 
@@ -45,9 +46,9 @@ class ItemList2 extends Component {
          dataSource={this.state.goods}
          viewType={PullToRefreshListView.constants.viewType.listView}
          style={styles.goodsListView}
-         initialListSize={25}
+         initialListSize={PAGE_SIZE}
          enableEmptySections={true}
-         pageSize={25}
+         pageSize={PAGE_SIZE}
          renderRow={this.renderItem.bind(this)}
          renderHeader={this.renderHeader.bind(this)}
          renderFooter={this.renderFooter.bind(this)}
