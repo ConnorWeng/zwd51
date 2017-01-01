@@ -12,8 +12,8 @@ import ItemList from './ItemList2';
 
 class CategoryItemsPage extends Component {
 
-  componentDidMount() {
-    this.props.clearGoodsInCate();
+  async componentDidMount() {
+    await this.props.clearGoodsInCate();
     this.onLoadMore();
   }
 

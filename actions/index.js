@@ -294,9 +294,10 @@ export function getNextLayer(cateId) {
   });
 }
 
-export function getGoodsInCate(cateId) {
+export function getGoodsInCate(cateId, page) {
   return serviceAction('GET_GOODS_IN_CATE', '/mobile_goods/goods_in_cate', 'GET', {
     cate_id: cateId,
+    page: page,
   });
 }
 

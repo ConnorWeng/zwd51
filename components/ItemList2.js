@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
-import {getGoods} from '../actions';
+import {mapDispatchToProps} from '../actions/mapper';
 import {PAGE_SIZE} from '../service.json';
 
 const {height, width} = Dimensions.get('window');
@@ -142,16 +142,9 @@ class ItemList2 extends Component {
 
 }
 
-const actions = (dispatch) => {
-  return {
-    getGoods: (storeId, page) => dispatch(getGoods(storeId, page)),
-  };
-};
-
 const styles = StyleSheet.create({
   goodsListView: {
-    marginTop: 10,
-    height: height - 10 - 65 - 10 - 30,
+    height: height - 10 - 65 - 10,
   },
   itemContainer: {
     flexDirection: 'row',
@@ -190,4 +183,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(state => state.good, actions)(ItemList2);
+export default connect(state => state.good, mapDispatchToProps)(ItemList2);

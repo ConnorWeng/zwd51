@@ -174,8 +174,8 @@ class SearchPage extends Component {
     this.props.search(this.state.keywords, this.props.searchGoodsRequest.page);
   }
 
-  search() {
-    this.props.clearSearchGoods();
+  async search() {
+    await this.props.clearSearchGoods();
     this.props.search(this.state.keywords, this.props.searchGoodsRequest.page);
   }
 
