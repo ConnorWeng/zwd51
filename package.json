@@ -6,6 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
+  "logLevel": "trace",
   "dependencies": {
     "rc-input-number": "^2.7.0",
     "react": "^15.1.0",
