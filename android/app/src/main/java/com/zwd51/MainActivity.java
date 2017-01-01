@@ -15,6 +15,7 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactnativecomponent.swiperefreshlayout.RCTSwipeRefreshLayoutPackage;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import com.zwd51.packages.AlibabaAPIPackage;
+import com.zwd51.packages.Zwd51APIPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -50,7 +51,8 @@ public class MainActivity extends ReactActivity {
             new VectorIconsPackage(),
             new RCTSwipeRefreshLayoutPackage(),
             new AlibabaAPIPackage(MainActivity.this),
-            new WebViewBridgePackage()
+            new WebViewBridgePackage(),
+            new Zwd51APIPackage()
         );
     }
 

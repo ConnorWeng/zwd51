@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {
+  NativeModules,
   StyleSheet,
   Navigator,
   BackAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
+import {mapDispatchToProps} from '../actions/mapper';
 import PageContainer from '../components/PageContainer';
 import MainPage from '../components/MainPage';
 import ItemPage from '../components/ItemPage';
@@ -34,6 +36,14 @@ class App extends Component {
       }
       return false;
     });
+    // 等10秒是为了等待检查完是否需要更新版本，如果用户选择更新，则logout app
+    setTimeout(() => {
+      NativeModules.Zwd51API.isUpdatingVersion((isUpdating) => {
+        if (isUpdating) {
+          this.props.logout();
+        }
+      });
+    }, 10000);
   }
 
   componentWillUnmount() {
@@ -151,4 +161,4 @@ var styles = StyleSheet.create({
   },
 });
 
-export default connect()(App);
+export default connect(state => state, mapDispatchToProps)(App);
