@@ -22,19 +22,12 @@ class ItemList2 extends Component {
 
   constructor(props) {
     super(props);
-    const dataSource = new ListView.DataSource({
+    this.dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
     });
-    this.state = {
-      dataSource: dataSource,
-      goods: dataSource.cloneWithRows(props.data),
-    };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      goods: this.state.dataSource.cloneWithRows(nextProps.data),
-    });
     this.refs.pullToRefreshListView.endLoadMore(nextProps.isEnd);
   }
 
@@ -43,7 +36,7 @@ class ItemList2 extends Component {
       <PullToRefreshListView
          ref="pullToRefreshListView"
          contentContainerStyle={styles.itemContainer}
-         dataSource={this.state.goods}
+         dataSource={this.dataSource.cloneWithRows(this.props.data)}
          viewType={PullToRefreshListView.constants.viewType.listView}
          style={styles.goodsListView}
          initialListSize={PAGE_SIZE}
