@@ -112,7 +112,7 @@ class ItemPage extends Component {
             <Text style={styles.arrow}>></Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.touchableContainer} onPress={()=>{this.props.navigator.push({ShopPage: true, shop: this.props.shop})}}>
-            <Text style={styles.pleaseSelect}>前往店铺</Text>
+            <Text style={styles.pleaseSelect}>店铺  {this.props.shop ? this.props.shop.store_name : ''}</Text>
             <Text style={styles.arrow}>></Text>
           </TouchableOpacity>
           {(() => {
