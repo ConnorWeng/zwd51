@@ -175,8 +175,8 @@ class MarketPage extends Component {
     this.props.getShops(this.props.mkId, this.state.keywords, this.props.getShopsRequest.page);
   }
 
-  search() {
-    this.props.changeMkId(this.refs.markets.getSelected());
+  async search() {
+    await this.props.changeMkId(this.refs.markets.getSelected());
     this.props.getShops(this.props.mkId, this.state.keywords, this.props.getShopsRequest.page);
   }
 
