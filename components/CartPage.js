@@ -9,10 +9,10 @@ import {
   Dimensions,
   TouchableOpacity,
   ToastAndroid,
+  ProgressBarAndroid,
   RefreshControl,
 } from 'react-native';
 import {connect} from 'react-redux';
-import Spinner from 'react-native-loading-spinner-overlay';
 import Icon from 'react-native-vector-icons/Ionicons';
 import InputNumber from '../node_modules/rc-input-number/lib/index';
 import PleaseLogin from './PleaseLogin';
@@ -67,6 +67,13 @@ class CartPage extends Component {
       return (
         <PleaseLogin navigator={this.props.navigator}/>
       );
+    } else if (this.props.cart.getCartRequest.isLoading) {
+      return (
+        <ProgressBarAndroid
+           style={styles.loading}
+           color={'#ff0000'}
+           styleAttr={'Small'}/>
+      );
     } else {
       return (
         <View style={{flex: 1}}>
@@ -87,7 +94,6 @@ class CartPage extends Component {
               <Text style={[styles.itemActionText, {color: '#fff'}]}>结算({this.state.selected.length})</Text>
             </TouchableOpacity>
           </View>
-          <Spinner visible={this.props.cart.getCartRequest.isLoading}/>
         </View>
       );
     }
@@ -322,6 +328,9 @@ const numberStyles = StyleSheet.create({
   },
   highlightStepBorderColor: {
     borderColor: '#2DB7F5'
+  },
+  loading: {
+    marginTop: 10,
   },
 });
 
