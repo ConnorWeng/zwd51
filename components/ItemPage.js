@@ -16,7 +16,6 @@ import {
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modalbox';
-import Spinner from 'react-native-loading-spinner-overlay';
 import InputNumber from '../node_modules/rc-input-number/lib/index';
 import inputNumberStyles from '../node_modules/rc-input-number/lib/styles';
 import SpecPicker from './SpecPicker';
@@ -126,6 +125,13 @@ class ItemPage extends Component {
                    }}
                    source={{html: codeInject(html)}}/>
               );
+            } else if (this.props.good.getDescriptionRequest.isLoading) {
+              return (
+                <ProgressBarAndroid
+                   style={styles.loading}
+                   color={'#ff0000'}
+                   styleAttr={'Small'}/>
+              );
             } else {
               return (
                 <TouchableOpacity style={styles.clickToDisplayContainer} onPress={this.getDescription.bind(this)}>
@@ -148,18 +154,32 @@ class ItemPage extends Component {
           </TouchableOpacity>
         </View>
         <Modal style={styles.modal} position={'bottom'} ref={'modal'} onOpened={this.onModalOpened.bind(this)}>
-          <TouchableOpacity style={styles.modalCloseBtn} onPress={() => this.refs.modal.close()}>
-            <Icon name="ios-close-circle-outline" size={24}/>
-          </TouchableOpacity>
-          <SpecPicker ref="specPicker" specs={this.props.good.getSpecsRequest.specs} specName1={this.props.good.getSpecsRequest.specName1} specName2={this.props.good.getSpecsRequest.specName2}/>
-          <SpecContainer specName="数量">
-            <InputNumber ref="num" styles={inputNumberStyles} defaultValue={1} min={1}/>
-          </SpecContainer>
-          <TouchableOpacity onPress={this.selectSpec.bind(this)} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
-            <Text style={[styles.itemActionText, {color: '#fff'}]}>确认</Text>
-          </TouchableOpacity>
+        {(() => {
+          if (this.props.good.getSpecsRequest.isLoading) {
+            return (
+              <ProgressBarAndroid
+                   style={styles.loading}
+                   color={'#ff0000'}
+                   styleAttr={'Small'}/>
+            );
+          } else {
+            return (
+              <View>
+                <TouchableOpacity style={styles.modalCloseBtn} onPress={() => this.refs.modal.close()}>
+                  <Icon name="ios-close-circle-outline" size={24}/>
+                </TouchableOpacity>
+                <SpecPicker ref="specPicker" specs={this.props.good.getSpecsRequest.specs} specName1={this.props.good.getSpecsRequest.specName1} specName2={this.props.good.getSpecsRequest.specName2}/>
+                <SpecContainer specName="数量">
+                  <InputNumber ref="num" styles={inputNumberStyles} defaultValue={1} min={1}/>
+                </SpecContainer>
+                <TouchableOpacity onPress={this.selectSpec.bind(this)} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
+                  <Text style={[styles.itemActionText, {color: '#fff'}]}>确认</Text>
+                </TouchableOpacity>
+              </View>
+            );
+          }
+        })()}
         </Modal>
-        <Spinner visible={this.props.good.getDescriptionRequest.isLoading || this.props.good.getSpecsRequest.isLoading}/>
       </View>
     );
   }
@@ -372,6 +392,9 @@ const styles = StyleSheet.create({
     borderRightColor: 'rgba(0,0,0,0.3)',
     borderBottomColor: 'rgba(0,0,0,0.3)',
     borderLeftColor: 'rgba(0,0,0,0.1)',
+  },
+  loading: {
+    marginTop: 10,
   },
 });
 
