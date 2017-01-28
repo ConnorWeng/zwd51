@@ -9,8 +9,6 @@ import {
   Dimensions,
   ScrollView,
   WebView,
-  ActivityIndicator,
-  ProgressBarAndroid,
   ToastAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
@@ -20,6 +18,7 @@ import InputNumber from '../node_modules/rc-input-number/lib/index';
 import inputNumberStyles from '../node_modules/rc-input-number/lib/styles';
 import SpecPicker from './SpecPicker';
 import SpecContainer from './SpecContainer';
+import Loading from './Loading'
 import {getDescription, clearDescription, getSpecs, addToCart} from '../actions';
 
 const {height, width} = Dimensions.get('window');
@@ -127,10 +126,7 @@ class ItemPage extends Component {
               );
             } else if (this.props.good.getDescriptionRequest.isLoading) {
               return (
-                <ProgressBarAndroid
-                   style={styles.loading}
-                   color={'#ff0000'}
-                   styleAttr={'Small'}/>
+                <Loading/>
               );
             } else {
               return (
@@ -157,10 +153,7 @@ class ItemPage extends Component {
         {(() => {
           if (this.props.good.getSpecsRequest.isLoading) {
             return (
-              <ProgressBarAndroid
-                   style={styles.loading}
-                   color={'#ff0000'}
-                   styleAttr={'Small'}/>
+              <Loading/>
             );
           } else {
             return (
@@ -185,17 +178,8 @@ class ItemPage extends Component {
   }
 
   renderActivityIndicator() {
-    return ActivityIndicator ? (
-      <ActivityIndicator
-         style={{marginRight: 10,}}
-         animating={true}
-         color={'#ff0000'}
-         size={'small'}/>
-    ) : (
-      <ProgressBarAndroid
-         style={{marginRight: 10,}}
-         color={'#ff0000'}
-         styleAttr={'Small'}/>
+    return (
+      <Loading/>
     );
   }
 
@@ -392,9 +376,6 @@ const styles = StyleSheet.create({
     borderRightColor: 'rgba(0,0,0,0.3)',
     borderBottomColor: 'rgba(0,0,0,0.3)',
     borderLeftColor: 'rgba(0,0,0,0.1)',
-  },
-  loading: {
-    marginTop: 10,
   },
 });
 

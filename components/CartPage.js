@@ -9,13 +9,13 @@ import {
   Dimensions,
   TouchableOpacity,
   ToastAndroid,
-  ProgressBarAndroid,
   RefreshControl,
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import InputNumber from '../node_modules/rc-input-number/lib/index';
 import PleaseLogin from './PleaseLogin';
+import Loading from './Loading';
 import {getCart, dropFromCart, dropFromCartLocal} from '../actions';
 
 const {height, width} = Dimensions.get('window');
@@ -69,10 +69,7 @@ class CartPage extends Component {
       );
     } else if (this.props.cart.getCartRequest.isLoading) {
       return (
-        <ProgressBarAndroid
-           style={styles.loading}
-           color={'#ff0000'}
-           styleAttr={'Small'}/>
+        <Loading/>
       );
     } else {
       return (
@@ -328,9 +325,6 @@ const numberStyles = StyleSheet.create({
   },
   highlightStepBorderColor: {
     borderColor: '#2DB7F5'
-  },
-  loading: {
-    marginTop: 10,
   },
 });
 
