@@ -7,12 +7,11 @@ import {
   TouchableHighlight,
   Image,
   Dimensions,
-  ActivityIndicator,
-  ProgressBarAndroid,
   ToastAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
+import Loading from './Loading';
 import {getGoods} from '../actions';
 import {PAGE_SIZE} from '../service.json';
 
@@ -92,6 +91,14 @@ class ItemList extends Component {
   }
 
   renderFooter(viewState) {
+    if (this.props.getGoodsRequest.isLoading) {
+      return (
+        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Loading/>
+          <Text>加载中...</Text>
+        </View>
+      );
+    }
     let {pullState, pullDistancePercent} = viewState;
     const {load_more_none, load_more_idle, will_load_more, loading_more, loaded_all,} = PullToRefreshListView.constants.viewState;
     pullDistancePercent = Math.round(pullDistancePercent * 100);
@@ -114,12 +121,6 @@ class ItemList extends Component {
           <Text>放开加载更多</Text>
         </View>
       );
-    case loading_more:
-      return (
-        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          {this.renderActivityIndicator()}<Text>加载中...</Text>
-        </View>
-      );
     case loaded_all:
       return (
         <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
@@ -127,21 +128,6 @@ class ItemList extends Component {
         </View>
       );
     }
-  }
-
-  renderActivityIndicator() {
-    return ActivityIndicator ? (
-      <ActivityIndicator
-         style={{marginRight: 10,}}
-         animating={true}
-         color={'#ff0000'}
-         size={'small'}/>
-    ) : (
-      <ProgressBarAndroid
-         style={{marginRight: 10,}}
-         color={'#ff0000'}
-         styleAttr={'Small'}/>
-    );
   }
 
   onRefresh() {
