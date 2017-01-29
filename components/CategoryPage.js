@@ -66,7 +66,7 @@ class CategoryPage extends Component {
         {(() => {
           if (this.props.category.getNextLayerRequest.isLoading) {
             return (
-              <Loading/>
+              <Loading style={styles.loading}/>
             );
           } else {
             return (
@@ -131,6 +131,9 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 20,
+  },
+  loading: {
+    marginTop: 10,
   },
 });
 

@@ -126,7 +126,7 @@ class ItemPage extends Component {
               );
             } else if (this.props.good.getDescriptionRequest.isLoading) {
               return (
-                <Loading/>
+                <Loading style={styles.loading}/>
               );
             } else {
               return (
@@ -153,7 +153,7 @@ class ItemPage extends Component {
         {(() => {
           if (this.props.good.getSpecsRequest.isLoading) {
             return (
-              <Loading/>
+              <Loading style={styles.loading}/>
             );
           } else {
             return (
@@ -179,7 +179,7 @@ class ItemPage extends Component {
 
   renderActivityIndicator() {
     return (
-      <Loading/>
+      <Loading style={styles.loading}/>
     );
   }
 
@@ -373,6 +373,9 @@ const styles = StyleSheet.create({
     borderRightColor: 'rgba(0,0,0,0.3)',
     borderBottomColor: 'rgba(0,0,0,0.3)',
     borderLeftColor: 'rgba(0,0,0,0.1)',
+  },
+  loading: {
+    marginTop: 10,
   },
 });
 

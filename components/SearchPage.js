@@ -18,7 +18,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
-import Spinner from 'react-native-loading-spinner-overlay';
+import Loading from './Loading';
 import {searchGoods, clearSearchGoods} from '../actions';
 import {PAGE_SIZE} from '../service.json';
 
@@ -85,7 +85,6 @@ class SearchPage extends Component {
                  pullUpDistance={35}
                  pullUpStayDistance={50}/> : null
         }
-        <Spinner visible={this.props.searchGoodsRequest.isLoading}/>
       </View>
     );
   }
@@ -114,6 +113,14 @@ class SearchPage extends Component {
   }
 
   renderFooter(viewState) {
+    if (this.props.searchGoodsRequest.isLoading) {
+      return (
+        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
+          <Loading/>
+          <Text>加载中...</Text>
+        </View>
+      );
+    }
     let {pullState, pullDistancePercent} = viewState;
     let {load_more_none, load_more_idle, will_load_more, loading_more, loaded_all, } = PullToRefreshListView.constants.viewState;
     pullDistancePercent = Math.round(pullDistancePercent * 100);
@@ -134,12 +141,6 @@ class SearchPage extends Component {
       return (
         <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
           <Text>放开加载更多</Text>
-        </View>
-      );
-    case loading_more:
-      return (
-        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
-          {this.renderActivityIndicator()}<Text>加载中...</Text>
         </View>
       );
     case loaded_all:

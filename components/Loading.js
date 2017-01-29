@@ -11,9 +11,9 @@ class Loading extends Component {
   render() {
     return (
       <ProgressBarAndroid
-           style={styles.loading}
-           color={'#ff0000'}
-           styleAttr={'Small'}/>
+         style={[styles.loading, this.props.style]}
+         color={'#ff0000'}
+         styleAttr={'Small'}/>
     );
   }
 
@@ -21,7 +21,6 @@ class Loading extends Component {
 
 const styles = StyleSheet.create({
   loading: {
-    marginTop: 10,
   },
 });
 

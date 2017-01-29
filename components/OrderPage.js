@@ -10,14 +10,13 @@ import {
   Image,
   ToastAndroid,
   Dimensions,
-  ActivityIndicator,
-  ProgressBarAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import OrderHead from './OrderHead';
+import Loading from './Loading';
 import {getOrders, getAlipayOrderInfo, clearAlipayOrderInfo, confirmOrder, clearOrders, refreshOrders} from '../actions';
 import {PAGE_SIZE} from '../service.json';
 
@@ -96,7 +95,7 @@ class OrderPage extends Component {
            pullDownStayDistance={50}
            pullUpDistance={35}
            pullUpStayDistance={50}/>
-        <Spinner visible={this.props.order.getOrdersRequest.isLoading || this.props.order.submitOrderRequest.isLoading || this.props.order.getAlipayOrderInfoRequest.isLoading|| this.props.order.confirmOrderRequest.isLoading}/>
+        <Spinner visible={this.props.order.submitOrderRequest.isLoading || this.props.order.getAlipayOrderInfoRequest.isLoading|| this.props.order.confirmOrderRequest.isLoading}/>
       </View>
     );
   }
@@ -152,6 +151,14 @@ class OrderPage extends Component {
   }
 
   renderHeader(viewState) {
+    if (this.props.order.getOrdersRequest.isLoading) {
+      return (
+        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Loading/>
+          <Text>加载中...</Text>
+        </View>
+      );
+    }
     let {pullState, pullDistancePercent} = viewState;
     let {refresh_none, refresh_idle, will_refresh, refreshing,} = PullToRefreshListView.constants.viewState;
     pullDistancePercent = Math.round(pullDistancePercent * 100);
@@ -174,16 +181,18 @@ class OrderPage extends Component {
           <Text>放开立即刷新</Text>
         </View>
       );
-    case refreshing:
-      return (
-        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          {this.renderActivityIndicator()}<Text>加载中</Text>
-        </View>
-      );
     }
   }
 
   renderFooter(viewState) {
+    if (this.props.order.getOrdersRequest.isLoading) {
+      return (
+        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Loading/>
+          <Text>加载中...</Text>
+        </View>
+      );
+    }
     let {pullState, pullDistancePercent} = viewState;
     const {load_more_none, load_more_idle, will_load_more, loading_more, loaded_all,} = PullToRefreshListView.constants.viewState;
     pullDistancePercent = Math.round(pullDistancePercent * 100);
@@ -206,12 +215,6 @@ class OrderPage extends Component {
           <Text>放开加载更多</Text>
         </View>
       );
-    case loading_more:
-      return (
-        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          {this.renderActivityIndicator()}<Text>加载中...</Text>
-        </View>
-      );
     case loaded_all:
       return (
         <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
@@ -219,21 +222,6 @@ class OrderPage extends Component {
         </View>
       );
     }
-  }
-
-  renderActivityIndicator() {
-    return ActivityIndicator ? (
-      <ActivityIndicator
-         style={{marginRight: 10,}}
-         animating={true}
-         color={'#ff0000'}
-         size={'small'}/>
-    ) : (
-      <ProgressBarAndroid
-         style={{marginRight: 10,}}
-         color={'#ff0000'}
-         styleAttr={'Small'}/>
-    );
   }
 
   onRefresh() {

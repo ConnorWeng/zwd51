@@ -69,7 +69,7 @@ class CartPage extends Component {
       );
     } else if (this.props.cart.getCartRequest.isLoading) {
       return (
-        <Loading/>
+        <Loading style={styles.loading}/>
       );
     } else {
       return (
@@ -325,6 +325,9 @@ const numberStyles = StyleSheet.create({
   },
   highlightStepBorderColor: {
     borderColor: '#2DB7F5'
+  },
+  loading: {
+    marginTop: 10,
   },
 });
 

@@ -7,14 +7,12 @@ import {
   TouchableHighlight,
   Image,
   Dimensions,
-  ActivityIndicator,
-  ProgressBarAndroid,
   ToastAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
-import Spinner from 'react-native-loading-spinner-overlay';
 import {mapDispatchToProps} from '../actions/mapper';
+import Loading from './Loading';
 import {PAGE_SIZE} from '../service.json';
 
 const {height, width} = Dimensions.get('window');
@@ -61,7 +59,6 @@ class CategoryItemsPage extends Component {
            enabledPullDown={false}
            pullUpDistance={35}
            pullUpStayDistance={50}/>
-        <Spinner visible={this.props.good.getGoodsInCateRequest.isLoading}/>
       </View>
     );
   }
@@ -90,6 +87,14 @@ class CategoryItemsPage extends Component {
   }
 
   renderFooter(viewState) {
+    if (this.props.good.getGoodsInCateRequest.isLoading) {
+      return (
+        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+          <Loading/>
+          <Text>加载中...</Text>
+        </View>
+      );
+    }
     let {pullState, pullDistancePercent} = viewState;
     const {load_more_none, load_more_idle, will_load_more, loading_more, loaded_all,} = PullToRefreshListView.constants.viewState;
     pullDistancePercent = Math.round(pullDistancePercent * 100);
@@ -112,12 +117,6 @@ class CategoryItemsPage extends Component {
           <Text>放开加载更多</Text>
         </View>
       );
-    case loading_more:
-      return (
-        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          {this.renderActivityIndicator()}<Text>加载中...</Text>
-        </View>
-      );
     case loaded_all:
       return (
         <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
@@ -125,21 +124,7 @@ class CategoryItemsPage extends Component {
         </View>
       );
     }
-  }
 
-  renderActivityIndicator() {
-    return ActivityIndicator ? (
-      <ActivityIndicator
-         style={{marginRight: 10,}}
-         animating={true}
-         color={'#ff0000'}
-         size={'small'}/>
-    ) : (
-      <ProgressBarAndroid
-         style={{marginRight: 10,}}
-         color={'#ff0000'}
-         styleAttr={'Small'}/>
-    );
   }
 
   onRefresh() {
