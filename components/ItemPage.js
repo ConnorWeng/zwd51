@@ -157,17 +157,21 @@ class ItemPage extends Component {
             );
           } else {
             return (
-              <View>
-                <TouchableOpacity style={styles.modalCloseBtn} onPress={() => this.refs.modal.close()}>
-                  <Icon name="ios-close-circle-outline" size={24}/>
-                </TouchableOpacity>
-                <SpecPicker ref="specPicker" specs={this.props.good.getSpecsRequest.specs} specName1={this.props.good.getSpecsRequest.specName1} specName2={this.props.good.getSpecsRequest.specName2}/>
-                <SpecContainer specName="数量">
-                  <InputNumber ref="num" styles={inputNumberStyles} defaultValue={1} min={1}/>
-                </SpecContainer>
-                <TouchableOpacity onPress={this.selectSpec.bind(this)} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
-                  <Text style={[styles.itemActionText, {color: '#fff'}]}>确认</Text>
-                </TouchableOpacity>
+              <View style={styles.container}>
+                <ScrollView style={styles.itemContainer}>
+                  <TouchableOpacity style={styles.modalCloseBtn} onPress={() => this.refs.modal.close()}>
+                    <Icon name="ios-close-circle-outline" size={24}/>
+                  </TouchableOpacity>
+                  <SpecPicker ref="specPicker" specs={this.props.good.getSpecsRequest.specs} specName1={this.props.good.getSpecsRequest.specName1} specName2={this.props.good.getSpecsRequest.specName2}/>
+                  <SpecContainer specName="数量">
+                    <InputNumber ref="num" styles={inputNumberStyles} defaultValue={1} min={1}/>
+                  </SpecContainer>
+                </ScrollView>
+                <View style={styles.itemActionContainer}>
+                  <TouchableOpacity onPress={this.selectSpec.bind(this)} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
+                    <Text style={[styles.itemActionText, {color: '#fff'}]}>确认</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             );
           }
@@ -354,7 +358,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   modal: {
-    height: 285,
+    height: 400,
   },
   modalCloseBtn: {
     alignItems: 'flex-end',
