@@ -189,11 +189,8 @@ class ItemPage extends Component {
 
   getOuterIid() {
     let outerIid = '';
-    if (this.props.goods_attr) {
-      for (var k in this.props.goods_attr) {
-        outerIid = this.props.goods_attr[k].attr_value
-        break;
-      }
+    if (this.props.attr_value) {
+      outerIid = this.props.attr_value;
     }
     return outerIid;
   }
