@@ -21,9 +21,19 @@ class ShopPage extends Component {
   }
 
   render() {
+    let shopInfo;
+    if (this.props.getGoodsRequest.data.length) {
+      shopInfo = (
+        <ShopInfo {...this.props.getGoodsRequest.data[0].shop}/>
+      );
+    } else {
+      shopInfo = (
+        <ShopInfo {...this.props.shop}/>
+      );
+    }
     return (
       <View style={styles.container}>
-        <ShopInfo {...this.props.shop}/>
+        {shopInfo}
         <ItemList shopId={this.props.shop.store_id} navigator={this.props.navigator}/>
       </View>
     );

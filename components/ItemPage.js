@@ -109,7 +109,7 @@ class ItemPage extends Component {
             {this.state.selected ? <Text style={styles.pleaseSelect}>已选择  {this.state.selected.specification} {this.state.selected.quantity}件</Text> : <Text style={styles.pleaseSelect}>选择  尺码 颜色分类</Text>}
             <Text style={styles.arrow}>></Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.touchableContainer} onPress={()=>{this.props.navigator.push({ShopPage: true, shop: this.props.shop})}}>
+          <TouchableOpacity style={styles.touchableContainer} onPress={this.goToStore.bind(this)}>
             <Text style={styles.pleaseSelect}>店铺  {this.props.shop ? this.props.shop.store_name : ''}</Text>
             <Text style={styles.arrow}>></Text>
           </TouchableOpacity>
@@ -262,6 +262,18 @@ class ItemPage extends Component {
       price: this.props.price,
       desc: this.props.good.getDescriptionRequest.description,
     }});
+  }
+
+  goToStore() {
+    let shop;
+    if (this.props.shop) {
+      shop = this.props.shop;
+    } else {
+      shop = {
+        store_id: this.props.store_id
+      };
+    }
+    this.props.navigator.push({ShopPage: true, shop: shop});
   }
 
 }
