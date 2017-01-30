@@ -5,7 +5,6 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-  TouchableHighlight,
   ListView,
   Dimensions,
   Platform,
@@ -91,7 +90,7 @@ class SearchPage extends Component {
 
   renderItem(item) {
     return (
-      <TouchableHighlight style={styles.item} onPress={() => this.props.navigator.push({ItemPage: true, item: item})}>
+      <TouchableOpacity style={styles.item} onPress={() => this.props.navigator.push({ItemPage: true, item: item})}>
         <View>
           <Image source={{uri: item.default_image}} style={styles.itemImage}/>
           <View style={styles.itemTitleContainer}>
@@ -102,7 +101,7 @@ class SearchPage extends Component {
             <Text style={styles.itemOriginPrice}>¥ {item.price}</Text>
           </View>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 
