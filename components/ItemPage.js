@@ -106,7 +106,7 @@ class ItemPage extends Component {
             <Text style={styles.itemOriginPrice}>淘宝价 ¥ {this.props.price}</Text>
           </View>
           <TouchableOpacity style={styles.touchableContainer} onPress={()=>{this.refs.modal.open();}}>
-            {this.state.selected ? <Text style={styles.pleaseSelect}>已选择  {this.state.selected.specification}</Text> : <Text style={styles.pleaseSelect}>选择  尺码 颜色分类</Text>}
+            {this.state.selected ? <Text style={styles.pleaseSelect}>已选择  {this.state.selected.specification} {this.state.selected.quantity}件</Text> : <Text style={styles.pleaseSelect}>选择  尺码 颜色分类</Text>}
             <Text style={styles.arrow}>></Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.touchableContainer} onPress={()=>{this.props.navigator.push({ShopPage: true, shop: this.props.shop})}}>
