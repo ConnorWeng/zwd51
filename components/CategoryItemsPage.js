@@ -4,7 +4,7 @@ import {
   View,
   Text,
   ListView,
-  TouchableHighlight,
+  TouchableOpacity,
   Image,
   Dimensions,
   ToastAndroid,
@@ -65,7 +65,7 @@ class CategoryItemsPage extends Component {
 
   renderItem(item) {
     return (
-      <TouchableHighlight style={styles.item} onPress={() => this.props.navigator.push({ItemPage: true, item: item})}>
+      <TouchableOpacity style={styles.item} onPress={() => this.props.navigator.push({ItemPage: true, item: item})}>
         <View>
           <Image source={{uri: item.default_image}} style={styles.itemImage}/>
           <View style={styles.itemTitleContainer}>
@@ -76,7 +76,7 @@ class CategoryItemsPage extends Component {
             <Text style={styles.itemOriginPrice}>¥ {item.price}</Text>
           </View>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 
