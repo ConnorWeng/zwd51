@@ -99,6 +99,12 @@ class ItemPage extends Component {
       <View style={styles.container}>
         <ScrollView style={styles.itemContainer}>
           <Image style={styles.itemImage} source={{uri: this.props.default_image.replace('_240x240.jpg', '')}}/>
+          <View style={styles.shareContainer}>
+            <TouchableOpacity style={styles.shareButton} onPress={() => {this.refs.shareModal.open();}}>
+              <Icon name="ios-share" size={30} color="#ffffff"/>
+              <Text style={styles.shareButtonLabel}>分享</Text>
+            </TouchableOpacity>
+          </View>
           <View style={styles.itemHead}>
             <Text numberOfLines={2} style={styles.itemTitle}>{this.props.goods_name}</Text>
             <Text style={styles.itemOuterIid}>商家编码：{this.getOuterIid()}</Text>
@@ -176,6 +182,19 @@ class ItemPage extends Component {
             );
           }
         })()}
+        </Modal>
+        <Modal style={styles.shareModal} position={'bottom'} ref={'shareModal'}>
+          <View style={styles.container}>
+            <TouchableOpacity style={styles.modalCloseBtn} onPress={() => this.refs.shareModal.close()}>
+              <Icon name="ios-close-circle-outline" size={24}/>
+            </TouchableOpacity>
+            <View>
+              <TouchableOpacity style={styles.wxTimelineContainer} onPress={this.shareToWxTimeline.bind(this)}>
+                <Image style={styles.wxTimelineLogo} source={require('../images/icon_res_download_moments.png')}/>
+                <Text>朋友圈</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </Modal>
       </View>
     );
@@ -274,6 +293,10 @@ class ItemPage extends Component {
       };
     }
     this.props.navigator.push({ShopPage: true, shop: shop});
+  }
+
+  shareToWxTimeline() {
+    NativeModules.WxAPI.shareToWxTimeline("http://www.51zwd.com/goods/" + this.props.goods_id, "51zwd尖货：" + this.props.goods_name, "", ()=>{}, ()=>{});
   }
 
 }
@@ -393,6 +416,36 @@ const styles = StyleSheet.create({
   loading: {
     marginTop: 10,
   },
+  shareContainer: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+  shareButton: {
+    width: 60,
+    height: 30,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  shareButtonLabel: {
+    marginLeft: 5,
+    fontSize: 16,
+    color: '#ffffff',
+  },
+  shareModal: {
+    height: 100,
+  },
+  wxTimelineContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  wxTimelineLogo: {
+    width: 48,
+    height: 48,
+  }
 });
 
 export default connect(state => state, actions)(ItemPage);
