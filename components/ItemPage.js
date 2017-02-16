@@ -18,7 +18,7 @@ import InputNumber from '../node_modules/rc-input-number/lib/index';
 import inputNumberStyles from '../node_modules/rc-input-number/lib/styles';
 import SpecPicker from './SpecPicker';
 import SpecContainer from './SpecContainer';
-import Loading from './Loading'
+import Loading from './Loading';
 import {getDescription, clearDescription, getSpecs, addToCart} from '../actions';
 
 const {height, width} = Dimensions.get('window');
@@ -188,9 +188,13 @@ class ItemPage extends Component {
             <TouchableOpacity style={styles.modalCloseBtn} onPress={() => this.refs.shareModal.close()}>
               <Icon name="ios-close-circle-outline" size={24}/>
             </TouchableOpacity>
-            <View>
-              <TouchableOpacity style={styles.wxTimelineContainer} onPress={this.shareToWxTimeline.bind(this)}>
-                <Image style={styles.wxTimelineLogo} source={require('../images/icon_res_download_moments.png')}/>
+            <View style={styles.apps}>
+              <TouchableOpacity style={styles.appContainer} onPress={this.shareToWxSession.bind(this)}>
+                <Image style={styles.appLogo} source={require('../images/icon64_appwx_logo.png')}/>
+                <Text>微信</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.appContainer} onPress={this.shareToWxTimeline.bind(this)}>
+                <Image style={styles.appLogo} source={require('../images/icon_res_download_moments.png')}/>
                 <Text>朋友圈</Text>
               </TouchableOpacity>
             </View>
@@ -296,7 +300,11 @@ class ItemPage extends Component {
   }
 
   shareToWxTimeline() {
-    NativeModules.WxAPI.shareToWxTimeline("http://www.51zwd.com/goods/" + this.props.goods_id, "51zwd尖货：" + this.props.goods_name, "", ()=>{}, ()=>{});
+    NativeModules.WxAPI.shareToWxTimeline("http://www.51zwd.com/goods/" + this.props.goods_id, "51zwd尖货：" + this.props.goods_name);
+  }
+
+  shareToWxSession() {
+    NativeModules.WxAPI.shareToWxSession("http://www.51zwd.com/goods/" + this.props.goods_id, "51zwd尖货：" + this.props.goods_name);
   }
 
 }
@@ -437,12 +445,17 @@ const styles = StyleSheet.create({
   shareModal: {
     height: 100,
   },
-  wxTimelineContainer: {
+  apps: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  appContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    margin: 5,
   },
-  wxTimelineLogo: {
+  appLogo: {
     width: 48,
     height: 48,
   }

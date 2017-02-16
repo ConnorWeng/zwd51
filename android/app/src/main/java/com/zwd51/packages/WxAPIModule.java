@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -32,7 +31,16 @@ public class WxAPIModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void shareToWxTimeline(String url, String title, String imageUrl, Callback successCallback, Callback errorCallback) {
+    public void shareToWxTimeline(String url, String title) {
+        shareToWx(SendMessageToWX.Req.WXSceneTimeline, url, title);
+    }
+
+    @ReactMethod
+    public void shareToWxSession(String url, String title) {
+        shareToWx(SendMessageToWX.Req.WXSceneSession, url, title);
+    }
+
+    private void shareToWx(int scene, String url, String title) {
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = url;
         WXMediaMessage msg = new WXMediaMessage(webpage);
@@ -45,7 +53,7 @@ public class WxAPIModule extends ReactContextBaseJavaModule {
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
         req.message = msg;
-        req.scene = SendMessageToWX.Req.WXSceneTimeline;
+        req.scene = scene;
         wxapi.sendReq(req);
     }
 
