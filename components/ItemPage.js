@@ -101,7 +101,7 @@ class ItemPage extends Component {
           <Image style={styles.itemImage} source={{uri: this.props.default_image.replace('_240x240.jpg', '')}}/>
           <View style={styles.shareContainer}>
             <TouchableOpacity style={styles.shareButton} onPress={() => {this.refs.shareModal.open();}}>
-              <Icon name="ios-share" size={30} color="#ffffff"/>
+              <Icon name="ios-share" size={24} color="#ffffff"/>
               <Text style={styles.shareButtonLabel}>分享</Text>
             </TouchableOpacity>
           </View>
@@ -436,6 +436,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 20,
   },
   shareButtonLabel: {
     marginLeft: 5,
