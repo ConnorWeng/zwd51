@@ -18,7 +18,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import Loading from './Loading';
-import {searchGoods, clearSearchGoods} from '../actions';
+import {mapDispatchToProps} from '../actions/mapper';
 import {PAGE_SIZE} from '../service.json';
 
 const {height, width} = Dimensions.get('window');
@@ -171,21 +171,14 @@ class SearchPage extends Component {
   }
 
   onLoadMore() {
-    this.props.search(this.state.keywords, this.props.searchGoodsRequest.page);
+    this.props.searchGoods(this.state.keywords, this.props.searchGoodsRequest.page);
   }
 
   async search() {
     await this.props.clearSearchGoods();
-    this.props.search(this.state.keywords, this.props.searchGoodsRequest.page);
+    this.props.searchGoods(this.state.keywords, this.props.searchGoodsRequest.page);
   }
 
-}
-
-const actions = (dispatch) => {
-  return {
-    search: (keywords, page) => dispatch(searchGoods(keywords, page)),
-    clearSearchGoods: () => dispatch(clearSearchGoods()),
-  };
 }
 
 const styles = StyleSheet.create({
@@ -258,4 +251,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(state => state.good, actions)(SearchPage);
+export default connect(state => state.good, mapDispatchToProps)(SearchPage);
