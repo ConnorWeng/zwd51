@@ -306,3 +306,10 @@ export function clearGoodsInCate() {
     type: 'CLEAR_GOODS_IN_CATE',
   };
 }
+
+export function getVipDiscount(behalfId, accessToken) {
+  return serviceAction('GET_VIP_DISCOUNT', '/mobile_order/get_vip_discount', 'GET', {
+    behalf_id: behalfId,
+    access_token: accessToken,
+  });
+}

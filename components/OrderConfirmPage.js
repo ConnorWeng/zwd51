@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import TouchableContainerItem from './TouchableContainerItem';
 import TouchableContainerItemsGroup from './TouchableContainerItemsGroup';
-import {submitOrder, getOrderGoodsInfo, clearSubmitOrderInfo} from '../actions';
+import {mapDispatchToProps} from '../actions/mapper';
 
 const {height, width} = Dimensions.get('window');
 
@@ -138,11 +138,15 @@ class OrderConfirmPage extends Component {
               <Text>快递费用</Text>
               <Text style={{color: '#f40'}}>+ {this.state.deliveryFee}</Text>
             </TouchableContainerItem>
+            <TouchableContainerItem style={{height: 40}} bodyStyle={{justifyContent: 'space-between'}} arrow={false}>
+              <Text style={{color: '#f40'}}>vip优惠</Text>
+              <Text style={{color: '#f40'}}>- {this.props.order.getVipDiscountRequest.vipDiscount ? this.props.order.getVipDiscountRequest.vipDiscount : '0'}</Text>
+            </TouchableContainerItem>
           </TouchableContainerItemsGroup>
         </ScrollView>
         <View style={styles.actionContainer}>
           <View style={styles.priceContainer}>
-            <Text style={styles.priceText}>实付款：¥{this.props.order.getOrderGoodsRequest.goodsInfo.amount + this.props.order.getOrderGoodsRequest.goodsInfo.behalf_fee + this.state.deliveryFee}</Text>
+            <Text style={styles.priceText}>实付款：¥{this.props.order.getOrderGoodsRequest.goodsInfo.amount + this.props.order.getOrderGoodsRequest.goodsInfo.behalf_fee + this.state.deliveryFee - parseFloat(this.props.order.getVipDiscountRequest.vipDiscount)}</Text>
           </View>
           <TouchableOpacity onPress={this.submitOrder.bind(this)} style={[styles.submitAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
             <Text style={[styles.submitActionText, {color: '#fff'}]}>{this.props.order.submitOrderRequest.isLoading ? '处理中...' : '提交订单'}</Text>
@@ -169,6 +173,7 @@ class OrderConfirmPage extends Component {
 
   onSelectBehalf(value) {
     if (this.props.order.getOrderGoodsRequest.goodsInfo.behalfs) {
+      this.props.getVipDiscount(value, this.props.member.accessToken);
       const deliveries = [];
       const selectedBehalfs = this.props.order.getOrderGoodsRequest.goodsInfo.behalfs.filter((behalf) => {
         if (behalf.bh_id === value) {
@@ -211,20 +216,6 @@ class OrderConfirmPage extends Component {
   }
 
 }
-
-const actions = (dispatch) => {
-  return {
-    submitOrder: (specIds, specNums, addressId,
-                  behalfId, deliveryId, postscript,
-                  accessToken) => dispatch(
-                    submitOrder(specIds, specNums, addressId,
-                                behalfId, deliveryId, postscript,
-                                accessToken)
-                  ),
-    getOrderGoodsInfo: (specIds, specNums, accessToken) => dispatch(getOrderGoodsInfo(specIds, specNums, accessToken)),
-    clearSubmitOrderInfo: () => dispatch(clearSubmitOrderInfo()),
-  };
-};
 
 const styles = StyleSheet.create({
   receiverName: {
@@ -280,4 +271,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(state => state, actions)(OrderConfirmPage);
+export default connect(state => state, mapDispatchToProps)(OrderConfirmPage);

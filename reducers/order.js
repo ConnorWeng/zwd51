@@ -81,7 +81,13 @@ const requestState = {
       deliverys: 'deliverys',
       levyRebackGoodsFee: 'levy_reback_goods_fee',
     },
-  }
+  },
+  getVipDiscountRequest: {
+    name: 'GET_VIP_DISCOUNT',
+    mapping: {
+      vipDiscount: {init: '0.00'},
+    }
+  },
 };
 
 export default buildReducer(defaultState, defaultHandler, requestState);
