@@ -152,7 +152,7 @@ class OrderConfirmPage extends Component {
             <Text style={[styles.submitActionText, {color: '#fff'}]}>{this.props.order.submitOrderRequest.isLoading ? '处理中...' : '提交订单'}</Text>
           </TouchableOpacity>
         </View>
-        <Spinner visible={this.props.order.getOrderGoodsRequest.isLoading || this.props.order.submitOrderRequest.isLoading}/>
+        <Spinner visible={this.props.order.getOrderGoodsRequest.isLoading || this.props.order.submitOrderRequest.isLoading || this.props.order.getVipDiscountRequest.isLoading}/>
       </View>
     );
   }
