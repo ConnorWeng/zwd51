@@ -12,11 +12,14 @@ class AboutPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.versionContainer}>
+        <View style={styles.centerContainer}>
           <Image source={require('../images/logo_welcome.gif')}/>
           <Text style={styles.version}>{version}</Text>
         </View>
-        <Text style={styles.copyright}>我要做网店 版权所有</Text>
+        <View style={styles.centerContainer}>
+          <Text style={styles.copyright}>Copyright ©2017</Text>
+          <Text style={styles.copyright}>上海轩颐网络科技有限公司</Text>
+        </View>
       </View>
     );
   }
@@ -32,7 +35,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     marginBottom: 10,
   },
-  versionContainer: {
+  centerContainer: {
     alignItems: 'center',
   },
   version: {
