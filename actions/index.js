@@ -313,3 +313,16 @@ export function getVipDiscount(behalfId, accessToken) {
     access_token: accessToken,
   });
 }
+
+export function saveMobileShopSettings(shopNick, profit, mobile, imQQ, imWX, imWW, announcement, accessToken) {
+  return serviceAction('SAVE_MOBILE_SHOP_SETTINGS', '/mobile_setting/shop_settings', 'POST', {
+    shop_nick: shopNick,
+    profit: profit,
+    mobile: mobile,
+    im_qq: imQQ,
+    im_wx: imWX,
+    im_ww: imWW,
+    announcement: announcement,
+    access_token: accessToken,
+  });
+}

@@ -8,6 +8,7 @@ import address from './address';
 import cart from './cart';
 import taobao from './taobao';
 import category from './category';
+import setting from './setting';
 
 const reducers = combineReducers({
   page,
@@ -19,6 +20,7 @@ const reducers = combineReducers({
   cart,
   taobao,
   category,
+  setting,
 });
 
 const rootReducer = (state, action) => {

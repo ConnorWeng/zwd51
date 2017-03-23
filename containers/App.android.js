@@ -24,6 +24,7 @@ import RefundPage from '../components/RefundPage';
 import UploadItemPage from '../components/UploadItemPage';
 import CategoryPage from '../components/CategoryPage';
 import CategoryItemsPage from '../components/CategoryItemsPage';
+import MobileShopPage from '../components/MobileShopPage';
 
 class App extends Component {
 
@@ -146,6 +147,11 @@ class App extends Component {
           if (route.CategoryItemsPage) {
             return (
               <CategoryItemsPage navigator={navigator} {...route.category}/>
+            );
+          }
+          if (route.MobileShopPage) {
+            return (
+              <MobileShopPage navigator={navigator}/>
             );
           }
         })()}
