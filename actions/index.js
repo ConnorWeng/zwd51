@@ -1,12 +1,5 @@
 import {serviceAction} from './builder';
 
-export function changeMainTab(index) {
-  return {
-    type: 'CHANGE_MAIN_TAB',
-    index: index,
-  };
-}
-
 export function login(username, password) {
   return serviceAction('LOGIN', '/mobile_member/login', 'POST', {
     username: username,

@@ -4,6 +4,7 @@ import {
   View,
   ScrollView,
   AppState,
+  ToastAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
@@ -18,6 +19,13 @@ import CartPage from './CartPage';
 import WelcomePage from './WelcomePage';
 
 class MainPage extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: '',
+    };
+  }
 
   componentDidMount() {
     AppState.addEventListener('change', this.handleAppStateChange);
@@ -34,10 +42,10 @@ class MainPage extends Component {
       <View style={styles.container}>
         <Icon.ToolbarAndroid
            style={styles.toolbar}
-           title={this.props.page.title}
+           title={this.state.title}
            iconSize={30}
            actions={
-             this.props.page.title !== '搜款式' ? [
+             this.state.title !== '搜款式' ? [
                {title: 'Search', iconName: 'ios-search-outline', iconColor: '#f40', show: 'ifRoom'},
              ] : []
            }
@@ -48,7 +56,7 @@ class MainPage extends Component {
            locked={true}
            initialPage={0}
            renderTabBar={() => <TabBar />}
-           onChangeTab={ins => this.props.changeMainTab(ins.i)}>
+           onChangeTab={this.onChangeTab.bind(this)}>
           <HomePage navigator={this.props.navigator} tabLabel="ios-home-outline" style={styles.tabView}/>
           <SearchPage navigator={this.props.navigator} tabLabel="ios-search-outline" style={styles.tabView}/>
           <CartPage navigator={this.props.navigator} tabLabel="ios-cart-outline" style={styles.tabView}/>
@@ -62,6 +70,27 @@ class MainPage extends Component {
 
   onActionSelected() {
     this.refs.scrollableTabView.goToPage(1);
+  }
+
+  onChangeTab(position) {
+    let title = '';
+    switch (position.i) {
+    case 1:
+      title = '搜款式';
+      break;
+    case 2:
+      title = '购物车';
+      break;
+    case 3:
+      title = '逛市场';
+      break;
+    case 4:
+      title = '我的';
+      break;
+    }
+    this.setState({
+      title: title,
+    });
   }
 
 }
