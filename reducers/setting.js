@@ -11,6 +11,12 @@ const requestState = {
       success: 'success',
     },
   },
+  getMobileShopSettingsRequest: {
+    name: 'GET_MOBILE_SHOP_SETTINGS',
+    mapping: {
+      settings: {init: false},
+    },
+  },
 };
 
 export default buildReducer(defaultState, defaultHandler, requestState);

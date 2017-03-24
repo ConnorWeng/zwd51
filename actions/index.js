@@ -319,3 +319,9 @@ export function saveMobileShopSettings(shopNick, profit, mobile, imQQ, imWX, imW
     access_token: accessToken,
   });
 }
+
+export function getMobileShopSettings(accessToken) {
+  return serviceAction('GET_MOBILE_SHOP_SETTINGS', '/mobile_setting/shop_settings', 'GET', {
+    access_token: accessToken,
+  });
+}
