@@ -248,7 +248,7 @@ class ItemPage extends Component {
 
   buy() {
     if (!this.state.selected) {
-      ToastAndroid.show('请选择商品规格', ToastAndroid.SHORT);
+      this.refs.modal.open();
       return ;
     } else {
       this.props.navigator.push({
