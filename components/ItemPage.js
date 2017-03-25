@@ -100,9 +100,9 @@ class ItemPage extends Component {
         <ScrollView style={styles.itemContainer}>
           <Image style={styles.itemImage} source={{uri: this.props.default_image.replace('_240x240.jpg', '')}}/>
           <View style={styles.shareContainer}>
-            <TouchableOpacity style={styles.shareButton} onPress={() => {this.refs.shareModal.open();}}>
-              <Icon name="ios-share" size={24} color="#ffffff"/>
-              <Text style={styles.shareButtonLabel}>分享</Text>
+            <TouchableOpacity style={styles.shareButton} onPress={this.shareToWx.bind(this)}>
+              <Icon name="ios-share" size={26} color="#ffffff"/>
+              <Text style={styles.shareButtonLabel}>传微信</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.itemHead}>
@@ -299,12 +299,22 @@ class ItemPage extends Component {
     this.props.navigator.push({ShopPage: true, shop: shop});
   }
 
+  shareToWx() {
+    if (!this.props.member.accessToken) {
+      return this.props.navigator.push({LoginPage: true});
+    }
+    if (!this.props.setting.getMobileShopSettingsRequest.settings) {
+      return this.props.navigator.push({MobileShopPage: true});
+    }
+    this.refs.shareModal.open();
+  }
+
   shareToWxTimeline() {
-    NativeModules.WxAPI.shareToWxTimeline("http://www.51zwd.com/goods/" + this.props.goods_id, "51zwd尖货：" + this.props.goods_name);
+    NativeModules.WxAPI.shareToWxTimeline("http://app.51zwd.com/ecmall51-app/index.php?app=mobile_home&act=mobile_shop&user_id=" + this.props.member.userId + '&goods_id=' + this.props.goods_id + '&title=' + this.props.goods_name + '&price=' + this.props.price, this.props.goods_name, this.props.default_image);
   }
 
   shareToWxSession() {
-    NativeModules.WxAPI.shareToWxSession("http://www.51zwd.com/goods/" + this.props.goods_id, "51zwd尖货：" + this.props.goods_name);
+    NativeModules.WxAPI.shareToWxSession("http://app.51zwd.com/ecmall51-app/index.php?app=mobile_home&act=mobile_shop&user_id=" + this.props.member.userId + '&goods_id=' + this.props.goods_id + '&title=' + this.props.goods_name + '&price=' + this.props.price, this.props.goods_name, this.props.default_image);
   }
 
 }
@@ -430,9 +440,9 @@ const styles = StyleSheet.create({
     top: 0,
   },
   shareButton: {
-    width: 60,
-    height: 30,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    width: 80,
+    height: 40,
+    backgroundColor: 'rgba(240,64,0,0.6)',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -440,7 +450,7 @@ const styles = StyleSheet.create({
   },
   shareButtonLabel: {
     marginLeft: 5,
-    fontSize: 16,
+    fontSize: 18,
     color: '#ffffff',
   },
   shareModal: {
