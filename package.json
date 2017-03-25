@@ -1,6 +1,6 @@
 {
   "name": "zwd51",
-  "version": "0.2.16",
+  "version": "0.2.17",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
