@@ -28,6 +28,12 @@ class LabelAndInput extends Component {
     return this.state.text;
   }
 
+  setText(text) {
+    this.setState({
+      text: text,
+    });
+  }
+
 }
 
 const styles = StyleSheet.create({

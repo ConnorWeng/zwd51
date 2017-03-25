@@ -13,8 +13,15 @@ import LabelAndInput from './LabelAndInput';
 
 class MobileShopPage extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      settings: {},
+    };
+  }
+
   componentDidMount() {
-    this.props.getMobileShopSettings(this.props.member.accessToken);
+    this.getSettings();
   }
 
   render() {
@@ -29,20 +36,15 @@ class MobileShopPage extends Component {
       ToastAndroid.show(this.props.setting.getMobileShopSettingsRequest.message, ToastAndroid.SHORT);
     }
 
-    let settings = {};
-    if (this.props.setting.getMobileShopSettingsRequest.settings) {
-      settings = this.props.setting.getMobileShopSettingsRequest.settings;
-    }
-
     return (
       <View style={{flex: 1}}>
-        <LabelAndInput ref="profit" label="每件加价" defaultValue={settings['profit']}/>
-        <LabelAndInput ref="shopNick" label="微店名称" defaultValue={settings['shop_nick']}/>
-        <LabelAndInput ref="mobile" label="手机号" defaultValue={settings['mobile']}/>
-        <LabelAndInput ref="imQQ" label="QQ" defaultValue={settings['im_qq']}/>
-        <LabelAndInput ref="imWX" label="微信" defaultValue={settings['im_wx']}/>
-        <LabelAndInput ref="imWW" label="旺旺" defaultValue={settings['im_ww']}/>
-        <LabelAndInput ref="announcement" label="公告" defaultValue={settings['announcement']}/>
+        <LabelAndInput ref="profit" label="每件加价" defaultValue={this.state.settings['profit']}/>
+        <LabelAndInput ref="shopNick" label="微店名称" defaultValue={this.state.settings['shop_nick']}/>
+        <LabelAndInput ref="mobile" label="手机号" defaultValue={this.state.settings['mobile']}/>
+        <LabelAndInput ref="imQQ" label="QQ" defaultValue={this.state.settings['im_qq']}/>
+        <LabelAndInput ref="imWX" label="微信" defaultValue={this.state.settings['im_wx']}/>
+        <LabelAndInput ref="imWW" label="旺旺" defaultValue={this.state.settings['im_ww']}/>
+        <LabelAndInput ref="announcement" label="公告" defaultValue={this.state.settings['announcement']}/>
         <PrimaryButton label={'确认'} onPress={this.save.bind(this)}/>
         <Spinner visible={this.props.setting.saveMobileShopSettingsRequest.isLoading || this.props.setting.getMobileShopSettingsRequest.isLoading}/>
       </View>
@@ -71,6 +73,23 @@ class MobileShopPage extends Component {
     const announcement = this.refs.announcement.getText();
     const accessToken = this.props.member.accessToken;
     this.props.saveMobileShopSettings(shopNick, profit, mobile, imQQ, imWX, imWW, announcement, accessToken);
+  }
+
+  async getSettings() {
+    await this.props.getMobileShopSettings(this.props.member.accessToken);
+    if (this.props.setting.getMobileShopSettingsRequest.settings) {
+      const settings = this.props.setting.getMobileShopSettingsRequest.settings;
+      this.refs.profit.setText(settings['profit']);
+      this.refs.shopNick.setText(settings['shop_nick']);
+      this.refs.mobile.setText(settings['mobile']);
+      this.refs.imQQ.setText(settings['im_qq']);
+      this.refs.imWX.setText(settings['im_wx']);
+      this.refs.imWW.setText(settings['im_ww']);
+      this.refs.announcement.setText(settings['announcement']);
+      this.setState({
+        settings: settings,
+      });
+    }
   }
 
 }
