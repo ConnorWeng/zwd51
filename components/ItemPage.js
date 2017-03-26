@@ -312,11 +312,11 @@ class ItemPage extends Component {
   }
 
   shareToWxTimeline() {
-    NativeModules.WxAPI.shareToWxTimeline("http://app.51zwd.com/ecmall51-app/index.php?app=mobile_home&act=mobile_shop&user_id=" + this.props.member.userId + '&goods_id=' + this.props.goods_id + '&title=' + this.props.goods_name + '&price=' + this.props.price, this.props.goods_name, this.props.default_image);
+    NativeModules.WxAPI.shareToWxTimeline("http://app.51zwd.com/ecmall51-app/index.php?app=mobile_home&act=mobile_shop&user_id=" + this.props.member.userId + '&goods_id=' + this.props.goods_id + '&title=' + this.props.goods_name + '&price=' + this.props.price + '&pic_url=' + encodeURIComponent(this.props.default_image), this.props.goods_name, this.props.default_image);
   }
 
   shareToWxSession() {
-    NativeModules.WxAPI.shareToWxSession("http://app.51zwd.com/ecmall51-app/index.php?app=mobile_home&act=mobile_shop&user_id=" + this.props.member.userId + '&goods_id=' + this.props.goods_id + '&title=' + this.props.goods_name + '&price=' + this.props.price, this.props.goods_name, this.props.default_image);
+    NativeModules.WxAPI.shareToWxSession("http://app.51zwd.com/ecmall51-app/index.php?app=mobile_home&act=mobile_shop&user_id=" + this.props.member.userId + '&goods_id=' + this.props.goods_id + '&title=' + this.props.goods_name + '&price=' + this.props.price + '&pic_url=' + encodeURIComponent(this.props.default_image), this.props.goods_name, this.props.default_image);
   }
 
 }
