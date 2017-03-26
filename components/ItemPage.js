@@ -301,9 +301,11 @@ class ItemPage extends Component {
 
   shareToWx() {
     if (!this.props.member.accessToken) {
+      ToastAndroid.show('请先登录', ToastAndroid.SHORT);
       return this.props.navigator.push({LoginPage: true});
     }
     if (!this.props.setting.getMobileShopSettingsRequest.settings) {
+      ToastAndroid.show('请先填写微店信息', ToastAndroid.SHORT);
       return this.props.navigator.push({MobileShopPage: true});
     }
     this.refs.shareModal.open();

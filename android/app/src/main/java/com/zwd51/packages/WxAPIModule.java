@@ -17,10 +17,9 @@ import com.zwd51.Util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Connor on 10/02/17.
@@ -55,24 +54,25 @@ public class WxAPIModule extends ReactContextBaseJavaModule {
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = title;
 
-//        Log.d(TAG, "shareToWx: start downloading " + picUrl);
-//        Bitmap httpGetBitmap = this.getHttpGetBitmap(picUrl);
-//        Log.d(TAG, "shareToWx: downloaded " + httpGetBitmap.getByteCount());
-//        if (httpGetBitmap != null) {
-//            msg.thumbData = Util.bmpToByteArray(httpGetBitmap, true);
-//        } else {
-        Resources resources = getReactApplicationContext().getResources();
-        Bitmap thumb = BitmapFactory.decodeResource(resources, R.mipmap.launcher);
-        msg.thumbData = Util.bmpToByteArray(thumb, true);
-//        }
+        Log.d(TAG, "shareToWx: start downloading " + picUrl);
+        Bitmap httpGetBitmap = this.getHttpGetBitmap(picUrl);
+        Log.d(TAG, "shareToWx: downloaded " + httpGetBitmap.getByteCount());
+        if (httpGetBitmap != null) {
+            msg.thumbData = Util.compressBitmapToData(httpGetBitmap, 32);
+        } else {
+            Resources resources = getReactApplicationContext().getResources();
+            Bitmap thumb = BitmapFactory.decodeResource(resources, R.mipmap.launcher);
+            msg.thumbData = Util.bmpToByteArray(thumb, true);
+        }
+        Log.d(TAG, "shareToWx: thumb data length is " + msg.thumbData.length);
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
         req.message = msg;
         req.scene = scene;
-//        Log.d(TAG, "shareToWx: start sending message to wx");
+        Log.d(TAG, "shareToWx: start sending message to wx");
         wxapi.sendReq(req);
-//        Log.d(TAG, "shareToWx: sent");
+        Log.d(TAG, "shareToWx: sent");
     }
 
     private String buildTransaction(final String type) {
@@ -84,7 +84,7 @@ public class WxAPIModule extends ReactContextBaseJavaModule {
         InputStream in = null;
         try {
             URL url = new URL(picUrl);
-            HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.setConnectTimeout(5 * 1000);
             urlConnection.setReadTimeout(5 * 1000);
