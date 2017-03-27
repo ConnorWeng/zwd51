@@ -17,9 +17,10 @@ class OrderGoodsPage extends Component {
           <Image style={styles.goodImage} source={{uri: good.goods_image}}/>
           <View style={styles.goodDetailsContainer}>
             <Text style={styles.goodName} numberOfLines={2}>{good.goods_name}</Text>
+            <Text>{good.specification}</Text>
             <View style={styles.goodPriceContainer}>
               <Text style={styles.goodSubtotal}>¥ {good.subtotal || good.price}</Text>
-              <Text style={styles.goodQuantity}>x{good.quantity}</Text>
+              <Text>x{good.quantity}</Text>
             </View>
           </View>
         </View>
@@ -64,8 +65,6 @@ const styles = StyleSheet.create({
   },
   goodSubtotal: {
     color: '#f40',
-  },
-  goodQuantity: {
   },
 });
 
