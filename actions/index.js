@@ -257,11 +257,13 @@ export function getOrderInfo(orderId, accessToken) {
   });
 }
 
-export function addItem(goodsId, title, price, desc, accessToken) {
+export function addItem(goodsId, title, price, profit, profit0, desc, accessToken) {
   return serviceAction('ADD_ITEM', '/mobile_taobao/add_item', 'POST', {
     goods_id: goodsId,
     title: title,
     price: price,
+    profit: profit,
+    profit0: profit0,
     desc: desc,
     access_token: accessToken,
   });
@@ -324,4 +326,12 @@ export function getMobileShopSettings(accessToken) {
   return serviceAction('GET_MOBILE_SHOP_SETTINGS', '/mobile_setting/shop_settings', 'GET', {
     access_token: accessToken,
   });
+}
+
+export function setProfit(profit, profit0) {
+  return {
+    type: 'SET_PROFIT',
+    profit: profit,
+    profit0: profit0,
+  };
 }

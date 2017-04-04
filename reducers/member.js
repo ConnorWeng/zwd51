@@ -8,6 +8,11 @@ const member = (state = {
   isTaobao: false,
 }, action) => {
   switch (action.type) {
+  case 'SET_PROFIT':
+    return Object.assign({}, state, {
+      profit: action.profit,
+      profit0: action.profit0,
+    });
   case 'LOGIN_REQUEST':
     return Object.assign({}, state, {
       isLogging: true,
