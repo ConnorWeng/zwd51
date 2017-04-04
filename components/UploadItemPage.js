@@ -43,7 +43,7 @@ class UploadItemPage extends Component {
     return (
       <ScrollView>
         <LabelAndInput ref="title" label="宝贝标题:" flexDirection="column" defaultValue={this.props.goods_name} multiline={true} inputStyle={{fontSize: 14, color: 'rgb(100,100,100)'}}/>
-        <LabelAndInput ref="price" label="一口价:" flexDirection="column" defaultValue={this.props.price} inputStyle={{fontSize: 14, color: 'rgb(100,100,100)'}}/>
+        <LabelAndInput ref="price" label="一口价:" flexDirection="column" defaultValue={(parseFloat(this.props.price) * (parseFloat(this.props.member.profit0)/100.0) + parseFloat(this.props.member.profit)) + ''} inputStyle={{fontSize: 14, color: 'rgb(100,100,100)'}}/>
         <LabelAndInput label="图片搬家:" flexDirection="column">
           {
             this.props.good.getDescriptionRequest.imgsInDesc ? this.props.good.getDescriptionRequest.imgsInDesc.map((img, i) => {

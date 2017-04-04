@@ -1,6 +1,8 @@
 const member = (state = {
   accessToken: '',
   username: '',
+  profit: 0,
+  profit0: 100,
   isLogging: false,
   message: '',
   isTaobao: false,
@@ -23,6 +25,8 @@ const member = (state = {
         accessToken: action.json.access_token,
         userId: action.json.user_id,
         username: action.json.user_name,
+        profit: action.json.profit,
+        profit0: action.json.profit0,
         message: '登录成功',
       });
     }
@@ -43,6 +47,8 @@ const member = (state = {
         accessToken: action.json.access_token,
         userId: action.json.user_id,
         username: action.json.user_name,
+        profit: action.json.profit,
+        profit0: action.json.profit0,
         message: '登录成功',
         isTaobao: true,
       });
