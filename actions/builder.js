@@ -15,6 +15,11 @@ export function serviceAction(serviceName, path, method, params) {
       type: serviceName + '_CHECK',
       json: json,
     });
+    if (json.code === 510008) {
+      dispatch({
+        type: 'LOGOUT',
+      });
+    }
     setTimeout(() => {
       dispatch({
         type: serviceName + '_CLEAR_MESSAGE',
