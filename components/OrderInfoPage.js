@@ -101,7 +101,7 @@ class OrderInfoPage extends Component {
           <TouchableContainerItemsGroup style={{marginTop: 10}}>
             <TouchableContainerItem style={{height: 40}} bodyStyle={{justifyContent: 'space-between'}} arrow={false}>
               <Text>下单时间</Text>
-              <Text>{moment(order.order_add_time * 1000).format('YYYY-MM-DD hh:mm:ss')}</Text>
+              <Text>{moment(order.order_add_time*1000 + 8*60*60*1000).format('YYYY-MM-DD HH:mm:ss')}</Text>
             </TouchableContainerItem>
             <TouchableContainerItem style={{height: 40}} bodyStyle={{justifyContent: 'space-between'}} arrow={false}>
               <Text>运费</Text>
