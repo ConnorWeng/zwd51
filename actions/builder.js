@@ -25,7 +25,7 @@ export function serviceAction(serviceName, path, method, params) {
         type: serviceName + '_CLEAR_MESSAGE',
       });
     }, 3000);
-    return json;
+    return Promise.resolve(json);
   };
 }
 
@@ -41,7 +41,7 @@ async function callGetService(path, params) {
       message: e.message,
     };
   }
-  return json;
+  return Promise.resolve(json);
 }
 
 async function callPostService(path, params) {
@@ -63,7 +63,7 @@ async function callPostService(path, params) {
       message: e.message,
     };
   }
-  return json;
+  return Promise.resolve(json);
 }
 
 function buildQueryString(params) {
