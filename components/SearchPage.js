@@ -12,10 +12,10 @@ import {
   Text,
   Image,
   ToastAndroid,
+  FlatList,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
-import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import Loading from './Loading';
 import {mapDispatchToProps} from '../actions/mapper';
 import {PAGE_SIZE} from '../service.json';
@@ -26,26 +26,14 @@ class SearchPage extends Component {
 
   constructor(props) {
     super(props);
-    const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-    });
     this.state = {
       keywords: '',
-      dataSource: dataSource,
-      searchGoods: dataSource.cloneWithRows(props.searchGoodsRequest.data),
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.searchGoodsRequest.message) {
       ToastAndroid.show(nextProps.searchGoodsRequest.message, ToastAndroid.SHORT);
-    } else {
-      this.setState({
-        searchGoods: this.state.dataSource.cloneWithRows(nextProps.searchGoodsRequest.data),
-      });
-    }
-    if (this.refs.pullToRefreshListView) {
-      this.refs.pullToRefreshListView.endLoadMore(nextProps.searchGoodsRequest.isEnd);
     }
   }
 
@@ -65,29 +53,28 @@ class SearchPage extends Component {
         </View>
         {
           this.props.searchGoodsRequest.data.length > 0 ?
-            <PullToRefreshListView
-                 ref="pullToRefreshListView"
-                 contentContainerStyle={styles.itemContainer}
-                 dataSource={this.state.searchGoods}
-                 viewType={PullToRefreshListView.constants.viewType.listView}
+            <FlatList
+                 ref="flatList"
                  style={styles.goodsListView}
-                 initialListSize={PAGE_SIZE}
-                 enableEmptySections={true}
-                 pageSize={PAGE_SIZE}
-                 renderRow={this.renderItem.bind(this)}
-                 renderHeader={this.renderHeader.bind(this)}
-                 renderFooter={this.renderFooter.bind(this)}
-                 onRefresh={this.onRefresh.bind(this)}
-                 onLoadMore={this.onLoadMore.bind(this)}
-                 enabledPullDown={false}
-                 pullUpDistance={35}
-                 pullUpStayDistance={50}/> : null
+                 horizontal={false}
+                 numColumns={2}
+                 columnWrapperStyle={styles.itemContainer}
+                 keyExtractor={this.keyExtractor.bind(this)}
+                 ListFooterComponent={this.renderFooter.bind(this)}
+                 renderItem={this.renderItem.bind(this)}
+                 data={this.props.searchGoodsRequest.data}
+                 onEndReached={this.onLoadMore.bind(this)}
+                 onEndReachedThreshold={0.01}/> : null
         }
       </View>
     );
   }
 
-  renderItem(item) {
+  keyExtractor(item, index) {
+    return item.goods_id;
+  }
+
+  renderItem({item}) {
     return (
       <TouchableOpacity style={styles.item} onPress={() => this.props.navigator.push({ItemPage: true, item: item})}>
         <View>
@@ -104,14 +91,14 @@ class SearchPage extends Component {
     );
   }
 
-  renderHeader(viewState) {
-    return (
-      <View style={{width: width}}></View>
-    );
-  }
-
-  renderFooter(viewState) {
-    if (this.props.searchGoodsRequest.isLoading) {
+  renderFooter() {
+    if (this.props.searchGoodsRequest.isEnd) {
+      return (
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
+          <Text>没有更多了</Text>
+        </View>
+      );
+    } else {
       return (
         <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
           <Loading/>
@@ -119,48 +106,6 @@ class SearchPage extends Component {
         </View>
       );
     }
-    let {pullState, pullDistancePercent} = viewState;
-    let {load_more_none, load_more_idle, will_load_more, loading_more, loaded_all, } = PullToRefreshListView.constants.viewState;
-    pullDistancePercent = Math.round(pullDistancePercent * 100);
-    switch(pullState) {
-    case load_more_none:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
-          <Text>上拉加载更多</Text>
-        </View>
-      );
-    case load_more_idle:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
-          <Text>上拉加载更多</Text>
-        </View>
-      );
-    case will_load_more:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
-          <Text>放开加载更多</Text>
-        </View>
-      );
-    case loaded_all:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
-          <Text>没有更多了</Text>
-        </View>
-      );
-    }
-  }
-
-  renderActivityIndicator() {
-    return (
-      <ActivityIndicator
-         style={{marginRight: 10,}}
-         color={'#ff0000'}
-         size={'small'}/>
-    );
-  }
-
-  onRefresh() {
-    this.refs.pullToRefreshListView.endRefresh(true);
   }
 
   onLoadMore() {
@@ -208,11 +153,7 @@ const styles = StyleSheet.create({
     height: height - 65 - 40 - 42 - 20,
   },
   itemContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
     justifyContent: 'space-between',
-    marginTop: 5,
   },
   item: {
     width: width / 2 - 2.5,
