@@ -167,7 +167,6 @@ dependencies {
     compile project(':react-native-vector-icons')
     compile project(':react-native-smart-swipe-refresh-layout')
     compile project(':android-auto-update')
-    compile project(':react-native-webview-bridge')
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.0.2'
 }
 

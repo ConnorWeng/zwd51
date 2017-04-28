@@ -10,8 +10,6 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
-import com.loveplusplus.update.UpdateChecker;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactnativecomponent.swiperefreshlayout.RCTSwipeRefreshLayoutPackage;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -45,7 +43,6 @@ public class MainApplication extends Application implements ReactApplication {
                     new VectorIconsPackage(),
                     new RCTSwipeRefreshLayoutPackage(),
                     new AlibabaAPIPackage(),
-                    new WebViewBridgePackage(),
                     new Zwd51APIPackage(),
                     new WxAPIPackage(wxapi)
             );
