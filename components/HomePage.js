@@ -10,11 +10,10 @@ import {
   Image,
   Dimensions,
   ToastAndroid,
+  WebView,
 } from 'react-native';
 import {connect} from 'react-redux';
-import WebViewBridge from 'react-native-webview-bridge';
 import ItemPage from './ItemPage';
-import ItemList from './ItemList';
 import {SERVICE_URL} from "../service.json";
 import {welcomed} from '../actions';
 
@@ -24,20 +23,15 @@ class HomePage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-      }),
-    };
   }
 
   render() {
     return (
-      <View>
-        <WebViewBridge
+      <View style={{flex:1}}>
+        <WebView
            ref="webView"
-           onBridgeMessage={this.onBridgeMessage.bind(this)}
-           style={styles.webViewBridge}
+           onMessage={this.onMessage.bind(this)}
+           style={styles.webView}
            source={{uri: SERVICE_URL + '/index.php?app=mobile_home'}}
            onLoadEnd={this.onWebViewLoadEnd.bind(this)}
            renderError={this.renderWebViewError.bind(this)}/>
@@ -45,7 +39,8 @@ class HomePage extends Component {
     );
   }
 
-  onBridgeMessage(message) {
+  onMessage(event) {
+    const message = event.nativeEvent.data;
     const content = JSON.parse(message);
     switch (content.type) {
     case 'viewItem':
@@ -97,7 +92,7 @@ const actions = (dispatch) => {
 };
 
 const styles = StyleSheet.create({
-  webViewBridge: {
+  webView: {
     height: height - 56 - 60,
   },
   banner: {

@@ -17,15 +17,9 @@ import java.util.List;
  */
 public class AlibabaAPIPackage implements ReactPackage {
 
-    private Activity mainActivity;
-
-    public AlibabaAPIPackage(Activity mainActivity) {
-        this.mainActivity = mainActivity;
-    }
-
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        return Arrays.<NativeModule>asList(new AlibabaAPIModule(reactContext, mainActivity));
+        return Arrays.<NativeModule>asList(new AlibabaAPIModule(reactContext));
     }
 
     @Override

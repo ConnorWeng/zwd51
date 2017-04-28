@@ -9,7 +9,6 @@ import {
   Dimensions,
   Platform,
   ActivityIndicator,
-  ProgressBarAndroid,
   Text,
   Image,
   ToastAndroid,
@@ -52,7 +51,7 @@ class SearchPage extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{flex: 1}}>
         <View style={styles.searchContainer}>
           <View style={styles.searchInputContainer}>
             <TextInput onChangeText={(text) => this.setState({keywords: text})} style={styles.searchInput} underlineColorAndroid="rgba(0,0,0,0)" placeholder="搜索..."/>
@@ -152,17 +151,11 @@ class SearchPage extends Component {
   }
 
   renderActivityIndicator() {
-    return ActivityIndicator ? (
+    return (
       <ActivityIndicator
          style={{marginRight: 10,}}
-         animating={true}
          color={'#ff0000'}
          size={'small'}/>
-    ) : (
-      <ProgressBarAndroid
-         style={{marginRight: 10,}}
-         color={'#ff0000'}
-         styleAttr={'Small'}/>
     );
   }
 
@@ -217,6 +210,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
     marginTop: 5,
   },

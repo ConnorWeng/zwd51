@@ -72,7 +72,7 @@ class OrderConfirmPage extends Component {
             <TouchableContainerItem style={{height: 80}} arrow={true} onPress={() => {this.props.navigator.push({AddressPage: true, addr: this.props.order.getOrderGoodsRequest.goodsInfo.default_address ? this.props.order.getOrderGoodsRequest.goodsInfo.default_address : {}})}}>
               {
                 this.props.order.getOrderGoodsRequest.goodsInfo.default_address ?
-                  <View style={{flexDirection: 'row', flexWrap: 'wrap', flex: 1}}>
+                  <View style={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', flex: 1}}>
                     <Text style={styles.receiverName}>{this.props.order.getOrderGoodsRequest.goodsInfo.default_address.consignee}</Text>
                     <Text style={styles.receiverMobile}>{this.props.order.getOrderGoodsRequest.goodsInfo.default_address.phone_mob}</Text>
                     <Text style={styles.receiverAddress} numberOfLines={1}>{this.props.order.getOrderGoodsRequest.goodsInfo.default_address.address}</Text>

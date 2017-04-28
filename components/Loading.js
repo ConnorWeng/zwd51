@@ -3,17 +3,17 @@ import {
   StyleSheet,
   View,
   Text,
-  ProgressBarAndroid
+  ActivityIndicator
 } from 'react-native';
 
 class Loading extends Component {
 
   render() {
     return (
-      <ProgressBarAndroid
+      <ActivityIndicator
          style={[styles.loading, this.props.style]}
          color={'#ff0000'}
-         styleAttr={'Small'}/>
+         size={'small'}/>
     );
   }
 

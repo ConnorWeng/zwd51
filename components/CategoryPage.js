@@ -6,10 +6,13 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import {connect} from 'react-redux';
 import Loading from './Loading';
 import {mapDispatchToProps} from '../actions/mapper';
+
+const {height, width} = Dimensions.get('window');
 
 class CategoryPage extends Component {
 
@@ -98,10 +101,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   leftView: {
-    flex: 1,
+    width: 100,
   },
   rightView: {
-    flex: 3,
+    width: width - 100,
   },
   categoryContainer: {
     alignItems: 'center',
@@ -121,6 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    alignItems: 'flex-start',
   },
   subCategoryContainer: {
     width: 80,

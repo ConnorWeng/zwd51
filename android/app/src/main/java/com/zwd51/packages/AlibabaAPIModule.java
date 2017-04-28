@@ -1,6 +1,5 @@
 package com.zwd51.packages;
 
-import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -28,11 +27,8 @@ public class AlibabaAPIModule extends ReactContextBaseJavaModule {
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
 
-    private Activity mainActivity;
-
-    public AlibabaAPIModule(ReactApplicationContext reactContext, final Activity mainActivity) {
+    public AlibabaAPIModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        this.mainActivity = mainActivity;
     }
 
     @Override
@@ -43,7 +39,7 @@ public class AlibabaAPIModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void login(final Callback successCallback, final Callback errorCallback) {
         LoginService loginService = AlibabaSDK.getService(LoginService.class);
-        loginService.showLogin(mainActivity, new LoginCallback() {
+        loginService.showLogin(getCurrentActivity(), new LoginCallback() {
             @Override
             public void onSuccess(Session session) {
                 Log.i("AlibabaAPIModule", "onSuccess: "+session.isLogin()+"-UserId-" + session.getUserId() + "-LoginTime-"+ session.getLoginTime()+"[user]:nick="+session.getUser().nick + "头像"+ session.getUser().avatarUrl);
@@ -81,11 +77,11 @@ public class AlibabaAPIModule extends ReactContextBaseJavaModule {
                         // 判断resultStatus 为9000则代表支付成功
                         if (TextUtils.equals(resultStatus, "9000")) {
                             // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-                            Toast.makeText(mainActivity, "支付成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getCurrentActivity(), "支付成功", Toast.LENGTH_SHORT).show();
                             successCallback.invoke();
                         } else {
                             // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
-                            Toast.makeText(mainActivity, "支付失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getCurrentActivity(), "支付失败", Toast.LENGTH_SHORT).show();
                             errorCallback.invoke("支付失败:" + payResult.getResultStatus());
                         }
                         break;
@@ -98,7 +94,7 @@ public class AlibabaAPIModule extends ReactContextBaseJavaModule {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                PayTask alipay = new PayTask(mainActivity);
+                PayTask alipay = new PayTask(getCurrentActivity());
                 Map<String, String> result = alipay.payV2(orderInfo, true);
                 Log.i("msp", result.toString());
 

@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   specCheckboxContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    alignItems: 'flex-start',
     marginTop: 5,
     marginBottom: 5,
   },

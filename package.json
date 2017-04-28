@@ -1,6 +1,6 @@
 {
   "name": "zwd51",
-  "version": "0.2.24",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -9,8 +9,8 @@
   "logLevel": "trace",
   "dependencies": {
     "rc-input-number": "^2.7.0",
-    "react": "^15.1.0",
-    "react-native": "0.27.2",
+    "react": "^16.0.0-alpha.6",
+    "react-native": "^0.43.4",
     "react-native-checkbox": "^1.0.15",
     "react-native-loading-spinner-overlay": "^0.1.1",
     "react-native-modalbox": "^1.3.7",
