@@ -70,8 +70,6 @@ public class MainApplication extends Application implements ReactApplication {
                 Log.e("MainApplication", "onFailure: SDK fail");
             }
         });
-
-        //UpdateChecker.checkForDialog(getApplicationContext());
     }
 
     private void regToWx() {
