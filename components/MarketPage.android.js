@@ -10,11 +10,11 @@ import {
   DrawerLayoutAndroid,
   Dimensions,
   ToastAndroid,
+  FlatList
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TimerEnhance from 'react-native-smart-timer-enhance';
-import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import Loading from './Loading';
 import ShopInfo from './ShopInfo';
 import SpecSelector from './SpecSelector';
@@ -30,8 +30,6 @@ class MarketPage extends Component {
     });
     this.state = {
       keywords: '',
-      dataSource: dataSource,
-      shops: dataSource.cloneWithRows(props.getShopsRequest.data),
     };
   }
 
@@ -44,13 +42,6 @@ class MarketPage extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.getShopsRequest.message) {
       ToastAndroid.show(nextProps.getShopsRequest.message, ToastAndroid.SHORT);
-    } else {
-      this.setState({
-        shops: this.state.dataSource.cloneWithRows(nextProps.getShopsRequest.data),
-      });
-    }
-    if (this.refs.pullToRefreshListView) {
-      this.refs.pullToRefreshListView.endLoadMore(nextProps.getShopsRequest.isEnd);
     }
   }
 
@@ -71,7 +62,7 @@ class MarketPage extends Component {
          drawerWidth={300}
          drawerPosition={DrawerLayoutAndroid.positions.Right}
          renderNavigationView={() => navigationView}>
-        <View>
+        <View style={{flex: 1}}>
           <View style={styles.searchContainer}>
             <View style={styles.searchInputContainer}>
               <TextInput onChangeText={(text) => this.setState({keywords: text})} style={styles.searchInput} underlineColorAndroid="rgba(0,0,0,0)" placeholder="搜索..."/>
@@ -83,75 +74,47 @@ class MarketPage extends Component {
               <Icon name="ios-funnel-outline" size={30} color="#000000" />
             </TouchableOpacity>
           </View>
-          <PullToRefreshListView
-             ref="pullToRefreshListView"
+          <FlatList
+             ref="flatList"
              style={styles.shopListView}
-             dataSource={this.state.shops}
-             viewType={PullToRefreshListView.constants.viewType.listView}
-             renderRow={this.renderShop.bind(this)}
-             renderFooter={this.renderFooter.bind(this)}
-             onRefresh={this.onRefresh.bind(this)}
-             onLoadMore={this.onLoadMore.bind(this)}
-             enabledPullDown={true}
-             pullUpDistance={35}
-             pullUpStayDistance={50}
-             initialListSize={PAGE_SIZE}
-             pageSize={PAGE_SIZE}/>
+             keyExtractor={this.keyExtractor.bind(this)}
+             ListFooterComponent={this.renderFooter.bind(this)}
+             renderItem={this.renderShop.bind(this)}
+             data={this.props.getShopsRequest.data}
+             onEndReached={this.onLoadMore.bind(this)}
+             onEndReachedThreshold={0.01}/>
         </View>
       </DrawerLayoutAndroid>
     );
   }
 
-  renderShop(shop) {
+  keyExtractor(item, index) {
+    return item.store_id;
+  }
+
+  renderShop({item}) {
     return (
-      <TouchableOpacity onPress={() => { this.props.navigator.push({ShopPage: true, shop: shop}); }}>
-        <ShopInfo {...shop} />
+      <TouchableOpacity onPress={() => { this.props.navigator.push({ShopPage: true, shop: item}); }}>
+        <ShopInfo {...item} />
       </TouchableOpacity>
     );
   }
 
   renderFooter(viewState) {
-    if (this.props.getShopsRequest.isLoading) {
+    if (this.props.getShopsRequest.isEnd) {
       return (
-        <View style={{flexDirection: 'row', height: 35, justifyContent: 'center', alignItems: 'center',}}>
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
+          <Text>没有更多了</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
           <Loading/>
           <Text>加载中...</Text>
         </View>
       );
     }
-    let {pullState, pullDistancePercent} = viewState;
-    const {load_more_none, load_more_idle, will_load_more, loading_more, loaded_all,} = PullToRefreshListView.constants.viewState;
-    pullDistancePercent = Math.round(pullDistancePercent * 100);
-    switch(pullState) {
-    case load_more_none:
-      return (
-        <View style={{height: 35, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>上拉加载更多</Text>
-        </View>
-      );
-    case load_more_idle:
-      return (
-        <View style={{height: 35, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>上拉加载更多</Text>
-        </View>
-      );
-    case will_load_more:
-      return (
-        <View style={{height: 35, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>放开加载更多</Text>
-        </View>
-      );
-    case loaded_all:
-      return (
-        <View style={{height: 35, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>没有更多了</Text>
-        </View>
-      );
-    }
-  }
-
-  onRefresh() {
-    this.refs.pullToRefreshListView.endRefresh(true);
   }
 
   onLoadMore() {
@@ -165,7 +128,6 @@ class MarketPage extends Component {
 
   onConfirm() {
     this.refs.drawerLayout.closeDrawer();
-    this.refs.pullToRefreshListView.endLoadMore();
     this.props.changeMkId(this.refs.markets.getSelected());
   }
 
