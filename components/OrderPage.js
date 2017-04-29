@@ -10,11 +10,11 @@ import {
   Image,
   ToastAndroid,
   Dimensions,
+  FlatList,
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import OrderHead from './OrderHead';
 import Loading from './Loading';
 import {getOrders, getAlipayOrderInfo, clearAlipayOrderInfo, confirmOrder, clearOrders, refreshOrders} from '../actions';
@@ -26,13 +26,10 @@ class OrderPage extends Component {
 
   constructor(props) {
     super(props);
-    this.dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-    });
-    this.state = {
-      orders: this.dataSource.cloneWithRows(props.order.getOrdersRequest.data),
-    };
     this.confirmTimer = false;
+    this.state = {
+      refreshing: false,
+    };
   }
 
   componentDidMount() {
@@ -40,16 +37,6 @@ class OrderPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.order.getOrdersRequest.message) {
-      ToastAndroid.show(nextProps.order.getOrdersRequest.message, ToastAndroid.SHORT);
-    }
-    if (nextProps.order.getOrdersRequest.data) {
-      this.setState({
-        orders: this.dataSource.cloneWithRows(nextProps.order.getOrdersRequest.data),
-      });
-      this.refs.pullToRefreshListView.endRefresh();
-    }
-    this.refs.pullToRefreshListView.endLoadMore(nextProps.order.getOrdersRequest.isEnd);
     if (nextProps.order.getAlipayOrderInfoRequest.orderInfo) {
       this.props.navigator.push({
         PaymentPage: true,
@@ -78,29 +65,28 @@ class OrderPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <PullToRefreshListView
-           ref="pullToRefreshListView"
-           dataSource={this.state.orders}
-           viewType={PullToRefreshListView.constants.viewType.listView}
+        <FlatList
+           ref="flatList"
            style={styles.orderListView}
-           initialListSize={PAGE_SIZE}
-           enableEmptySections={true}
-           pageSize={PAGE_SIZE}
-           renderRow={this.renderOrder.bind(this)}
-           renderHeader={this.renderHeader.bind(this)}
-           renderFooter={this.renderFooter.bind(this)}
-           onRefresh={this.onRefresh.bind(this)}
-           onLoadMore={this.onLoadMore.bind(this)}
-           pullDownDistance={35}
-           pullDownStayDistance={50}
-           pullUpDistance={35}
-           pullUpStayDistance={50}/>
+           keyExtractor={this.keyExtractor.bind(this)}
+           ListFooterComponent={this.renderFooter.bind(this)}
+           renderItem={this.renderOrder.bind(this)}
+           data={this.props.order.getOrdersRequest.data}
+           onEndReached={this.onLoadMore.bind(this)}
+           onEndReachedThreshold={0.01}
+           refreshing={this.state.refreshing}
+           onRefresh={this.onRefresh.bind(this)}/>
         <Spinner visible={this.props.order.submitOrderRequest.isLoading || this.props.order.getAlipayOrderInfoRequest.isLoading|| this.props.order.confirmOrderRequest.isLoading}/>
       </View>
     );
   }
 
-  renderOrder(order) {
+  keyExtractor(item, index) {
+    return item.order_id;
+  }
+
+  renderOrder({item}) {
+    const order = item;
     const goods = [];
     for (var g in order.order_goods) {
       const goods_image = order.order_goods[g].goods_image;
@@ -150,87 +136,47 @@ class OrderPage extends Component {
     );
   }
 
-  renderHeader(viewState) {
-    if (this.props.order.getOrdersRequest.isLoading) {
-      return (
-        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Loading/>
-          <Text>加载中...</Text>
-        </View>
-      );
+  renderFooter() {
+    if (this.state.refreshing) {
+      return null;
     }
-    let {pullState, pullDistancePercent} = viewState;
-    let {refresh_none, refresh_idle, will_refresh, refreshing,} = PullToRefreshListView.constants.viewState;
-    pullDistancePercent = Math.round(pullDistancePercent * 100);
-    switch(pullState) {
-    case refresh_none:
+    if (this.props.order.getOrdersRequest.isEnd) {
       return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>下拉刷新</Text>
-        </View>
-      );
-    case refresh_idle:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>继续下拉刷新</Text>
-        </View>
-      );
-    case will_refresh:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>放开立即刷新</Text>
-        </View>
-      );
-    }
-  }
-
-  renderFooter(viewState) {
-    if (this.props.order.getOrdersRequest.isLoading) {
-      return (
-        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Loading/>
-          <Text>加载中...</Text>
-        </View>
-      );
-    }
-    let {pullState, pullDistancePercent} = viewState;
-    const {load_more_none, load_more_idle, will_load_more, loading_more, loaded_all,} = PullToRefreshListView.constants.viewState;
-    pullDistancePercent = Math.round(pullDistancePercent * 100);
-    switch(pullState) {
-    case load_more_none:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>上拉加载更多</Text>
-        </View>
-      );
-    case load_more_idle:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>上拉加载更多</Text>
-        </View>
-      );
-    case will_load_more:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>放开加载更多</Text>
-        </View>
-      );
-    case loaded_all:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
           <Text>没有更多了</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
+          <Loading/>
+          <Text>加载中...</Text>
         </View>
       );
     }
   }
 
   onRefresh() {
+    this.setState({
+      refreshing: true,
+    });
     this.props.clearOrders();
-    this.props.refreshOrders(this.props.member.accessToken);
+    this.props.refreshOrders(this.props.member.accessToken).then((json) => {
+      this.setState({
+        refreshing: false,
+      });
+      if (json.error) {
+        ToastAndroid.show(json.message, ToastAndroid.SHORT);
+      }
+    });
   }
 
   onLoadMore() {
-    this.props.getOrders(this.props.order.getOrdersRequest.page, this.props.member.accessToken);
+    this.props.getOrders(this.props.order.getOrdersRequest.page, this.props.member.accessToken).then((json) => {
+      if (json.error) {
+        ToastAndroid.show(json.message, ToastAndroid.SHORT);
+      }
+    });
   }
 
 }
