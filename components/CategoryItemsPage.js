@@ -3,14 +3,13 @@ import {
   StyleSheet,
   View,
   Text,
-  ListView,
   TouchableOpacity,
   Image,
   Dimensions,
   ToastAndroid,
+  FlatList,
 } from 'react-native';
 import {connect} from 'react-redux';
-import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview';
 import {mapDispatchToProps} from '../actions/mapper';
 import Loading from './Loading';
 import {PAGE_SIZE} from '../service.json';
@@ -21,9 +20,6 @@ class CategoryItemsPage extends Component {
 
   constructor(props) {
     super(props);
-    this.dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-    });
   }
 
   async componentDidMount() {
@@ -31,39 +27,30 @@ class CategoryItemsPage extends Component {
     this.onLoadMore();
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.refs.pullToRefreshListView.endLoadMore(nextProps.good.getGoodsInCateRequest.isEnd);
-  }
-
   render() {
-    if (this.props.good.getGoodsInCateRequest.message) {
-      ToastAndroid.show(this.props.good.getGoodsInCateRequest.message, ToastAndroid.SHORT);
-    }
-
     return (
       <View style={{flex: 1}}>
-        <PullToRefreshListView
-           ref="pullToRefreshListView"
-           contentContainerStyle={styles.itemContainer}
-           dataSource={this.dataSource.cloneWithRows(this.props.good.getGoodsInCateRequest.data)}
-           viewType={PullToRefreshListView.constants.viewType.listView}
+        <FlatList
+           ref="FlatList"
            style={styles.goodsListView}
-           initialListSize={PAGE_SIZE}
-           enableEmptySections={true}
-           pageSize={PAGE_SIZE}
-           renderRow={this.renderItem.bind(this)}
-           renderHeader={this.renderHeader.bind(this)}
-           renderFooter={this.renderFooter.bind(this)}
-           onRefresh={this.onRefresh.bind(this)}
-           onLoadMore={this.onLoadMore.bind(this)}
-           enabledPullDown={false}
-           pullUpDistance={35}
-           pullUpStayDistance={50}/>
+           horizontal={false}
+           numColumns={2}
+           columnWrapperStyle={styles.itemContainer}
+           keyExtractor={this.keyExtractor.bind(this)}
+           ListFooterComponent={this.renderFooter.bind(this)}
+           renderItem={this.renderItem.bind(this)}
+           data={this.props.good.getGoodsInCateRequest.data}
+           onEndReached={this.onLoadMore.bind(this)}
+           onEndReachedThreshold={0.01}/>
       </View>
     );
   }
 
-  renderItem(item) {
+  keyExtractor(item, index) {
+    return item.goods_id;
+  }
+
+  renderItem({item}) {
     return (
       <TouchableOpacity style={styles.item} onPress={() => this.props.navigator.push({ItemPage: true, item: item})}>
         <View>
@@ -80,59 +67,29 @@ class CategoryItemsPage extends Component {
     );
   }
 
-  renderHeader(viewState) {
-    return (
-      <View style={{width: width}}></View>
-    );
-  }
-
-  renderFooter(viewState) {
-    if (this.props.good.getGoodsInCateRequest.isLoading) {
+  renderFooter() {
+    if (this.props.good.getGoodsInCateRequest.isEnd) {
       return (
-        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
+          <Text>没有更多了</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{flexDirection: 'row', height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
           <Loading/>
           <Text>加载中...</Text>
         </View>
       );
     }
-    let {pullState, pullDistancePercent} = viewState;
-    const {load_more_none, load_more_idle, will_load_more, loading_more, loaded_all,} = PullToRefreshListView.constants.viewState;
-    pullDistancePercent = Math.round(pullDistancePercent * 100);
-    switch(pullState) {
-    case load_more_none:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>上拉加载更多</Text>
-        </View>
-      );
-    case load_more_idle:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>上拉加载更多</Text>
-        </View>
-      );
-    case will_load_more:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>放开加载更多</Text>
-        </View>
-      );
-    case loaded_all:
-      return (
-        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center',}}>
-          <Text>没有更多了</Text>
-        </View>
-      );
-    }
-
-  }
-
-  onRefresh() {
-    this.refs.pullToRefreshListView.endRefresh(true);
   }
 
   onLoadMore() {
-    this.props.getGoodsInCate(this.props.cate_id, this.props.good.getGoodsInCateRequest.page);
+    this.props.getGoodsInCate(this.props.cate_id, this.props.good.getGoodsInCateRequest.page).then((json) => {
+      if (json.error) {
+        ToastAndroid.show(json.message, ToastAndroid.SHORT);
+      }
+    });
   }
 
 }
@@ -142,11 +99,7 @@ const styles = StyleSheet.create({
     height: height - 10 - 65 - 10,
   },
   itemContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
     justifyContent: 'space-between',
-    marginTop: 5,
   },
   item: {
     width: width / 2 - 2.5,
