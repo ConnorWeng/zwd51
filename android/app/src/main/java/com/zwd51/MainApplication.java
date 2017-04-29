@@ -11,7 +11,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.reactnativecomponent.swiperefreshlayout.RCTSwipeRefreshLayoutPackage;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zwd51.packages.AlibabaAPIPackage;
@@ -41,7 +40,6 @@ public class MainApplication extends Application implements ReactApplication {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
                     new VectorIconsPackage(),
-                    new RCTSwipeRefreshLayoutPackage(),
                     new AlibabaAPIPackage(),
                     new Zwd51APIPackage(),
                     new WxAPIPackage(wxapi)

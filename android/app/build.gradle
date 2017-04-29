@@ -165,7 +165,6 @@ dependencies {
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile project(":OneSDK")
     compile project(':react-native-vector-icons')
-    compile project(':react-native-smart-swipe-refresh-layout')
     compile project(':android-auto-update')
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.0.2'
 }

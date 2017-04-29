@@ -4,7 +4,5 @@ include ':app'
 include ':OneSDK'
 include ':react-native-vector-icons'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
-include ':react-native-smart-swipe-refresh-layout'
-project(':react-native-smart-swipe-refresh-layout').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-smart-pull-to-refresh-listview/android')
 include ':android-auto-update'
 project(':android-auto-update').projectDir = new File(rootProject.projectDir, './android-auto-update/library')

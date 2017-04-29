@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import TimerEnhance from 'react-native-smart-timer-enhance';
 import Loading from './Loading';
 import ShopInfo from './ShopInfo';
 import SpecSelector from './SpecSelector';
@@ -261,4 +260,4 @@ const MOCKED_DATA = {
   }],
 };
 
-export default connect(state => state.market, actions)(TimerEnhance(MarketPage));
+export default connect(state => state.market, actions)(MarketPage);
