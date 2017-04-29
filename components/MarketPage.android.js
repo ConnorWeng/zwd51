@@ -48,7 +48,7 @@ class MarketPage extends Component {
   render() {
     const navigationView = (
       <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <SpecSelector ref="markets" category="市场" specs={[{label: '全部', value: 0}, {label: '国投', value: 130}, {label: '国大', value: 8}, {label: '大西豪', value: 4}, {label: '富丽', value: 2}, {label: '佰润', value: 6}, {label: '女人街', value: 3}, {label: '金纱', value: 255}, {label: '非凡', value: 12}, {label: '大时代', value: 10}, {label: '宝华', value: 5}, {label: '柏美', value: 9}, {label: '新金马', value: 45}, {label: '西街', value: 15}, {label: '欣欣', value: 251}, {label: '跨客城', value: 999}, {label: '新百佳', value: 22}, {label: '新旺角', value: 268}, {label: '新潮都', value: 11}, {label: '十三行', value: 14}, {label: '广控', value: 237}, {label: '鞋城', value: 18}, {label: '大西豪三晟', value: 277}, {label: '机筑巷', value: 53}, {label: '圣迦', value: 261}, {label: '景叶', value: 359}, {label: '南城', value: 16}, {label: '万佳', value: 20}, {label: '益民', value: 21}, {label: '富壹', value: 55}, {label: '北城', value: 139}, {label: '西苑鞋汇', value: 57}, {label: '金马实体', value: 151}, {label: '新塘牛仔城', value: 137}, {label: '沙河周边', value: 58}, {label: '其他', value: 56}, {label: '其他城市', value: 535},]}/>
+        <SpecSelector ref="markets" category="市场" specs={[{label: '国投', value: 130}, {label: '国大', value: 8}, {label: '女人街', value: 3}, {label: '大西豪', value: 4}, {label: '大时代', value: 10}, {label: '富丽', value: 2}, {label: '宝华', value: 5}, {label: '柏美', value: 9}, {label: '非凡', value: 12}, {label: '圣迦', value: 261}, {label: '佰润', value: 6}, {label: '新潮都', value: 11}, {label: '跨客城', value: 621}, {label: '三晟', value: 277}, {label: '西街', value: 15}, {label: '新金马', value: 45}, {label: '十三行', value: 14}, {label: '南城', value: 16}, {label: '金纱', value: 255}, {label: '老金马', value: 151}, {label: '景叶', value: 359}, {label: '西街福壹', value: 55}, {label: '鞋城', value: 18}, {label: '万佳', value: 20}, {label: '益民', value: 21}, {label: '新百佳', value: 22}, {label: '西苑鞋汇', value: 57}, {label: '狮岭', value: 786}, {label: '其他城市', value: 840}, {label: '周边', value: 660}]}/>
         <View style={styles.itemActionContainer}>
         <TouchableOpacity onPress={this.onConfirm.bind(this)} style={[styles.itemAction, {borderColor: 'rgba(0,0,0,0.1)', backgroundColor: '#f40'}]}>
           <Text style={[styles.itemActionText, {color: '#fff'}]}>确定</Text>
@@ -128,7 +128,7 @@ class MarketPage extends Component {
 
   onConfirm() {
     this.refs.drawerLayout.closeDrawer();
-    this.props.changeMkId(this.refs.markets.getSelected());
+    this.search();
   }
 
 }
