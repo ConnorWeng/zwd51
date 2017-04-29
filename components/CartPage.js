@@ -23,7 +23,6 @@ class CartPage extends Component {
 
   constructor(props) {
     super(props);
-    this.refreshed = false;
     this.state = {
       selected: [],
     };
@@ -35,44 +34,44 @@ class CartPage extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.member.accessToken) {
-      if (!this.refreshed) {
-        this.refreshed = true;
-        this.onRefresh();
-      }
-    }
-  }
-
   render() {
     if (!this.props.member.accessToken) {
       return (
         <PleaseLogin navigator={this.props.navigator}/>
       );
-    } else if (this.props.cart.getCartRequest.isLoading) {
+    }
+    if (this.props.cart.getCartRequest.isLoading) {
       return (
         <Loading style={styles.loading}/>
       );
-    } else {
-      return (
-        <View style={{flex: 1}}>
-          <ScrollView>
-            <FlatList
-               style={styles.cartList}
-               keyExtractor={(item, index) => item.store_id}
-               data={this.props.cart.getCartRequest.shops}
-               refreshing={this.props.cart.getCartRequest.isLoading}
-               onRefresh={this.onRefresh.bind(this)}
-               renderItem={this.renderShop.bind(this)}/>
-          </ScrollView>
-          <View style={styles.itemActionContainer}>
-            <TouchableOpacity onPress={this.buy.bind(this)} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
-              <Text style={[styles.itemActionText, {color: '#fff'}]}>结算({this.state.selected.length})</Text>
-            </TouchableOpacity>
-          </View>
+    }
+    let tips = null;
+    if (this.props.cart.getCartRequest.shops) {
+      tips = (
+        <View style={{height: 35, width: width, justifyContent: 'center', alignItems: 'center', }}>
+          <Text>下拉刷新</Text>
         </View>
       );
     }
+    return (
+      <View style={{flex: 1}}>
+        <ScrollView>
+          {tips}
+          <FlatList
+             style={styles.cartList}
+             keyExtractor={(item, index) => item.store_id}
+             data={this.props.cart.getCartRequest.shops ? [] : this.props.cart.getCartRequest.shops}
+             refreshing={this.props.cart.getCartRequest.isLoading}
+             onRefresh={this.onRefresh.bind(this)}
+             renderItem={this.renderShop.bind(this)}/>
+        </ScrollView>
+        <View style={styles.itemActionContainer}>
+          <TouchableOpacity onPress={this.buy.bind(this)} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
+            <Text style={[styles.itemActionText, {color: '#fff'}]}>结算({this.state.selected.length})</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
   }
 
   renderShop({item}) {
@@ -280,26 +279,25 @@ const numberStyles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    height: 25,
+    height: 34,
   },
   input: {
     flex: 1,
     textAlign: 'center',
-    paddingHorizontal: 8,
-    fontSize: 14,
+    fontSize: 16,
     color: '#222'
   },
   stepWrap: {
-    width: 18,
-    height: 18,
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
     borderWidth: 1,
     borderColor: '#d9d9d9',
     backgroundColor: 'white'
   },
   stepText: {
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 14,
     color: '#999',
     backgroundColor: 'transparent'
   },
