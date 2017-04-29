@@ -4,12 +4,11 @@ import {
   View,
   Text,
   ScrollView,
-  ListView,
   Image,
   Dimensions,
   TouchableOpacity,
   ToastAndroid,
-  RefreshControl,
+  FlatList,
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -25,39 +24,22 @@ class CartPage extends Component {
   constructor(props) {
     super(props);
     this.refreshed = false;
-    this.shopDataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-    });
-    this.goodDataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-    });
     this.state = {
-      shops: this.shopDataSource.cloneWithRows(props.cart.getCartRequest.shops),
       selected: [],
     };
   }
 
   componentDidMount() {
     if (this.props.member.accessToken) {
-      this.props.getCart(this.props.member.accessToken);
+      this.onRefresh();
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.member.accessToken) {
-      if (nextProps.cart.getCartRequest.message) {
-        ToastAndroid.show(nextProps.cart.getCartRequest.message, ToastAndroid.SHORT);
-      } else {
-        this.setState({
-          shops: this.shopDataSource.cloneWithRows(nextProps.cart.getCartRequest.shops),
-        });
-      }
       if (!this.refreshed) {
         this.refreshed = true;
-        this.props.getCart(nextProps.member.accessToken);
-      }
-      if (nextProps.cart.dropFromCartRequest.message) {
-        ToastAndroid.show(nextProps.cart.dropFromCartRequest.message, ToastAndroid.SHORT);
+        this.onRefresh();
       }
     }
   }
@@ -75,16 +57,13 @@ class CartPage extends Component {
       return (
         <View style={{flex: 1}}>
           <ScrollView>
-            <ListView
+            <FlatList
                style={styles.cartList}
-               refreshControl={
-                   <RefreshControl
-                        refreshing={this.props.cart.getCartRequest.isLoading}
-                        onRefresh={this.onRefresh.bind(this)}/>
-                   }
-               dataSource={this.state.shops}
-               renderRow={this.renderShop.bind(this)}
-               enableEmptySections={true}/>
+               keyExtractor={(item, index) => item.store_id}
+               data={this.props.cart.getCartRequest.shops}
+               refreshing={this.props.cart.getCartRequest.isLoading}
+               onRefresh={this.onRefresh.bind(this)}
+               renderItem={this.renderShop.bind(this)}/>
           </ScrollView>
           <View style={styles.itemActionContainer}>
             <TouchableOpacity onPress={this.buy.bind(this)} style={[styles.itemAction, {borderColor: '#F22D00', backgroundColor: '#f40'}]}>
@@ -96,7 +75,8 @@ class CartPage extends Component {
     }
   }
 
-  renderShop(shop) {
+  renderShop({item}) {
+    const shop = item;
     return (
       <TouchableOpacity style={styles.shopContainer} onPress={() => {
           const allSpecs = [];
@@ -125,16 +105,18 @@ class CartPage extends Component {
           <Text style={styles.shopName}>{shop.store_name}</Text>
         </View>
         <View style={styles.shopBodyContainer}>
-          <ListView
-             dataSource={this.goodDataSource.cloneWithRows(shop.goods)}
-             renderRow={this.renderGood.bind(this)}
-             enableEmptySections={true}/>
+          <FlatList
+             data={shop.goods}
+             extraData={this.state}
+             keyExtractor={(item, index) => item.spec_id}
+             renderItem={this.renderGood.bind(this)}/>
         </View>
       </TouchableOpacity>
     );
   }
 
-  renderGood(good) {
+  renderGood({item}) {
+    const good = item;
     return (
       <TouchableOpacity style={styles.goodContainer} onPress={() => {
           const index = this.indexOfSelected(good.spec_id);
@@ -160,7 +142,11 @@ class CartPage extends Component {
             <Text style={styles.goodSubtotal}>¥ {good.subtotal}</Text>
             <InputNumber styles={numberStyles} defaultValue={parseInt(good.quantity)} min={0} max={99} onChange={(number) => {
                 if (number === 0) {
-                  this.props.dropFromCart(good.rec_id, this.props.member.accessToken);
+                  this.props.dropFromCart(good.rec_id, this.props.member.accessToken).then((json) => {
+                    if (json.error) {
+                      ToastAndroid.show(json.message, ToastAndroid.SHORT);
+                    }
+                  });
                   this.props.dropFromCartLocal(good.store_id, good.rec_id);
                 }
               }}/>
@@ -180,7 +166,11 @@ class CartPage extends Component {
   }
 
   onRefresh() {
-    this.props.getCart(this.props.member.accessToken);
+    this.props.getCart(this.props.member.accessToken).then((json) => {
+      if (json.error) {
+        ToastAndroid.show(json.message, ToastAndroid.SHORT);
+      }
+    });
   }
 
   buy() {
