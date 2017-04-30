@@ -22,7 +22,7 @@ import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-    private static final String WX_APP_ID = "wx3763b26efb070ca6";
+    private static final String WX_APP_ID = "wx49ffd4653fc2fd24";
 
     private IWXAPI wxapi;
 
