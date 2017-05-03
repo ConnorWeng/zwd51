@@ -18,7 +18,7 @@ class ShopInfo extends Component {
             </View>
           </View>
           <Text style={styles.storeAddress}>
-            {this.props.mk_name}-{this.props.address}
+            {this.props.address}
           </Text>
         </View>
         <View style={styles.storeBodyContainer}>
