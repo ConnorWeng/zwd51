@@ -19,7 +19,7 @@ import inputNumberStyles from '../node_modules/rc-input-number/lib/styles';
 import SpecPicker from './SpecPicker';
 import SpecContainer from './SpecContainer';
 import Loading from './Loading';
-import {getDescription, clearDescription, getSpecs, addToCart} from '../actions';
+import {mapDispatchToProps} from '../actions/mapper';
 
 const {height, width} = Dimensions.get('window');
 
@@ -78,6 +78,7 @@ class ItemPage extends Component {
     this.state = {
       webViewHeight: 600,
       selected: null,
+      specData: {},
     };
   }
 
@@ -157,7 +158,7 @@ class ItemPage extends Component {
         </View>
         <Modal style={styles.modal} position={'bottom'} ref={'modal'} onOpened={this.onModalOpened.bind(this)}>
         {(() => {
-          if (this.props.good.getSpecsRequest.isLoading) {
+          if (!this.state.specData.specs) {
             return (
               <Loading style={styles.loading}/>
             );
@@ -168,7 +169,7 @@ class ItemPage extends Component {
                   <TouchableOpacity style={styles.modalCloseBtn} onPress={() => this.refs.modal.close()}>
                     <Icon name="ios-close-circle-outline" size={24}/>
                   </TouchableOpacity>
-                  <SpecPicker ref="specPicker" specs={this.props.good.getSpecsRequest.specs} specName1={this.props.good.getSpecsRequest.specName1} specName2={this.props.good.getSpecsRequest.specName2}/>
+                  <SpecPicker ref="specPicker" specs={this.state.specData.specs} specName1={this.state.specData.specName1} specName2={this.state.specData.specName2}/>
                   <SpecContainer specName="数量">
                     <InputNumber ref="num" styles={inputNumberStyles} defaultValue={1} min={1}/>
                   </SpecContainer>
@@ -223,8 +224,16 @@ class ItemPage extends Component {
   }
 
   onModalOpened() {
-    if (this.props.good.getSpecsRequest.specs.length === 0 || this.props.good.getSpecsRequest.specs[0].goods_id !== this.props.goods_id) {
-      this.props.getSpecs(this.props.goods_id);
+    if (!this.state.specData.specs) {
+      this.props.getSpecs(this.props.goods_id).then((json) => {
+        if (json.error) {
+          ToastAndroid.show(json.message, ToastAndroid.SHORT);
+          return ;
+        }
+        this.setState({
+          specData: json,
+        });
+      });
     }
   }
 
@@ -319,15 +328,6 @@ class ItemPage extends Component {
     NativeModules.WxAPI.shareToWxSession("http://app.51zwd.com/ecmall51-app/index.php?app=mobile_home&act=mobile_shop&user_id=" + this.props.member.userId + '&goods_id=' + this.props.goods_id + '&title=' + encodeURIComponent(this.props.goods_name) + '&price=' + this.props.price + '&pic_url=' + encodeURIComponent(this.props.default_image), this.props.goods_name, this.props.default_image);
   }
 
-}
-
-const actions = (dispatch) => {
-  return {
-    getDescription: (goodsId) => dispatch(getDescription(goodsId)),
-    clearDescription: () => dispatch(clearDescription()),
-    getSpecs: (goodsId) => dispatch(getSpecs(goodsId)),
-    addToCart: (specId, quantity, accessToken) => dispatch(addToCart(specId, quantity, accessToken)),
-  };
 }
 
 const styles = StyleSheet.create({
@@ -474,4 +474,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(state => state, actions)(ItemPage);
+export default connect(state => state, mapDispatchToProps)(ItemPage);

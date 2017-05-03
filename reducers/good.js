@@ -37,14 +37,6 @@ const requestState = {
       needMovePics: 'need_move_pics',
     },
   },
-  getSpecsRequest: {
-    name: 'GET_SPECS',
-    mapping: {
-      specs: {name: 'specs', init: []},
-      specName1: 'spec_name_1',
-      specName2: 'spec_name_2',
-    },
-  },
   searchGoodsRequest: 'SEARCH_GOODS',
   getGoodsInCateRequest: 'GET_GOODS_IN_CATE',
 };
