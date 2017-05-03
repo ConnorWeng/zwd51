@@ -5,12 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.zwd51.R;
 import com.zwd51.Util;
@@ -36,6 +38,20 @@ public class WxAPIModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "WxAPI";
+    }
+
+    @ReactMethod
+    public void pay(String appId, String partnerId, String prepayId, String packageValue, String nonceStr, String timeStamp, String sign, Callback callback) {
+        PayReq payReq = new PayReq();
+        payReq.appId = appId;
+        payReq.partnerId = partnerId;
+        payReq.prepayId = prepayId;
+        payReq.packageValue = packageValue;
+        payReq.nonceStr = nonceStr;
+        payReq.timeStamp = timeStamp;
+        payReq.sign = sign;
+        wxapi.sendReq(payReq);
+        callback.invoke();
     }
 
     @ReactMethod

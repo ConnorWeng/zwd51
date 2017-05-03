@@ -54,6 +54,7 @@ class OrderConfirmPage extends Component {
       const newOrder = nextProps.order.submitOrderRequest.orderInfo;
       this.props.navigator.push({
         PaymentPage: true,
+        orderId: newOrder.order_id,
         orderInfo: newOrder.order_info,
         orderAmount: newOrder.order_amount,
       });

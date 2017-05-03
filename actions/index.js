@@ -335,3 +335,10 @@ export function setProfit(profit, profit0) {
     profit0: profit0,
   };
 }
+
+export function wechatPrepay(orderId, accessToken) {
+  return serviceAction('WECHAT_PREPAY', '/mobile_order/wechat_prepay', 'POST', {
+    order_id: orderId,
+    access_token: accessToken,
+  });
+}

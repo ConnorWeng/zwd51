@@ -40,6 +40,7 @@ class OrderPage extends Component {
     if (nextProps.order.getAlipayOrderInfoRequest.orderInfo) {
       this.props.navigator.push({
         PaymentPage: true,
+        orderId: nextProps.order.getAlipayOrderInfoRequest.orderInfo.order_id,
         orderInfo: nextProps.order.getAlipayOrderInfoRequest.orderInfo.order_info,
         orderAmount: nextProps.order.getAlipayOrderInfoRequest.orderInfo.order_amount,
       });

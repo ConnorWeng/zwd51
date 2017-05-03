@@ -22,8 +22,6 @@ import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-    private static final String WX_APP_ID = "wx49ffd4653fc2fd24";
-
     private IWXAPI wxapi;
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -71,8 +69,8 @@ public class MainApplication extends Application implements ReactApplication {
     }
 
     private void regToWx() {
-        wxapi = WXAPIFactory.createWXAPI(this, WX_APP_ID, true);
-        boolean success = wxapi.registerApp(WX_APP_ID);
+        wxapi = WXAPIFactory.createWXAPI(this, Constants.WX_APP_ID, true);
+        boolean success = wxapi.registerApp(Constants.WX_APP_ID);
         Log.i("MainApplication", "WxAPI " + success);
     }
 }

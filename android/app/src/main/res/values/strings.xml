@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">我要做网店</string>
+    <string name="back">返回</string>
+    <string name="pay_success">支付成功！订单状态可能稍有延迟。</string>
+    <string name="pay_fail">对不起，支付失败了！请重试。</string>
 </resources>

@@ -44,6 +44,7 @@ android/app/libs
 android/OneSDK
 start.sh
 service.json
+service.prod.json
 *.keystore
 
 # fastlane

@@ -91,7 +91,7 @@ class App extends Component {
           }
           if (route.PaymentPage) {
             return (
-              <PaymentPage navigator={navigator} orderInfo={route.orderInfo} orderAmount={route.orderAmount}/>
+              <PaymentPage navigator={navigator} orderId={route.orderId} orderInfo={route.orderInfo} orderAmount={route.orderAmount}/>
             );
           }
           if (route.OrderPage) {
