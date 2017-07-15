@@ -1,3 +1,3 @@
 [submodule "android/android-auto-update"]
 	path = android/android-auto-update
-	url = https://github.com/feicien/android-auto-update
+	url = https://github.com/ConnorWeng/android-auto-update
